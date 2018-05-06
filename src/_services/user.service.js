@@ -1,4 +1,9 @@
 import { authHeader } from '../_helpers';
+import {config} from '../_config';
+
+console.log('config:', config)
+
+const apiUrl = config.apiUrl;
 
 export const userService = {
     login,
@@ -17,7 +22,7 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    return fetch('/users/authenticate', requestOptions)
+    return fetch(apiUrl + '/users/login', requestOptions)
         .then(response => {
             if (!response.ok) { 
                 return Promise.reject(response.statusText);
@@ -66,7 +71,7 @@ function register(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch('/users/register', requestOptions).then(handleResponse);
+    return fetch(apiUrl + '/users/signup', requestOptions).then(handleResponse);
 }
 
 function update(user) {
@@ -76,7 +81,7 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch('/users/' + user.id, requestOptions).then(handleResponse);;
+    return fetch('/users/' + user.id, requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -86,11 +91,11 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch('/users/' + id, requestOptions).then(handleResponse);;
+    return fetch('/users/' + id, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
-    if (!response.ok) { 
+    if (!response.ok) {
         return Promise.reject(response.statusText);
     }
 

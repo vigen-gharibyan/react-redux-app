@@ -1,9 +1,9 @@
 {
-  "name": "react-redux-registration-login-example",
+  "name": "react-redux-app",
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cornflourblue/react-redux-registration-login-example.git"
+    "url": "https://github.com/vigen-gharibyan/react-redux-app"
   },
   "license": "MIT",
   "scripts": {
