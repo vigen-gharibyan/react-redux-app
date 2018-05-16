@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import {history} from '../_helpers';
 import {alertActions} from '../_actions';
+import {validationActions} from '../_actions';
 import {PrivateRoute} from '../_components';
 import {HomePage} from '../HomePage';
 import {LoginPage} from '../LoginPage';
@@ -22,6 +23,7 @@ class App extends React.Component {
 
     render() {
         const {alert} = this.props;
+
         return (
             <div className="wrapper">
                 <div className="jumbotron">
@@ -44,7 +46,7 @@ class App extends React.Component {
                 <div className="text-center">
                     <p>
                         <a href="http://jasonwatmore.com/post/2017/09/16/react-redux-user-registration-and-login-tutorial-example"
-                           target="_top">React + Redux - User Registration and Login Tutorial & Example</a>
+                           target="_top">React + Redux - Application</a>
                     </p>
                     <p>
                         <a href="http://jasonwatmore.com" target="_top">JasonWatmore.com</a>

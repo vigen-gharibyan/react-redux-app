@@ -1,8 +1,6 @@
 import { authHeader } from '../_helpers';
 import {config} from '../_config';
 
-console.log('config:', config)
-
 const apiUrl = config.apiUrl;
 
 export const userService = {

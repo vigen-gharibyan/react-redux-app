@@ -3,7 +3,7 @@ import {form, control, button} from 'react-validation';
 import validator from 'validator';
 
 // Define own Form component
-const CustomForm = ({getValues, validate, validateAll, showError, hideError, children, ...props}) => (
+const CustomForm = ({getValues, validate, validateAll, showError, hideError, children, label, ...props}) => (
     // destruct non-valid props
     <form {...props}>{children}</form>
 );
@@ -14,6 +14,30 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => (
         <input {...props} />
         {
             isChanged && isUsed && 
+            <div className="help-block">{error}</div>
+        }
+    </div>
+);
+
+// Define own Textarea component
+const CustomTextarea = ({error, isChanged, isUsed, ...props}) => (
+    <div className={isChanged && isUsed && error && 'has-error'}>
+        <textarea {...props}>{ props.value }</textarea>
+        {
+            isChanged && isUsed &&
+            <div className="help-block">{error}</div>
+        }
+    </div>
+);
+
+// Define own Select component
+const CustomSelect = ({error, isChanged, isUsed, ...props}) => (
+    <div className={isChanged && isUsed && error && 'has-error'}>
+        <select {...props}>
+            {props.children}
+        </select>
+        {
+            isChanged && isUsed &&
             <div className="help-block">{error}</div>
         }
     </div>
@@ -30,7 +54,7 @@ const validations = {
     required: (value, props) => {
         const label = props.label || 'This field';
 
-        if (!value.toString().trim().length) {
+        if (!value || !value.toString().trim().length) {
             let text = `${label} is required`;
 
             return text;
@@ -94,12 +118,17 @@ const validations = {
                 return text;
             }
         }
+    },
+    apiError: (value, props) => {
+    // console.log('validation:', validation)
     }
 };
 
 // Now call HOCs on components
 const Form = form(CustomForm);
 const Input = control(CustomInput);
+const Textarea = control(CustomTextarea);
+const Select = control(CustomSelect);
 const Button = button(CustomButton);
 
-export {validations, Form, Input, Button};
+export {validations, Form, Input, Textarea, Select, Button};

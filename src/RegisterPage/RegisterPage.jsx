@@ -4,23 +4,25 @@ import {connect} from 'react-redux';
 import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 
 import {userActions} from '../_actions';
-import {validations, Form, Input} from '../_helpers';
+import {validationActions} from '../_actions';
+import {validations, Form, Input, Textarea, Button} from '../_helpers';
 
 class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            submitted: false,
             user: {
                 username: '',
                 email: '',
                 password: '',
                 passwordConfirm: ''
-            },
-            submitted: false
+            }
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.removeApiError = this.removeApiError.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -42,14 +44,25 @@ class RegisterPage extends React.Component {
         this.form.validateAll();
         const {user} = this.state;
         const {dispatch} = this.props;
-        if (user.username && user.email && user.password) {
-            dispatch(userActions.register(user));
+
+        if (1) {
+          dispatch(userActions.register(user));
+
+          if(this.props.validation) {
+            this.form.showError(this['username' + 'Input'], this.props.validation.username);
+            this.form.showError(this['email' + 'Input'], this.props.validation.email);
+          }
         }
     }
 
+    removeApiError() {
+//      this.form.hideError(this['usernameInput']);
+    }
+
     render() {
-        const {registering} = this.props;
+        const {registering, validation} = this.props;
         const {user, submitted} = this.state;
+
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h2>Register</h2>
@@ -65,9 +78,11 @@ class RegisterPage extends React.Component {
                                name="username"
                                id="username"
                                label="Username"
+                               ref={c => { this.usernameInput = c }}
+                               onFocus={this.removeApiError}
                                value={user.username}
                                onChange={this.handleChange}
-                               validations={[validations.required]}/>
+                               validations={[validations.required, validations.apiError]}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel htmlFor="email">Email</ControlLabel>
@@ -75,9 +90,10 @@ class RegisterPage extends React.Component {
                                name="email"
                                id="email"
                                label="Email"
+                               ref={c => { this.emailInput = c }}
                                value={user.email}
                                onChange={this.handleChange}
-                               validations={[validations.required, validations.email]}/>
+                               validations={[validations.required, validations.email, validations.apiError]}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel htmlFor="password">Password</ControlLabel>
@@ -102,8 +118,9 @@ class RegisterPage extends React.Component {
                                onChange={this.handleChange}
                                validations={[validations.required, validations.password]}/>
                     </FormGroup>
+
                     <FormGroup>
-                        <button className="btn btn-primary">Register</button>
+                        <Button className="btn btn-primary">Register</Button>
                         {registering &&
                         <img
                             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
@@ -118,8 +135,10 @@ class RegisterPage extends React.Component {
 
 function mapStateToProps(state) {
     const {registering} = state.registration;
+    const {validation} = state;
     return {
-        registering
+        registering,
+        validation
     };
 }
 
