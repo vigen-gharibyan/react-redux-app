@@ -151,7 +151,8 @@ function _delete(id) {
         }
     }
     function success(id) {
-        return { type: userConstants.DELETE_SUCCESS,
+        return {
+            type: userConstants.DELETE_SUCCESS,
             id
         }
     }

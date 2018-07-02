@@ -120,7 +120,11 @@ const validations = {
         }
     },
     apiError: (value, props) => {
-    // console.log('validation:', validation)
+        if(props.apierror) {
+            let text = props.apierror;
+
+            return text;
+        }
     }
 };
 

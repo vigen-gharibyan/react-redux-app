@@ -6,6 +6,9 @@ export const validationActions = {
 };
 
 function apiError(messages) {
+
+	console.log('messages:', messages)
+
 	return {
 		type: validationConstants.APIERROR,
 		messages

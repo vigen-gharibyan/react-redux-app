@@ -8,6 +8,7 @@ import {validationActions} from '../_actions';
 import {validations, Form, Input, Textarea, Button} from '../_helpers';
 
 class RegisterPage extends React.Component {
+  
     constructor(props) {
         super(props);
 
@@ -47,16 +48,19 @@ class RegisterPage extends React.Component {
 
         if (1) {
           dispatch(userActions.register(user));
-
-          if(this.props.validation) {
-            this.form.showError(this['username' + 'Input'], this.props.validation.username);
-            this.form.showError(this['email' + 'Input'], this.props.validation.email);
-          }
         }
+
+        this.setState({submitted: false});
+    }
+
+    componentWillReceiveProps(nextProps) {
+    //  this.form.showError(this['username' + 'Input'], nextProps.validation.username);
+    //  this.form.showError(this['email' + 'Input'], nextProps.validation.email);
     }
 
     removeApiError() {
-//      this.form.hideError(this['usernameInput']);
+    //  this.form.hideError(this['username' + 'Input']);
+    //  this.form.hideError(this['email' + 'Input']);
     }
 
     render() {
@@ -75,31 +79,30 @@ class RegisterPage extends React.Component {
                     <FormGroup>
                         <ControlLabel htmlFor="username">Username</ControlLabel>
                         <Input type="text" className="form-control"
-                               name="username"
-                               id="username"
+                               name="username" id="username"
                                label="Username"
                                ref={c => { this.usernameInput = c }}
                                onFocus={this.removeApiError}
                                value={user.username}
                                onChange={this.handleChange}
+                               apierror={this.props.validation.username}
                                validations={[validations.required, validations.apiError]}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel htmlFor="email">Email</ControlLabel>
                         <Input type="text" className="form-control"
-                               name="email"
-                               id="email"
+                               name="email" id="email"
                                label="Email"
                                ref={c => { this.emailInput = c }}
                                value={user.email}
                                onChange={this.handleChange}
+                               apierror={this.props.validation.email}
                                validations={[validations.required, validations.email, validations.apiError]}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel htmlFor="password">Password</ControlLabel>
                         <Input type="password" className="form-control"
-                               name="password"
-                               id="password"
+                               name="password" id="password"
                                label="Password"
                                minLength="6"
                                maxLength="32"
@@ -111,8 +114,7 @@ class RegisterPage extends React.Component {
                     <FormGroup>
                         <ControlLabel htmlFor="passwordConfirm">Confirm Password</ControlLabel>
                         <Input type="password" className="form-control"
-                               name="passwordConfirm"
-                               id="passwordConfirm"
+                               name="passwordConfirm" id="passwordConfirm"
                                label="Confirm Password"
                                value={user.passwordConfirm}
                                onChange={this.handleChange}
@@ -121,8 +123,9 @@ class RegisterPage extends React.Component {
 
                     <FormGroup>
                         <Button className="btn btn-primary">Register</Button>
-                        {registering &&
-                        <img
+                        {
+                          registering &&
+                          <img
                             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                         }
                         <Link to="/login" className="btn btn-link">Cancel</Link>
