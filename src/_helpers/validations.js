@@ -10,7 +10,7 @@ const CustomForm = ({getValues, validate, validateAll, showError, hideError, chi
 
 // Define own Input component
 const CustomInput = ({error, isChanged, isUsed, ...props}) => (
-    <div className={isChanged && isUsed && error && 'has-error'}>
+    <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
         <input {...props} />
         {
             isChanged && isUsed && 
@@ -21,7 +21,7 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => (
 
 // Define own Textarea component
 const CustomTextarea = ({error, isChanged, isUsed, ...props}) => (
-    <div className={isChanged && isUsed && error && 'has-error'}>
+    <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
         <textarea {...props}>{ props.value }</textarea>
         {
             isChanged && isUsed &&
@@ -32,7 +32,7 @@ const CustomTextarea = ({error, isChanged, isUsed, ...props}) => (
 
 // Define own Select component
 const CustomSelect = ({error, isChanged, isUsed, ...props}) => (
-    <div className={isChanged && isUsed && error && 'has-error'}>
+    <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
         <select {...props}>
             {props.children}
         </select>

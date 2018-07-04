@@ -23,12 +23,26 @@ class RegisterPage extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.removeApiError = this.removeApiError.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+      //this.removeApiError = this.removeApiError.bind(this);
+    }
+
+    removeApiError(name) {
+      const {dispatch} = this.props;
+      dispatch(validationActions.clear(name));
+
+      /*
+      if(this[name]) {
+        this.form.hideError(this[name]);
+        dispatch(validationActions.clear());
+      }
+      */
     }
 
     handleChange(event) {
         const {name, value} = event.target;
+
+        this.removeApiError(name);
         const {user} = this.state;
         this.setState({
             user: {
@@ -53,16 +67,6 @@ class RegisterPage extends React.Component {
         this.setState({submitted: false});
     }
 
-    componentWillReceiveProps(nextProps) {
-    //  this.form.showError(this['username' + 'Input'], nextProps.validation.username);
-    //  this.form.showError(this['email' + 'Input'], nextProps.validation.email);
-    }
-
-    removeApiError() {
-    //  this.form.hideError(this['username' + 'Input']);
-    //  this.form.hideError(this['email' + 'Input']);
-    }
-
     render() {
         const {registering, validation} = this.props;
         const {user, submitted} = this.state;
@@ -81,8 +85,7 @@ class RegisterPage extends React.Component {
                         <Input type="text" className="form-control"
                                name="username" id="username"
                                label="Username"
-                               ref={c => { this.usernameInput = c }}
-                               onFocus={this.removeApiError}
+                               ref={c => { this.username = c }}
                                value={user.username}
                                onChange={this.handleChange}
                                apierror={this.props.validation.username}
@@ -93,7 +96,7 @@ class RegisterPage extends React.Component {
                         <Input type="text" className="form-control"
                                name="email" id="email"
                                label="Email"
-                               ref={c => { this.emailInput = c }}
+                               ref={c => { this.email = c }}
                                value={user.email}
                                onChange={this.handleChange}
                                apierror={this.props.validation.email}

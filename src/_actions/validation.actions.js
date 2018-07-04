@@ -6,17 +6,15 @@ export const validationActions = {
 };
 
 function apiError(messages) {
-
-	console.log('messages:', messages)
-
 	return {
 		type: validationConstants.APIERROR,
 		messages
 	};
 }
 
-function clear() {
+function clear(name) {
     return {
-    	type: validationConstants.CLEAR
+    	type: validationConstants.CLEAR,
+    	name: name
     };
 }

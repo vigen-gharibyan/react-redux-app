@@ -13,7 +13,16 @@ export function validation(state = {}, action) {
       	return validationErrors;
       }
     case validationConstants.CLEAR:
-      return {};
+      {
+      	const {name} = action;
+      	let newState = {
+            ...state
+        };
+
+        delete newState[name];
+
+      	return newState;
+      }
     default:
       return state
   }
