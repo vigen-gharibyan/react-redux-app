@@ -2,6 +2,19 @@ import { userConstants } from '../_constants';
 
 export function users(state = {}, action) {
   switch (action.type) {
+    case userConstants.GETCURRENT_REQUEST:
+      return {
+        loading: true
+      };
+    case userConstants.GETCURRENT_SUCCESS:
+      return {
+        user: action.user
+      };
+    case userConstants.GETCURRENT_FAILURE:
+      return {
+        error: action.error
+      };
+
     case userConstants.GETALL_REQUEST:
       return {
         loading: true
@@ -14,6 +27,7 @@ export function users(state = {}, action) {
       return {
         error: action.error
       };
+
     case userConstants.DELETE_REQUEST:
       // add 'deleting:true' property to user being deleted
       return {

@@ -1,4 +1,4 @@
- import { validationConstants } from '../_constants';
+import { validationConstants } from '../_constants';
 
 export function validation(state = {}, action) {
   switch (action.type) {

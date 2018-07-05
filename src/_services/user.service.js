@@ -7,6 +7,7 @@ export const userService = {
     login,
     logout,
     register,
+    getCurrent,
     getAll,
     getById,
     update,
@@ -21,27 +22,33 @@ function login(username, password) {
     };
 
     return fetch(apiUrl + '/users/login', requestOptions)
+        .then(handleResponse)
         .then(response => {
-            if (!response.ok) {
-                return Promise.reject(response.statusText);
-            }
+            const { data } = response;
 
-            return response.json();
-        })
-        .then(user => {
             // login successful if there's a jwt token in the response
-            if (user && user.token) {
+            if (data && data.token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('token', data.token);
             }
-
-            return user;
+            
+            return response;
         });
 }
 
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+}
+
+function getCurrent() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(apiUrl + '/users/current', requestOptions)
+        .then(handleResponse);
 }
 
 function getAll() {

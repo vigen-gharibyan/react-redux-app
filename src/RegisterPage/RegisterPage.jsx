@@ -24,25 +24,15 @@ class RegisterPage extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-      //this.removeApiError = this.removeApiError.bind(this);
     }
 
     removeApiError(name) {
       const {dispatch} = this.props;
       dispatch(validationActions.clear(name));
-
-      /*
-      if(this[name]) {
-        this.form.hideError(this[name]);
-        dispatch(validationActions.clear());
-      }
-      */
     }
 
     handleChange(event) {
         const {name, value} = event.target;
-
-        this.removeApiError(name);
         const {user} = this.state;
         this.setState({
             user: {
@@ -50,6 +40,7 @@ class RegisterPage extends React.Component {
                 [name]: value
             }
         });
+        this.removeApiError(name);
     }
 
     handleSubmit(event) {
@@ -85,7 +76,6 @@ class RegisterPage extends React.Component {
                         <Input type="text" className="form-control"
                                name="username" id="username"
                                label="Username"
-                               ref={c => { this.username = c }}
                                value={user.username}
                                onChange={this.handleChange}
                                apierror={this.props.validation.username}
@@ -96,7 +86,6 @@ class RegisterPage extends React.Component {
                         <Input type="text" className="form-control"
                                name="email" id="email"
                                label="Email"
-                               ref={c => { this.email = c }}
                                value={user.email}
                                onChange={this.handleChange}
                                apierror={this.props.validation.email}

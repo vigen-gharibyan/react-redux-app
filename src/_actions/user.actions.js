@@ -7,6 +7,7 @@ export const userActions = {
     login,
     logout,
     register,
+    getCurrent,
     getAll,
     delete: _delete
 };
@@ -17,9 +18,15 @@ function login(username, password) {
 
         userService.login(username, password)
             .then(
-                user => {
-                    dispatch(success(user));
-                    history.push('/');
+                response => {
+                    const {data} = response;
+
+                    if(response.success) {
+                        dispatch(success(username));
+                        history.push('/');
+                    } else {
+                        dispatch(validationActions.apiError(data));
+                    }
                 },
                 error => {
                     dispatch(failure(error));
@@ -94,6 +101,42 @@ function register(user) {
     function failure(error) {
         return {
             type: userConstants.REGISTER_FAILURE,
+            error
+        };
+    }
+}
+
+function getCurrent() {
+    return dispatch => {
+        dispatch(request());
+
+        userService.getCurrent()
+            .then(
+                response => {
+                    const {data} = response;
+                    
+                    if(response.success) {
+                        dispatch(success(data));
+                    }
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() {
+        return {
+            type: userConstants.GETCURRENT_REQUEST
+        };
+    }
+    function success(user) {
+        return {
+            type: userConstants.GETCURRENT_SUCCESS,
+            user
+        };
+    }
+    function failure(error) {
+        return {
+            type: userConstants.GETCURRENT_FAILURE,
             error
         };
     }
