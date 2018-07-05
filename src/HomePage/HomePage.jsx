@@ -1,10 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-import { userActions } from '../_actions';
+import {userActions} from '../_actions';
 
 class HomePage extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            currentUser: null
+        };
+    }
+
     componentDidMount() {
         this.props.dispatch(userActions.getCurrent());
     }
@@ -13,15 +22,22 @@ class HomePage extends React.Component {
         return (e) => this.props.dispatch(userActions.delete(id));
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {users} = nextProps;
+        const currentUser = users.user || null;
+        this.setState({currentUser});
+    }
+
     render() {
+        const {currentUser} = this.state;
 
-        console.log('this.props:', this.props)
-
-        const { user } = this.props;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h1>Hi user.username !</h1>
-                
+                {
+                    !!currentUser &&
+                    <h1>Hi { currentUser.username } </h1>
+                }
+
                 <p>
                     <Link to="/login">Logout</Link>
                 </p>
@@ -31,8 +47,9 @@ class HomePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { user, users, authentication } = state;
-    //const { user } = authentication;
+    const {users, authentication} = state;
+    const {user} = users;
+
     return {
         user,
         users
@@ -40,4 +57,4 @@ function mapStateToProps(state) {
 }
 
 const connectedHomePage = connect(mapStateToProps)(HomePage);
-export { connectedHomePage as HomePage };
+export {connectedHomePage as HomePage};

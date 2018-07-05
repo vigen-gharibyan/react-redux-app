@@ -78,7 +78,7 @@ class RegisterPage extends React.Component {
                                label="Username"
                                value={user.username}
                                onChange={this.handleChange}
-                               apierror={this.props.validation.username}
+                               apierror={validation.username}
                                validations={[validations.required, validations.apiError]}/>
                     </FormGroup>
                     <FormGroup>
@@ -88,7 +88,7 @@ class RegisterPage extends React.Component {
                                label="Email"
                                value={user.email}
                                onChange={this.handleChange}
-                               apierror={this.props.validation.email}
+                               apierror={validation.email}
                                validations={[validations.required, validations.email, validations.apiError]}/>
                     </FormGroup>
                     <FormGroup>
@@ -131,6 +131,7 @@ class RegisterPage extends React.Component {
 function mapStateToProps(state) {
     const {registering} = state.registration;
     const {validation} = state;
+
     return {
         registering,
         validation
