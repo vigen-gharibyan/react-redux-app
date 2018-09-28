@@ -21,7 +21,7 @@ import {
 import { ButtonDropdowns, ButtonGroups, Buttons, BrandButtons } from './Buttons';
 import Charts from './Charts';
 import Dashboard from './Dashboard';
-import Profile from './Profile';
+import { Profile, EditProfile } from './Profile';
 import { CoreUIIcons, Flags, FontAwesome, SimpleLineIcons } from './Icons';
 import { Alerts, Badges, Modals } from './Notifications';
 import { Login, Page404, Page500, Register } from './Pages';
@@ -52,6 +52,7 @@ export {
   Charts,
   Dashboard,
   Profile,
+  EditProfile,
   Widgets,
   Jumbotrons,
   Switches,

@@ -3,7 +3,8 @@ import Loadable from 'react-loadable'
 
 import {CoreuiLayout} from './Layout';
 import Dashboard from './views/Dashboard';
-import Profile from './views/Profile';
+import Profile from './views/Profile/Profile';
+import EditProfile from './views/Profile/EditProfile';
 import Breadcrumbs from './views/Base/Breadcrumbs';
 import Cards from './views/Base/Cards';
 import Carousels from './views/Base/Carousels';
@@ -55,7 +56,8 @@ const Dashboard = Loadable({
 const routes = [
     { path: '/', exact: true, name: 'Home', component: CoreuiLayout },
     { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-    { path: '/profile', name: 'Profile', component: Profile },
+    { path: '/profile', exact: true, name: 'Profile', component: Profile },
+    { path: '/profile/edit', name: 'EditProfile', component: EditProfile },
     { path: '/theme', exact: true, name: 'Theme', component: Colors },
     { path: '/theme/colors', name: 'Colors', component: Colors },
     { path: '/theme/typography', name: 'Typography', component: Typography },

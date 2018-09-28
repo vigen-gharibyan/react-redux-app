@@ -22,15 +22,14 @@ import {
   Row,
 } from 'reactstrap';
 
-import {userActions, validationActions} from '../../../../actions';
-import {validations, Form, Input, Button as CoreuiButton} from '../../../../helpers/coreuiValidations';
+import {userActions, validationActions} from '../../../../../actions';
+import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers/coreuiValidations';
 
-class Profile extends Component {
+class EditProfile extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      submitted: false,
       user: {
         username: '',
         email: ''
@@ -39,6 +38,7 @@ class Profile extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   componentDidMount() {
@@ -73,19 +73,17 @@ class Profile extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-  //  this.setState({submitted: true});
     this.form.validateAll();
     const {user} = this.state;
-
-    console.log('user-:', user)
-
     const {dispatch} = this.props;
 
     if (1) {
       dispatch(userActions.updateCurrent(user));
     }
+  }
 
-    this.setState({submitted: false});
+  handleReset(event) {
+    console.log('reset ...')
   }
 
   render() {
@@ -134,7 +132,7 @@ class Profile extends Component {
                 <CoreuiButton type="submit" size="sm" color="primary">
                   <i className="fa fa-dot-circle-o"></i> Submit
                 </CoreuiButton>
-                <Button type="reset" size="sm" color="danger">
+                <Button onClick={this.handleReset} type="reset" size="sm" color="danger">
                   <i className="fa fa-ban"></i> Reset
                 </Button>
               </CardFooter>
@@ -156,4 +154,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps)(EditProfile);
