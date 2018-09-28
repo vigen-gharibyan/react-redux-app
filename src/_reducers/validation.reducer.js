@@ -7,21 +7,23 @@ export function validation(state = {}, action) {
       	let validationErrors = {};
       	const {messages} = action;
       	messages.map(item => {
-		    validationErrors[item.field] = item.message;
-		});
+          validationErrors[item.field] = item.message;
+        });
 
       	return validationErrors;
       }
     case validationConstants.CLEAR:
       {
-      	const {name} = action;
-      	let newState = {
-            ...state
-        };
+        const {name} = action;
+        if(name) {
+          let stateCopy = {
+              ...state
+          };
+          delete stateCopy[name];
+          return stateCopy;
+        }
 
-        delete newState[name];
-
-      	return newState;
+        return {};
       }
     default:
       return state

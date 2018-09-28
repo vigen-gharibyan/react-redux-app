@@ -1,69 +1,25 @@
 import React from 'react';
-import {Router, Route} from 'react-router-dom';
-import {connect} from 'react-redux';
+import Routes from '../routes';
 
-import {history} from '../_helpers';
-import {alertActions} from '../_actions';
-import {validationActions} from '../_actions';
-import {PrivateRoute} from '../_components';
-import {HomePage} from '../HomePage';
-import {LoginPage} from '../LoginPage';
-import {RegisterPage} from '../RegisterPage';
+// CoreUI Icons Set
+import '@coreui/icons/css/coreui-icons.min.css';
+// Import Flag Icons Set
+import 'flag-icon-css/css/flag-icon.min.css';
+// Import Font Awesome Icons Set
+import 'font-awesome/css/font-awesome.min.css';
+// Import Simple Line Icons Set
+import 'simple-line-icons/css/simple-line-icons.css';
+// Import Main styles for this application
+import '../scss/style.css';
+
+import './App.css';
 
 class App extends React.Component {
-    
-    constructor(props) {
-        super(props);
-
-        const {dispatch} = this.props;
-        history.listen((location, action) => {
-            // clear alert on location change
-            dispatch(alertActions.clear());
-        });
-    }
-
     render() {
-        const {alert} = this.props;
-
         return (
-            <div className="wrapper">
-                <div className="jumbotron">
-                    <div className="container">
-                        <div className="col-sm-8 col-sm-offset-2">
-                            {
-                                alert.message &&
-                                <div className={`alert ${alert.type}`}>{alert.message}</div>
-                            }
-                            <Router history={history}>
-                                <div>
-                                    <PrivateRoute exact path="/" component={HomePage}/>
-                                    <Route path="/login" component={LoginPage}/>
-                                    <Route path="/register" component={RegisterPage}/>
-                                </div>
-                            </Router>
-                        </div>
-                    </div>
-                </div>
-                <div className="text-center">
-                    <p>
-                        <a href="http://jasonwatmore.com/post/2017/09/16/react-redux-user-registration-and-login-tutorial-example"
-                           target="_top">React + Redux - Application</a>
-                    </p>
-                    <p>
-                        <a href="http://jasonwatmore.com" target="_top">JasonWatmore.com</a>
-                    </p>
-                </div>
-            </div>
+            <Routes/>
         );
     }
 }
 
-function mapStateToProps(state) {
-    const {alert} = state;
-    return {
-        alert
-    };
-}
-
-const connectedApp = connect(mapStateToProps)(App);
-export {connectedApp as App};
+export {App};

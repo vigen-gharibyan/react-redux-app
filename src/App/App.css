@@ -1,0 +1,14 @@
+.loading-btn-container {
+    position: relative;
+}
+span.loading-btn-container {
+    display: inline-block;
+}
+
+.loading-btn-container .loading-img {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right: -22px;
+}

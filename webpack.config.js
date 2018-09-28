@@ -4,8 +4,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: './src/index.jsx',
     output: {
-        path: path.resolve('dist'),
-        filename: 'bundle.js'
+        path: path.resolve('public'),
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     resolve: {
         extensions: ['.js', '.jsx']
@@ -19,15 +20,55 @@ module.exports = {
                 query: {
                     presets: ['react', 'es2015', 'stage-3']
                 }
+            },
+            {
+                test: /\.(css)$/,
+                use: [{
+                    loader: "style-loader" // creates style nodes from JS strings
+                }, {
+                    loader: "css-loader" // translates CSS into CommonJS
+                }]
+            },
+            {
+                test: /\.(scss)$/,
+                use: [{
+                    loader: 'style-loader', // inject CSS to page
+                }, {
+                    loader: 'css-loader', // translates CSS into CommonJS modules
+                }, {
+                    loader: 'postcss-loader', // Run post css actions
+                    options: {
+                        plugins: function () { // post css plugins, can be exported to postcss.config.js
+                            return [
+                                require('precss'),
+                                require('autoprefixer')
+                            ];
+                        }
+                    }
+                }, {
+                    loader: 'sass-loader' // compiles Sass to CSS
+                }]
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'fonts/'
+                    }
+                }]
             }
         ]
     },
     plugins: [new HtmlWebpackPlugin({
-        template: './src/index.html',
+        template: './public/index.html',
         filename: 'index.html',
         inject: 'body'
     })],
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        port: 3001,
+        contentBase: path.join(__dirname, 'public')
     }
 }
