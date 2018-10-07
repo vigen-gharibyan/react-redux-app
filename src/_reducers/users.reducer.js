@@ -15,6 +15,20 @@ export function users(state = {}, action) {
         error: action.error
       };
 
+    case userConstants.UPDATECURRENT_REQUEST:
+      return {
+        loading: true
+      };
+    case userConstants.UPDATECURRENT_SUCCESS: {
+      return {
+        updated: true
+      };
+    }
+    case userConstants.UPDATECURRENT_FAILURE:
+      return {
+        error: action.error
+      };
+
     case userConstants.GETALL_REQUEST:
       return {
         loading: true

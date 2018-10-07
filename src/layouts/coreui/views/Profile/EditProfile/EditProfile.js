@@ -22,6 +22,7 @@ import {
   Row,
 } from 'reactstrap';
 
+import {history} from '../../../../../helpers';
 import {userActions, validationActions} from '../../../../../actions';
 import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers/coreuiValidations';
 
@@ -46,10 +47,16 @@ class EditProfile extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {user} = nextProps;
+    const {user, updated} = nextProps;
     if (user) {
       this.setState({user});
     }
+
+    if(updated) {
+      history.push('/profile');
+    }
+
+    console.log('nextProps:', nextProps)
   }
 
   removeApiError(name) {
@@ -146,10 +153,11 @@ class EditProfile extends Component {
 
 function mapStateToProps(state) {
   const {users, validation} = state;
-  const {user} = users;
+  const {user, updated} = users;
 
   return {
     validation,
+    updated,
     user
   };
 }
