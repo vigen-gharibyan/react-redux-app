@@ -42,8 +42,8 @@ class EditProfile extends Component {
     this.handleReset = this.handleReset.bind(this);
   }
 
-  componentDidMount() {
-    this.props.dispatch(userActions.getCurrent());
+  componentWillMount() {
+    this.props.getCurrentUser();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,13 +55,10 @@ class EditProfile extends Component {
     if(updated) {
       history.push('/profile');
     }
-
-    console.log('nextProps:', nextProps)
   }
 
   removeApiError(name) {
-    const {dispatch} = this.props;
-    dispatch(validationActions.clear(name));
+    this.props.clearValidationError(name);
   }
 
   handleChange(event) {
@@ -82,10 +79,9 @@ class EditProfile extends Component {
 
     this.form.validateAll();
     const {user} = this.state;
-    const {dispatch} = this.props;
 
     if (1) {
-      dispatch(userActions.updateCurrent(user));
+      this.props.updateCurrentUser(user);
     }
   }
 
@@ -157,9 +153,23 @@ function mapStateToProps(state) {
 
   return {
     validation,
-    updated,
-    user
+    user,
+    updated
   };
 }
 
-export default connect(mapStateToProps)(EditProfile);
+function mapDispatchToProps(dispatch) {
+  return {
+    getCurrentUser: () => {
+      dispatch(userActions.getCurrent());
+    },
+    updateCurrentUser: (user) => {
+      dispatch(userActions.updateCurrent(user));
+    },
+    clearValidationError: (name) => {
+      dispatch(validationActions.clear(name));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
