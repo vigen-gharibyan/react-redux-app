@@ -51,6 +51,7 @@
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^2.26.0",
     "path": "^0.12.7",
+    "prettier": "1.14.3",
     "style-loader": "^0.22.1",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"

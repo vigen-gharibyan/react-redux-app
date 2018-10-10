@@ -18,16 +18,17 @@ import {
 import navigation from './_nav';
 // routes config
 import routes from './routes';
-import DefaultAside from './DefaultAside';
-import DefaultFooter from './DefaultFooter';
-import DefaultHeader from './DefaultHeader';
+import Aside from './sections/Aside';
+import Footer from './sections/Footer';
+import Header from './sections/Header';
+import Notifications from './Notifications/Notifications';
 
 class Layout extends Component {
     render() {
         return (
             <div className="app">
                 <AppHeader fixed>
-                    <DefaultHeader />
+                    <Header />
                 </AppHeader>
 
                 <div className="app-body">
@@ -58,12 +59,13 @@ class Layout extends Component {
                         </Container>
                     </main>
                     <AppAside fixed hidden>
-                        <DefaultAside />
+                        <Aside />
                     </AppAside>
                 </div>
                 <AppFooter>
-                    <DefaultFooter />
+                    <Footer />
                 </AppFooter>
+                <Notifications />
             </div>
         );
     }

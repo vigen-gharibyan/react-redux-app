@@ -10,7 +10,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-class DefaultAside extends Component {
+class Aside extends Component {
 
   constructor(props) {
     super(props);
@@ -311,7 +311,7 @@ class DefaultAside extends Component {
   }
 }
 
-DefaultAside.propTypes = propTypes;
-DefaultAside.defaultProps = defaultProps;
+Aside.propTypes = propTypes;
+Aside.defaultProps = defaultProps;
 
-export default DefaultAside;
+export default Aside;

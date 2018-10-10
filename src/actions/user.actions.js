@@ -36,7 +36,7 @@ function register(user) {
           });
         })
         .catch(err => {
-          let error = "Server error";
+          let error = 'Server error';
           dispatch(failure(error));
           dispatch(alertActions.error(error));
         });
@@ -165,16 +165,28 @@ function updateCurrent(user) {
     dispatch(request());
 
     userService.updateCurrent(user)
-      .then(
-        response => {
+      .then(response => {
           const {data} = response;
 
           if (response.success) {
             dispatch(success(data));
+            dispatch(alertActions.success('Updated successfully'));
           }
-        },
-        error => dispatch(failure(error))
-      );
+        }, error => {
+          dispatch(failure(error));
+          error.then(response => {
+            const {data} = response;
+            if (data) {
+              dispatch(failure(error));
+              dispatch(validationActions.apiError(data));
+            }
+          });
+        })
+        .catch(err => {
+          let error = 'Server error';
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        });
   };
 
   function request() {
