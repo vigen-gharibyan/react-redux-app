@@ -1,6 +1,6 @@
 import { userConstants } from '../_constants';
 
-export function registration(state = {}, action) {
+const registration = (state = {}, action) => {
   switch (action.type) {
     case userConstants.REGISTER_REQUEST:
     {
@@ -22,3 +22,5 @@ export function registration(state = {}, action) {
     }
   }
 }
+
+export default registration;

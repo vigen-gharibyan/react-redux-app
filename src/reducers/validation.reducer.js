@@ -1,6 +1,6 @@
 import { validationConstants } from '../_constants';
 
-export function validation(state = {}, action) {
+const validation = (state = {}, action) => {
   switch (action.type) {
     case validationConstants.APIERROR:
       {
@@ -29,3 +29,5 @@ export function validation(state = {}, action) {
       return state
   }
 }
+
+export default validation;

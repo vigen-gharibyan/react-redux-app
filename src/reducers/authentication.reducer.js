@@ -1,11 +1,9 @@
 import { userConstants } from '../_constants';
 import { userService } from '../services';
 
-//todo
-let user = JSON.parse(localStorage.getItem('user'));
-const initialState = userService.isLoggedin() ? { loggedIn: true, user } : {};
+const initialState = userService.isLoggedin() ? { loggedIn: true } : {};
 
-export function authentication(state = initialState, action) {
+const authentication = (state = initialState, action) => {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
       return {
@@ -25,3 +23,5 @@ export function authentication(state = initialState, action) {
       return state
   }
 }
+
+export default authentication;

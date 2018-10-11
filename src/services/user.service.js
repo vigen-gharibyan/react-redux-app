@@ -13,6 +13,7 @@ export const userService = {
     getCurrent,
     updateCurrent,
     update,
+    changePassword,
     delete: _delete
 };
 
@@ -145,6 +146,20 @@ function update(id, user) {
     };
 
     return fetch(`${apiUrl}/users/${id}`, requestOptions)
+        .then(handleResponse);
+}
+
+function changePassword(data) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            ...authHeader(),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    };
+
+    return fetch(`${apiUrl}/users/change-password`, requestOptions)
         .then(handleResponse);
 }
 

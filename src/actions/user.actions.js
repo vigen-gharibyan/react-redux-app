@@ -10,6 +10,7 @@ export const userActions = {
   getAll,
   getCurrent,
   updateCurrent,
+  changePassword,
   delete: _delete
 };
 
@@ -205,6 +206,56 @@ function updateCurrent(user) {
   function failure(error) {
     return {
       type: userConstants.UPDATECURRENT_FAILURE,
+      error
+    };
+  }
+}
+
+function changePassword(data) {
+  return dispatch => {
+    dispatch(request());
+
+    userService.changePassword(data)
+      .then(response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+            dispatch(alertActions.success('Password changed successfully'));
+          }
+        }, error => {
+          dispatch(failure(error));
+          error.then(response => {
+            const {data} = response;
+            if (data) {
+              dispatch(failure(error));
+              dispatch(validationActions.apiError(data));
+            }
+          });
+        })
+        .catch(err => {
+          let error = 'Server error';
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        });
+  };
+
+  function request() {
+    return {
+      type: userConstants.CHANGEPASSWORD_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.CHANGEPASSWORD_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.CHANGEPASSWORD_FAILURE,
       error
     };
   }

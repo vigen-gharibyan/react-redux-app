@@ -5,6 +5,7 @@ import {CoreuiLayout} from './Layout';
 import Dashboard from './views/Dashboard';
 import Profile from './views/Profile/Profile';
 import EditProfile from './views/Profile/EditProfile';
+import ChangePassword from './views/Profile/ChangePassword';
 import Breadcrumbs from './views/Base/Breadcrumbs';
 import Cards from './views/Base/Cards';
 import Carousels from './views/Base/Carousels';
@@ -57,7 +58,8 @@ const routes = [
     { path: '/', exact: true, name: 'Home', component: CoreuiLayout },
     { path: '/dashboard', name: 'Dashboard', component: Dashboard },
     { path: '/profile', exact: true, name: 'Profile', component: Profile },
-    { path: '/profile/edit', name: 'EditProfile', component: EditProfile },
+    { path: '/profile/edit', name: 'Edit Profile', component: EditProfile },
+    { path: '/profile/change-password', name: 'Change Password', component: ChangePassword },
     { path: '/theme', exact: true, name: 'Theme', component: Colors },
     { path: '/theme/colors', name: 'Colors', component: Colors },
     { path: '/theme/typography', name: 'Typography', component: Typography },

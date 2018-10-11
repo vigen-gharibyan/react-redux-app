@@ -26,24 +26,20 @@ import {history} from '../../../../../helpers';
 import {userActions, validationActions} from '../../../../../actions';
 import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers/coreuiValidations';
 
-class EditProfile extends Component {
+class ChangePassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: {
-        username: '',
-        email: ''
+      data: {
+        currentPassword: '',
+        newPassword: '',
+        newPasswordConfirm: ''
       }
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.getCurrentUser();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,14 +59,9 @@ class EditProfile extends Component {
 
   handleChange(event) {
     let {name, value} = event.target;
-
-    if (event.target.type === 'checkbox') {
-      value = event.target.checked;
-    }
-
-    const {user} = this.state;
-    user[name] = value;
-    this.setState({user});
+    const {data} = this.state;
+    data[name] = value;
+    this.setState({data});
     this.removeApiError(name);
   }
 
@@ -78,19 +69,15 @@ class EditProfile extends Component {
     event.preventDefault();
 
     this.form.validateAll();
-    const {user} = this.state;
+    const {data} = this.state;
 
     if (1) {
-      this.props.updateCurrentUser(user);
+      this.props.changePassword(data);
     }
   }
 
-  handleReset(event) {
-    console.log('reset ...')
-  }
-
   render() {
-    const {user} = this.state;
+    const {data} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -103,41 +90,56 @@ class EditProfile extends Component {
                   }}
                   onSubmit={this.handleSubmit}>
               <CardHeader>
-                <strong>Profile</strong>
+                <strong>Change Password</strong>
               </CardHeader>
               <CardBody>
                 <FormGroup>
-                  <Label htmlFor="username">Username</Label>
-                  <Input type="text"
-                         name="username" id="username"
-                         placeholder="Username"
-                         autoComplete="username"
-                         label="Username"
-                         value={user.username}
+                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <Input type="password"
+                         name="currentPassword" id="currentPassword"
+                         placeholder="Current Password"
+                         autoComplete="Current Password"
+                         label="Current Password"
+                         icon="icon-lock"
+                         value={data.currentPassword}
                          onChange={this.handleChange}
-                         apierror={this.props.validation.username}
+                         apierror={this.props.validation.currentPassword}
                          validations={[validations.required, validations.apiError]}/>
                 </FormGroup>
                 <FormGroup>
-                  <Label htmlFor="email">Email</Label>
-                  <Input type="text"
-                         name="email" id="email"
-                         placeholder="Email"
-                         autoComplete="email"
-                         label="Email"
-                         value={user.email}
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input type="password"
+                         name="newPassword" id="newPassword"
+                         placeholder="New Password"
+                         autoComplete="New Password"
+                         label="New Password"
+                         icon="icon-lock"
+                         minLength="6"
+                         maxLength="32"
+                         match="newPasswordConfirm"
+                         value={data.newPassword}
                          onChange={this.handleChange}
-                         apierror={this.props.validation.email}
-                         validations={[validations.required, validations.email, validations.apiError]}/>
+                         apierror={this.props.validation.newPassword}
+                         validations={[validations.required, validations.lt, validations.gt, validations.password, validations.match]}/>
+                </FormGroup>
+                <FormGroup>
+                  <Label htmlFor="newPasswordConfirm">Confirm New Password</Label>
+                  <Input type="password"
+                         name="newPasswordConfirm" id="newPasswordConfirm"
+                         placeholder="Confirm New Password"
+                         autoComplete="Confirm New Password"
+                         label="Confirm New Password"
+                         icon="icon-lock"
+                         value={data.newPasswordConfirm}
+                         onChange={this.handleChange}
+                         apierror={this.props.validation.newPasswordConfirm}
+                         validations={[validations.required, validations.password, validations.apiError]}/>
                 </FormGroup>
               </CardBody>
               <CardFooter>
                 <CoreuiButton type="submit" size="sm" color="primary">
                   <i className="fa fa-dot-circle-o"></i> Submit
                 </CoreuiButton>
-                <Button onClick={this.handleReset} type="reset" size="sm" color="danger">
-                  <i className="fa fa-ban"></i> Reset
-                </Button>
               </CardFooter>
             </Form>
           </Card>
@@ -163,8 +165,8 @@ function mapDispatchToProps(dispatch) {
     getCurrentUser: () => {
       dispatch(userActions.getCurrent());
     },
-    updateCurrentUser: (user) => {
-      dispatch(userActions.updateCurrent(user));
+    changePassword: (data) => {
+      dispatch(userActions.changePassword(data));
     },
     clearValidationError: (name) => {
       dispatch(validationActions.clear(name));
@@ -172,4 +174,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

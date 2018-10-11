@@ -2,5 +2,4 @@ export * from './fake-backend';
 export * from './history';
 export * from './store';
 export * from './auth-header';
-//export * from './validations';
 export * from './coreuiValidations';
