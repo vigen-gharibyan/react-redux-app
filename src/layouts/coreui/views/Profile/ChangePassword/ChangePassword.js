@@ -43,12 +43,9 @@ class ChangePassword extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {user, updated} = nextProps;
-    if (user) {
-      this.setState({user});
-    }
+    const {changed} = nextProps;
 
-    if(updated) {
+    if(changed) {
       history.push('/profile');
     }
   }
@@ -77,6 +74,7 @@ class ChangePassword extends Component {
   }
 
   render() {
+    const {loading} = this.props;
     const {data} = this.state;
 
     return (
@@ -137,9 +135,16 @@ class ChangePassword extends Component {
                 </FormGroup>
               </CardBody>
               <CardFooter>
-                <CoreuiButton type="submit" size="sm" color="primary">
-                  <i className="fa fa-dot-circle-o"></i> Submit
-                </CoreuiButton>
+                <span className="loading-btn-container">
+                  <CoreuiButton type="submit" size="sm" color="primary">
+                      <i className="fa fa-dot-circle-o"></i> Submit
+                  </CoreuiButton>
+                  {
+                    !!loading &&
+                    <img className="loading-img"
+                      src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                  }
+                </span>
               </CardFooter>
             </Form>
           </Card>
@@ -151,20 +156,17 @@ class ChangePassword extends Component {
 
 function mapStateToProps(state) {
   const {users, validation} = state;
-  const {user, updated} = users;
+  const {loading, changed} = users;
 
   return {
     validation,
-    user,
-    updated
+    loading,
+    changed
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCurrentUser: () => {
-      dispatch(userActions.getCurrent());
-    },
     changePassword: (data) => {
       dispatch(userActions.changePassword(data));
     },

@@ -214,6 +214,7 @@ function updateCurrent(user) {
 function changePassword(data) {
   return dispatch => {
     dispatch(request());
+    dispatch(alertActions.clear());
 
     userService.changePassword(data)
       .then(response => {

@@ -62,6 +62,13 @@ class Profile extends Component {
                     </Button>
                   </Link>
                 </dd>
+                <dd className="col-sm-9">
+                  <Link to="/profile/change-password">
+                    <Button size="sm" color="primary">
+                      <i className="fa fa-unlock-alt"></i> Change Password
+                    </Button>
+                  </Link>
+                </dd>
               </dl>
             </CardBody>
           </Card>

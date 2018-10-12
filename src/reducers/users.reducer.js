@@ -29,6 +29,20 @@ const  users = (state = {}, action) => {
         error: action.error
       };
 
+    case userConstants.CHANGEPASSWORD_REQUEST:
+      return {
+        loading: true
+      };
+    case userConstants.CHANGEPASSWORD_SUCCESS: {
+      return {
+        changed: true
+      };
+    }
+    case userConstants.CHANGEPASSWORD_FAILURE:
+      return {
+        error: action.error
+      };
+
     case userConstants.GETALL_REQUEST:
       return {
         loading: true

@@ -32,8 +32,7 @@ class Login extends Component {
 
     this.state = {
       username: '',
-      password: '',
-      submitted: false
+      password: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -54,7 +53,6 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    this.setState({submitted: true});
     this.form.validateAll();
     const {username, password} = this.state;
     const {dispatch} = this.props;
@@ -65,7 +63,7 @@ class Login extends Component {
 
   render() {
     const {loggingIn} = this.props;
-    const {username, password, submitted} = this.state;
+    const {username, password} = this.state;
 
     return (
       <div className="login-section">

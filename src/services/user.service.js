@@ -156,10 +156,10 @@ function changePassword(data) {
             ...authHeader(),
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify(data)
     };
 
-    return fetch(`${apiUrl}/users/change-password`, requestOptions)
+    return fetch(`${apiUrl}/users/password`, requestOptions)
         .then(handleResponse);
 }
 
@@ -174,6 +174,9 @@ function _delete(id) {
 }
 
 function handleResponse(response) {
+
+    console.log('response:', response)
+
     if (!response.ok) {
         return Promise.reject(response.json());
     //  throw response.json();
