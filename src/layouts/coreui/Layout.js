@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
-
 import {
     AppAside,
     AppBreadcrumb,
@@ -14,14 +13,16 @@ import {
     AppSidebarMinimizer,
     AppSidebarNav,
 } from '@coreui/react';
+
 // sidebar nav config
-import navigation from './_nav';
+import navigation from './sections/_nav';
+
 // routes config
 import routes from './routes';
 import Aside from './sections/Aside';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
-import Notifications from './Notifications/Notifications';
+import Notifications from './sections/Notifications';
 
 class Layout extends Component {
     render() {

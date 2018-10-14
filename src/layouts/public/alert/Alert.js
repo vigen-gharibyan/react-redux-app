@@ -20,7 +20,7 @@ class Alert extends Component {
 
         return (
             !!alert.message &&
-                <div className={`alert alert-success`}>{alert.message}</div>
+                <div className={`alert ${alert.type}`}>{alert.message}</div>
         );
     }
 }
