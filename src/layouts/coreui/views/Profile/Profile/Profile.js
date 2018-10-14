@@ -41,7 +41,7 @@ class Profile extends Component {
 
     return (
       <div className="animated fadeIn">
-        <Col xs="12" md="6">
+        <Col sm="12" md="8" xl="6">
           <Card>
             <CardHeader>
               Profile

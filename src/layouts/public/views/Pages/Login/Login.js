@@ -22,6 +22,8 @@ import {
   Button as CoreuiButton
 } from '../../../../../helpers/coreuiValidations';
 
+import './login.css';
+
 class Login extends Component {
 
   constructor(props) {
@@ -68,7 +70,7 @@ class Login extends Component {
     return (
       <div className="login-section">
         <Row className="justify-content-center">
-          <Col md="8">
+          <Col md="8" sm="12">
             <CardGroup>
               <Card className="p-4">
                 <CardBody>
@@ -110,7 +112,7 @@ class Login extends Component {
                     </div>
 
                     <Row>
-                      <Col xs="6">
+                      <Col sm="12" md="6">
                         <span className="loading-btn-container">
                           <CoreuiButton color="primary" className="px-4">Login</CoreuiButton>
                           {
@@ -120,7 +122,7 @@ class Login extends Component {
                           }
                         </span>
                       </Col>
-                      <Col xs="6" className="text-right">
+                      <Col sm="12" md="6" className="right-section">
                         <Link to="/">
                           <Button color="link" className="px-0">Forgot password?</Button>
                         </Link>
