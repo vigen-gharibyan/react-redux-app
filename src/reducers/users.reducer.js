@@ -33,11 +33,10 @@ const  users = (state = {}, action) => {
       return {
         loading: true
       };
-    case userConstants.CHANGEPASSWORD_SUCCESS: {
+    case userConstants.CHANGEPASSWORD_SUCCESS:
       return {
         changed: true
       };
-    }
     case userConstants.CHANGEPASSWORD_FAILURE:
       return {
         error: action.error

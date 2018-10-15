@@ -1,4 +1,4 @@
-import { authHeader } from '../helpers';
+import { authHeader, handleResponse } from '../helpers';
 import {config} from '../config';
 var jwt = require('jsonwebtoken');
 const apiUrl = config.apiUrl;
@@ -43,7 +43,7 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(apiUrl + '/users/login', requestOptions)
+    return fetch(`${apiUrl}/users/login`, requestOptions)
         .then(handleResponse)
         .then(response => {
             const { data } = response;
@@ -173,14 +173,4 @@ function _delete(id) {
     return fetch('/users/' + id, requestOptions).then(handleResponse);
 }
 
-function handleResponse(response) {
 
-    console.log('response:', response)
-
-    if (!response.ok) {
-        return Promise.reject(response.json());
-    //  throw response.json();
-    }
-
-    return response.json();
-}
