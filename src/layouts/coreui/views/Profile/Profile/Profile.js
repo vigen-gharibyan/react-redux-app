@@ -20,7 +20,11 @@ class Profile extends Component {
     this.state = {
       user: {
         username: '',
-        email: ''
+        email: '',
+        role: {
+          name: ''
+        },
+        created_at: ''
       }
     };
   }
@@ -54,6 +58,12 @@ class Profile extends Component {
 
                 <dt className="col-sm-3">Email:</dt>
                 <dd className="col-sm-9">{user.email}</dd>
+
+                <dt className="col-sm-3">Role:</dt>
+                <dd className="col-sm-9">{user.role.name}</dd>
+
+                <dt className="col-sm-3">Registered:</dt>
+                <dd className="col-sm-9">{user.created_at}</dd>
 
                 <dd className="col-sm-9">
                   <Link to="/profile/edit">

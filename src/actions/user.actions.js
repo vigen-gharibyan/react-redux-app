@@ -8,6 +8,7 @@ export const userActions = {
   login,
   logout,
   getAll,
+  get: getById,
   getCurrent,
   updateCurrent,
   changePassword,
@@ -287,13 +288,52 @@ function getAll() {
 
   function success(users) {
     return {
-      type: userConstants.GETALL_SUCCESS, users
+      type: userConstants.GETALL_SUCCESS,
+      users
     };
   }
 
   function failure(error) {
     return {
       type: userConstants.GETALL_FAILURE,
+      error
+    };
+  }
+}
+
+function getById(id) {
+  return dispatch => {
+    dispatch(request());
+
+    userService.get(id)
+      .then(
+        response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+          }
+        },
+        error => dispatch(failure(error))
+      );
+  };
+
+  function request() {
+    return {
+      type: userConstants.GETBYID_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.GETBYID_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.GETBYID_FAILURE,
       error
     };
   }

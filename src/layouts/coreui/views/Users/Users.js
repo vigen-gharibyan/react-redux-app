@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
+import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
 import {userActions} from '../../../../actions';
 import usersData from './UsersData'
 
 function UserRow(props) {
-  const user = props.user;
+  const {index, user} = props;
   const userLink = `/users/${user.id}`;
 
   const getBadge = (status) => {
@@ -20,13 +21,13 @@ function UserRow(props) {
   return (
     <tr key={user.id.toString()}>
       <th scope="row">
-        <a href={userLink}>{user.id}</a>
+        {index + 1}
       </th>
       <td>
-        <a href={userLink}>{user.username}</a>
+        <Link to={userLink}>{user.username}</Link>
       </td>
       <td>
-        <a href={userLink}>{user.email}</a>
+        <Link to={userLink}>{user.email}</Link>
       </td>
       <td>
         {user.created_at}
@@ -80,7 +81,7 @@ class Users extends Component {
                     <Table responsive hover>
                       <thead>
                         <tr>
-                          <th scope="col">id</th>
+                          <th scope="col"></th>
                           <th scope="col">Username</th>
                           <th scope="col">Email</th>
                           <th scope="col">Registered</th>
@@ -91,7 +92,7 @@ class Users extends Component {
                       <tbody>
                       {
                         items.map((user, index) =>
-                          <UserRow key={index} user={user}/>
+                          <UserRow key={index} index={index} user={user}/>
                         )
                       }
                       </tbody>
@@ -109,7 +110,7 @@ class Users extends Component {
 }
 
 function mapStateToProps(state) {
-  let {users} = state;
+  const {users} = state;
   const {items} = users;
 
   return {
