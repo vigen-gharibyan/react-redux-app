@@ -1,6 +1,6 @@
 import { userConstants } from '../_constants';
 
-const  users = (state = {}, action) => {
+const users = (state = {}, action) => {
   switch (action.type) {
     case userConstants.GETCURRENT_REQUEST:
       return {
@@ -19,11 +19,10 @@ const  users = (state = {}, action) => {
       return {
         loading: true
       };
-    case userConstants.UPDATECURRENT_SUCCESS: {
+    case userConstants.UPDATECURRENT_SUCCESS:
       return {
         updated: true
       };
-    }
     case userConstants.UPDATECURRENT_FAILURE:
       return {
         error: action.error

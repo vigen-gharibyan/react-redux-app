@@ -268,7 +268,13 @@ function getAll() {
 
     userService.getAll()
       .then(
-        users => dispatch(success(users)),
+        response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+          }
+        },
         error => dispatch(failure(error))
       );
   };
