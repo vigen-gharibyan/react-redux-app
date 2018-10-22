@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {updateTitle} from 'redux-title';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
@@ -30,7 +31,7 @@ class Login extends Component {
     super(props);
 
     // reset login status
-    this.props.dispatch(userActions.logout());
+    this.props.logout();
 
     this.state = {
       username: '',
@@ -41,9 +42,12 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.updateTitle('Login page');
+  }
+
   removeApiError(name) {
-    const {dispatch} = this.props;
-    dispatch(validationActions.clear());
+    this.props.clearValidationError();
   }
 
   handleChange(e) {
@@ -57,15 +61,15 @@ class Login extends Component {
 
     this.form.validateAll();
     const {username, password} = this.state;
-    const {dispatch} = this.props;
     if (1) {
-      dispatch(userActions.login(username, password));
+      this.props.login(username, password);
     }
   }
 
   render() {
     const {loggingIn} = this.props;
     const {username, password} = this.state;
+    const {title} = this.props;
 
     return (
       <div className="login-section">
@@ -155,13 +159,31 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   const {loggingIn} = state.authentication;
-  const {validation} = state;
+  const {title, validation} = state;
   return {
+    title,
     loggingIn,
     validation
   };
 }
 
-const connectedLogin = connect(mapStateToProps)(Login);
+function mapDispatchToProps(dispatch) {
+  return {
+    updateTitle: (title) => {
+      dispatch(updateTitle(title));
+    },
+    clearValidationError: (name) => {
+      dispatch(validationActions.clear(name));
+    },
+    login: (username, password) => {
+      dispatch(userActions.login(username, password));
+    },
+    logout: () => {
+      dispatch(userActions.logout());
+    }
+  };
+}
+
+const connectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
 export {connectedLogin as Login};
 

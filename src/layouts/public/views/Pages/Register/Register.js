@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {updateTitle} from 'redux-title';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
@@ -26,7 +27,6 @@ class Register extends Component {
     super(props);
 
     this.state = {
-      submitted: false,
       user: {
         username: '',
         email: '',
@@ -40,9 +40,16 @@ class Register extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.updateTitle('Register page');
+  }
+
+  componentWillUnmount() {
+    this.props.updateTitle(this.props.title);
+  }
+
   removeApiError(name) {
-    const {dispatch} = this.props;
-    dispatch(validationActions.clear(name));
+    this.props.clearValidationError(name);
   }
 
   handleChange(event) {
@@ -65,21 +72,17 @@ class Register extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    this.setState({submitted: true});
     this.form.validateAll();
     const {user} = this.state;
-    const {dispatch} = this.props;
 
     if (1) {
-      dispatch(userActions.register(user));
+        this.props.register(user);
     }
-
-    this.setState({submitted: false});
   }
 
   render() {
-    const {registering, validation} = this.props;
-    const {user, submitted} = this.state;
+    const {registering} = this.props;
+    const {user} = this.state;
 
     return (
       <div className="register-section">
@@ -186,13 +189,30 @@ class Register extends Component {
 
 function mapStateToProps(state) {
   const {registering} = state.registration;
-  const {validation} = state;
+  const {title, validation} = state;
+
+    console.log('title:', title)
 
   return {
+    title,
     registering,
     validation
   };
 }
 
-const connectedRegister = connect(mapStateToProps)(Register);
+function mapDispatchToProps(dispatch) {
+  return {
+    updateTitle: (title) => {
+      dispatch(updateTitle(title));
+    },
+    clearValidationError: (name) => {
+      dispatch(validationActions.clear(name));
+    },
+    register: (user) => {
+      dispatch(userActions.register(user));
+  }
+};
+}
+
+const connectedRegister = connect(mapStateToProps, mapDispatchToProps)(Register);
 export {connectedRegister as Register};
