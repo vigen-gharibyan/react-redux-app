@@ -25,7 +25,8 @@ function register(user) {
           if (response.success) {
             dispatch(success());
             history.push('/login');
-            dispatch(alertActions.success('Registration successful'));
+            const successMessage = "You have succesfully registered. Before login check your email to activate your account.";
+            dispatch(alertActions.success(successMessage));
           }
         }, error => {
           dispatch(failure(error));

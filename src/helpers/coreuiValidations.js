@@ -23,16 +23,13 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => {
     <div>
       <InputGroup>
         {
-          !!props.icon &&
+          (!!props.icon || !!props.grouptext) &&
           <InputGroupAddon addonType="prepend">
             <InputGroupText>
-              <i className={props.icon}></i>
+              { !!props.icon && <i className={props.icon}></i> }
+              { !!props.grouptext && props.grouptext }
             </InputGroupText>
           </InputGroupAddon>
-        }
-        {
-          !!props.grouptext &&
-          <InputGroupText>{ props.grouptext }</InputGroupText>
         }
         <Input {...props}/>
       </InputGroup>
