@@ -111,9 +111,11 @@ class Users extends Component {
 
 function mapStateToProps(state) {
   const {users} = state;
-  const {items} = users;
+  const {user, items} = users;
 
   return {
+    ...state,
+    user,
     items
   };
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import {connect} from 'react-redux';
 import { Container } from 'reactstrap';
 import {
     AppAside,
@@ -23,8 +24,14 @@ import Aside from './sections/Aside';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
 import Notifications from './sections/Notifications';
+import {userActions} from '../../actions';
 
 class Layout extends Component {
+
+    componentWillMount() {
+        this.props.getCurrentUser();
+    }
+
     render() {
         return (
             <div className="app">
@@ -72,4 +79,13 @@ class Layout extends Component {
     }
 }
 
-export {Layout as CoreuiLayout};
+function mapDispatchToProps(dispatch) {
+  return {
+    getCurrentUser: () => {
+      dispatch(userActions.getCurrent());
+    }
+  }
+}
+
+const connectedLayout = connect(null, mapDispatchToProps)(Layout);
+export {connectedLayout as CoreuiLayout};

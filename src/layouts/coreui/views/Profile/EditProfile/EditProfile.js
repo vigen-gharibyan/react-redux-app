@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -47,12 +47,12 @@ class EditProfile extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {user, updated} = nextProps;
+    const {user, updatedCurrent} = nextProps;
     if (user) {
       this.setState({user});
     }
 
-    if(updated) {
+    if(updatedCurrent) {
       history.push('/profile');
     }
   }
@@ -149,12 +149,12 @@ class EditProfile extends Component {
 
 function mapStateToProps(state) {
   const {users, validation} = state;
-  const {user, updated} = users;
+  const {user, updatedCurrent} = users;
 
   return {
     validation,
     user,
-    updated
+    updatedCurrent
   };
 }
 

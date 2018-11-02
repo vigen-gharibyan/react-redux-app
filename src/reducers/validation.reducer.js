@@ -17,7 +17,7 @@ const validation = (state = {}, action) => {
         const {name} = action;
         if(name) {
           let stateCopy = {
-              ...state
+            ...state
           };
           delete stateCopy[name];
           return stateCopy;

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import {Link, NavLink} from 'react-router-dom';
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import {Can} from "../../../helpers/Can";
+
 import logo from '../assets/img/brand/logo.svg';
 import sygnet from '../assets/img/brand/sygnet.svg';
 
@@ -14,10 +17,30 @@ const propTypes = {
 const defaultProps = {};
 
 class Header extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentUser: {
+        username: '',
+        email: ''
+      }
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {currentUser} = nextProps;
+    if (currentUser) {
+      this.setState({currentUser});
+    }
+  }
+
   render() {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+    const { currentUser } = this.state;
 
     return (
       <React.Fragment>
@@ -32,9 +55,16 @@ class Header extends Component {
           <NavItem className="px-3">
             <NavLink to="/">Dashboard</NavLink>
           </NavItem>
-          <NavItem className="px-3">
-            <NavLink to="/users">Users</NavLink>
-          </NavItem>
+
+          <Can
+            perform="users:list"
+            yes={() => (
+              <NavItem className="px-3">
+                <NavLink to="/users">Users</NavLink>
+              </NavItem>
+              )}
+            />
+
           <NavItem className="px-3">
             <NavLink to="/settings">Settings</NavLink>
           </NavItem>
@@ -42,17 +72,26 @@ class Header extends Component {
 
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
-            <NavLink to="#"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
+            <NavLink to="#">
+              <i className="icon-bell"></i><Badge pill color="danger">5</Badge>
+            </NavLink>
           </NavItem>
           <NavItem className="d-md-down-none">
-            <NavLink to="#"><i className="icon-list"></i></NavLink>
+            <NavLink to="#">
+              <i className="icon-list"></i>
+            </NavLink>
           </NavItem>
           <NavItem className="d-md-down-none">
-            <NavLink to="#"><i className="icon-location-pin"></i></NavLink>
+            <NavLink to="#">
+              <i className="icon-location-pin"></i>
+            </NavLink>
           </NavItem>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={'/assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+              <img src={'/assets/img/avatars/6.jpg'}
+                   className="img-avatar"
+                   alt={currentUser.email}
+                   title={currentUser.username} />
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
@@ -85,4 +124,12 @@ class Header extends Component {
 Header.propTypes = propTypes;
 Header.defaultProps = defaultProps;
 
-export default Header;
+function mapStateToProps(state) {
+  const {users: {user}} = state;
+
+  return {
+    currentUser: user
+  };
+}
+
+export default connect(mapStateToProps)(Header);

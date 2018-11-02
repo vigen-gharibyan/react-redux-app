@@ -21,28 +21,28 @@ function register(user) {
     dispatch(alertActions.clear());
 
     userService.register(user)
-        .then(response => {
-          if (response.success) {
-            dispatch(success());
-            history.push('/login');
-            const successMessage = "You have succesfully registered. Before login check your email to activate your account.";
-            dispatch(alertActions.success(successMessage));
+      .then(response => {
+        if (response.success) {
+          dispatch(success());
+          history.push('/login');
+          const successMessage = "You have succesfully registered. Before login check your email to activate your account.";
+          dispatch(alertActions.success(successMessage));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
           }
-        }, error => {
-          dispatch(failure(error));
-          error.then(response => {
-            const {data} = response;
-            if (data) {
-              dispatch(failure(error));
-              dispatch(validationActions.apiError(data));
-            }
-          });
-        })
-        .catch(err => {
-          let error = 'Server error';
-          dispatch(failure(error));
-          dispatch(alertActions.error(error));
         });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
   };
 
   function request(user) {

@@ -43,9 +43,9 @@ class ChangePassword extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {changed} = nextProps;
+    const {passwordChanged} = nextProps;
 
-    if(changed) {
+    if(passwordChanged) {
       history.push('/profile');
     }
   }
@@ -156,12 +156,12 @@ class ChangePassword extends Component {
 
 function mapStateToProps(state) {
   const {users, validation} = state;
-  const {loading, changed} = users;
+  const {loading, passwordChanged} = users;
 
   return {
     validation,
     loading,
-    changed
+    passwordChanged
   };
 }
 
