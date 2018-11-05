@@ -1,118 +1,145 @@
 import {userConstants} from '../_constants';
+var _ = require('lodash');
 
 let initialState = {user: null};
 
-const users = (state = {}, action) => {
+function getState (state) {
+  let newState = _.pick(state, ['user']);
+
+  return newState;
+}
+
+const users = (state = initialState, action) => {
   switch (action.type) {
     case userConstants.GETCURRENT_REQUEST: {
+      const newState = getState(state);
+
       return {
-        ...state,
+        ...newState,
         loading: true
       };
     }
     case userConstants.GETCURRENT_SUCCESS: {
+      const newState = getState(state);
       const {user} = action;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         user
       };
     }
     case userConstants.GETCURRENT_FAILURE: {
+      const newState = getState(state);
       const {error} = action;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         error
       };
     }
 
     case userConstants.UPDATECURRENT_REQUEST: {
+      const newState = getState(state);
+
       return {
-        ...state,
+        ...newState,
         loading: true
       };
     }
     case userConstants.UPDATECURRENT_SUCCESS: {
+      const newState = getState(state);
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         updatedCurrent: true
       };
     }
     case userConstants.UPDATECURRENT_FAILURE: {
+      const newState = getState(state);
       const {error} = action;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         error
       };
     }
 
     case userConstants.CHANGEPASSWORD_REQUEST: {
+      const newState = getState(state);
+
       return {
-        ...state,
+        ...newState,
         loading: true
       };
     }
     case userConstants.CHANGEPASSWORD_SUCCESS: {
+      const newState = getState(state);
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         passwordChanged: true
       };
     }
     case userConstants.CHANGEPASSWORD_FAILURE: {
+      const newState = getState(state);
       const {error} = action;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         error
       };
     }
 
     case userConstants.GETALL_REQUEST: {
+      const newState = getState(state);
+
       return {
-        ...state,
+        ...newState,
         loading: true
       };
     }
     case userConstants.GETALL_SUCCESS: {
+      const newState = getState(state);
       const items = action.users;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         items
       };
     }
     case userConstants.GETALL_FAILURE: {
+      const newState = getState(state);
       const {error} = action;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         error
       };
     }
 
     case userConstants.GETBYID_REQUEST: {
+      const newState = getState(state);
+
       return {
-        ...state,
+        ...newState,
         loading: true
       };
     }
     case userConstants.GETBYID_SUCCESS: {
+      const newState = getState(state);
       const {user} = action;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         user
       };
     }
     case userConstants.GETBYID_FAILURE: {
+      const newState = getState(state);
       const {error} = action;
+
       return {
-        ...state,
-        loading: false,
+        ...newState,
         error
       };
     }
@@ -151,11 +178,9 @@ const users = (state = {}, action) => {
       };
     }
     default: {
-      return {
-        ...state,
-        updatedCurrent: false,
-        passwordChanged: false
-      };
+      const newState = getState(state);
+
+      return newState;
     }
   }
 }

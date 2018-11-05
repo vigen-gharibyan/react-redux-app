@@ -14,7 +14,7 @@ import {userActions} from '../../../../actions';
 
 import usersData from './UsersData'
 
-class User extends Component {
+class Edit extends Component {
 
   constructor(props) {
     super(props);
@@ -63,24 +63,8 @@ class User extends Component {
               </CardHeader>
               <CardBody>
                 <dl className="row">
-                  <dt className="col-sm-3">Username:</dt>
-                  <dd className="col-sm-9">{user.username}</dd>
-
-                  <dt className="col-sm-3">Email:</dt>
-                  <dd className="col-sm-9">{user.email}</dd>
-
-                  <dt className="col-sm-3">Role:</dt>
-                  <dd className="col-sm-9">{user.role.name}</dd>
-
-                  <dt className="col-sm-3">Registered:</dt>
-                  <dd className="col-sm-9">{user.created_at}</dd>
-
                   <dd className="col-sm-9">
-                    <Link to={`/users/edit/${user.id}`}>
-                      <Button size="sm" color="primary">
-                        <i className="fa fa-edit"></i> Edit
-                      </Button>
-                    </Link>
+                    Edit User
                   </dd>
                 </dl>
               </CardBody>
@@ -101,4 +85,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(User);
+const UserEdit = connect(mapStateToProps)(Edit);
+export default UserEdit;

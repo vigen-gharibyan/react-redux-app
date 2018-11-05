@@ -40,6 +40,7 @@ import Typography from './views/Theme/Typography';
 import Widgets from './views/Widgets/Widgets';
 import Users from './views/Users/Users';
 import User from './views/Users/User';
+import UserEdit from './views/Users/Edit';
 
 function Loading() {
     return <div>Loading...</div>;
@@ -97,8 +98,9 @@ const routes = [
     { path: '/notifications/modals', name: 'Modals', component: Modals },
     { path: '/widgets', name: 'Widgets', component: Widgets },
     { path: '/charts', name: 'Charts', component: Charts },
-    { path: '/users', exact: true,  name: 'Users', component: Users },
+    { path: '/users', exact: true, name: 'Users', component: Users },
     { path: '/users/:id', exact: true, name: 'User Details', component: User },
+    { path: '/users/edit/:id', exact: true, name: 'Edit User Details', component: UserEdit },
 ];
 
 export default routes;

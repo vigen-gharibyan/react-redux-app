@@ -43,6 +43,7 @@ class EditProfile extends Component {
   }
 
   componentWillMount() {
+    this.props.clearValidationError();
     this.props.getCurrentUser();
   }
 
