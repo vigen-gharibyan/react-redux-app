@@ -6,10 +6,14 @@ import {
   InputGroupAddon,
   InputGroupText,
   Button,
-  FormText
+  FormGroup,
+  FormText,
+  FormFeedback
 } from 'reactstrap';
 
-import {validations} from './validations';
+import {validations} from '../validations';
+
+import './styles.css';
 
 // Define own Form component
 const CustomForm = ({getValues, validate, validateAll, showError, hideError, children, label, ...props}) => (
@@ -19,8 +23,10 @@ const CustomForm = ({getValues, validate, validateAll, showError, hideError, chi
 
 // Define own Input component
 const CustomInput = ({error, isChanged, isUsed, ...props}) => {
+  const hasError = isChanged && isUsed && !!error;
+
   return (
-    <div>
+    <FormGroup className={hasError ? 'has-error' : ''}>
       <InputGroup>
         {
           (!!props.icon || !!props.grouptext) &&
@@ -31,43 +37,45 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => {
             </InputGroupText>
           </InputGroupAddon>
         }
-        <Input {...props}/>
+        <Input invalid={hasError} {...props}/>
       </InputGroup>
-      {
-        isChanged && isUsed &&
-        <FormText className="help-block">{error}</FormText>
-      }
-    </div>
+      <FormFeedback invalid={hasError}>{error}</FormFeedback>
+    </FormGroup>
 
   );
 };
 
 // Define own Textarea component
-const CustomTextarea = ({error, isChanged, isUsed, ...props}) => (
-  <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
-    <textarea {...props}>{ props.value }</textarea>
-    {
-      isChanged && isUsed &&
-      <FormText className="help-block">{error}</FormText>
-    }
-  </div>
-);
+const CustomTextarea = ({error, isChanged, isUsed, ...props}) => {
+  const hasError = isChanged && isUsed && !!error;
+
+  return (
+    <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
+      <textarea invalid={hasError} {...props}>{ props.value }</textarea>
+      <FormFeedback>{error}</FormFeedback>
+    </div>
+  )
+};
 
 // Define own Select component
-const CustomSelect = ({error, isChanged, isUsed, ...props}) => (
-  <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
-    <select {...props}>
-      {props.children}
-    </select>
-    {
-      isChanged && isUsed &&
-      <FormText className="help-block">{error}</FormText>
-    }
-  </div>
-);
+const CustomSelect = ({error, isChanged, isUsed, ...props}) => {
+  const hasError = isChanged && isUsed && !!error;
+
+  return (
+    <FormGroup className={hasError ? 'has-error' : ''}>
+      <InputGroup>
+        <Input type="select" invalid={hasError} {...props}>
+          {props.children}
+        </Input>
+      </InputGroup>
+      <FormFeedback>{error}</FormFeedback>
+    </FormGroup>
+  )
+};
 
 // Define own Checkbox component
 const CustomCheckbox = ({error, isChanged, isUsed, ...props}) => {
+  const hasError = isChanged && isUsed && !!error;
   const {children} = {...props};
   delete props.children;
 
@@ -77,7 +85,7 @@ const CustomCheckbox = ({error, isChanged, isUsed, ...props}) => {
         <label><input type="checkbox" {...props}/>{ children }</label>
       </div>
       {
-        isChanged && isUsed &&
+        hasError &&
         <FormText className="help-block">{error}</FormText>
       }
     </div>

@@ -21,7 +21,7 @@ import {
   Form,
   Input,
   Button as CoreuiButton
-} from '../../../../../helpers/coreuiValidations';
+} from '../../../../../helpers';
 
 import './login.css';
 

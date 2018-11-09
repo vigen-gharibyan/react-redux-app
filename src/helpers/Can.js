@@ -31,11 +31,11 @@ const check = (rules, role, action, data) => {
 
 const Can = props => {
   let {role} = props;
-  const {cutrentUser} = props;
+  const {currentUser} = props;
 
   if(typeof role == 'undefined') {
-    if(cutrentUser) {
-      role = cutrentUser.role.id;
+    if(currentUser) {
+      role = currentUser.role.id;
     }
   }
 
@@ -50,10 +50,10 @@ Can.defaultProps = {
 };
 
 function mapStateToProps(state) {
-  const {users: {user}} = state;
+  const {users: {currentUser}} = state;
 
   return {
-    cutrentUser: user
+    currentUser
   };
 }
 

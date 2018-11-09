@@ -89,12 +89,11 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-  const {users, validation} = state;
-  const {user} = users;
+  const {validation, users: {currentUser}} = state;
 
   return {
     validation,
-    user
+    user: currentUser
   };
 }
 

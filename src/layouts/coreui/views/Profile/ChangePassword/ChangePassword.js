@@ -24,7 +24,7 @@ import {
 
 import {history} from '../../../../../helpers';
 import {userActions, validationActions} from '../../../../../actions';
-import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers/coreuiValidations';
+import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers';
 
 class ChangePassword extends Component {
   constructor(props) {

@@ -100,7 +100,7 @@ const routes = [
     { path: '/charts', name: 'Charts', component: Charts },
     { path: '/users', exact: true, name: 'Users', component: Users },
     { path: '/users/:id', exact: true, name: 'User Details', component: User },
-    { path: '/users/edit/:id', exact: true, name: 'Edit User Details', component: UserEdit },
+    { path: '/users/:id/edit', exact: true, name: 'Edit', component: UserEdit },
 ];
 
 export default routes;

@@ -2,6 +2,6 @@
 export * from './history';
 export * from './store';
 export * from './fetcher';
-export * from './coreuiValidations';
+export * from './CoreuiValidations/validations';
 export * from './Can';
 export * from './rbac-rules';

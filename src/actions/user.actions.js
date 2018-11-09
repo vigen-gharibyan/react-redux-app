@@ -9,6 +9,7 @@ export const userActions = {
   logout,
   getAll,
   get: getById,
+  update: updateById,
   getCurrent,
   updateCurrent,
   changePassword,
@@ -335,6 +336,56 @@ function getById(id) {
   function failure(error) {
     return {
       type: userConstants.GETBYID_FAILURE,
+      error
+    };
+  }
+}
+
+function updateById(id, user) {
+  return dispatch => {
+    dispatch(request());
+
+    userService.update(id, user)
+      .then(response => {
+        const {data} = response;
+
+        if (response.success) {
+          dispatch(success(data));
+          dispatch(alertActions.success('Updated successfully'));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
+          }
+        });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
+  };
+
+  function request() {
+    return {
+      type: userConstants.UPDATEBYID_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.UPDATEBYID_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.UPDATEBYID_FAILURE,
       error
     };
   }

@@ -125,10 +125,10 @@ Header.propTypes = propTypes;
 Header.defaultProps = defaultProps;
 
 function mapStateToProps(state) {
-  const {users: {user}} = state;
+  const {users: {currentUser}} = state;
 
   return {
-    currentUser: user
+    currentUser
   };
 }
 

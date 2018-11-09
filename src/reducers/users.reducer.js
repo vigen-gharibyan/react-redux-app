@@ -1,10 +1,10 @@
 import {userConstants} from '../_constants';
 var _ = require('lodash');
 
-let initialState = {user: null};
+let initialState = {currentUser: null};
 
 function getState (state) {
-  let newState = _.pick(state, ['user']);
+  let newState = _.pick(state, ['currentUser']);
 
   return newState;
 }
@@ -25,7 +25,7 @@ const users = (state = initialState, action) => {
 
       return {
         ...newState,
-        user
+        currentUser: user
       };
     }
     case userConstants.GETCURRENT_FAILURE: {
@@ -135,6 +135,32 @@ const users = (state = initialState, action) => {
       };
     }
     case userConstants.GETBYID_FAILURE: {
+      const newState = getState(state);
+      const {error} = action;
+
+      return {
+        ...newState,
+        error
+      };
+    }
+
+    case userConstants.UPDATEBYID_REQUEST: {
+      const newState = getState(state);
+
+      return {
+        ...newState,
+        loading: true
+      };
+    }
+    case userConstants.UPDATEBYID_SUCCESS: {
+      const newState = getState(state);
+
+      return {
+        ...newState,
+        updated: true
+      };
+    }
+    case userConstants.UPDATEBYID_FAILURE: {
       const newState = getState(state);
       const {error} = action;
 

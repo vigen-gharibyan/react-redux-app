@@ -24,7 +24,7 @@ import {
 
 import {history} from '../../../../../helpers';
 import {userActions, validationActions} from '../../../../../actions';
-import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers/coreuiValidations';
+import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers';
 
 class EditProfile extends Component {
   constructor(props) {
@@ -104,7 +104,7 @@ class EditProfile extends Component {
                   }}
                   onSubmit={this.handleSubmit}>
               <CardHeader>
-                <strong>Profile</strong>
+                <strong>Edit Profile</strong>
               </CardHeader>
               <CardBody>
                 <FormGroup>
@@ -134,7 +134,7 @@ class EditProfile extends Component {
               </CardBody>
               <CardFooter>
                 <CoreuiButton type="submit" size="sm" color="primary">
-                  <i className="fa fa-dot-circle-o"></i> Submit
+                  <i className="fa fa-dot-circle-o"></i> Save
                 </CoreuiButton>
                 <Button onClick={this.handleReset} type="reset" size="sm" color="danger">
                   <i className="fa fa-ban"></i> Reset
@@ -149,12 +149,11 @@ class EditProfile extends Component {
 }
 
 function mapStateToProps(state) {
-  const {users, validation} = state;
-  const {user, updatedCurrent} = users;
+  const {validation, users: {currentUser, updatedCurrent}} = state;
 
   return {
     validation,
-    user,
+    user: currentUser,
     updatedCurrent
   };
 }

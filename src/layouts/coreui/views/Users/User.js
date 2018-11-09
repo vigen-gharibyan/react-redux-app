@@ -43,8 +43,6 @@ class User extends Component {
   componentWillReceiveProps(nextProps) {
     const {user} = nextProps;
 
-    console.log('nextProps:', nextProps)
-
     if (user) {
       this.setState({user});
     }
@@ -72,11 +70,14 @@ class User extends Component {
                   <dt className="col-sm-3">Role:</dt>
                   <dd className="col-sm-9">{user.role.name}</dd>
 
+                  <dt className="col-sm-3">Status:</dt>
+                  <dd className="col-sm-9">{user.status.name}</dd>
+
                   <dt className="col-sm-3">Registered:</dt>
                   <dd className="col-sm-9">{user.created_at}</dd>
 
                   <dd className="col-sm-9">
-                    <Link to={`/users/edit/${user.id}`}>
+                    <Link to={`/users/${user.id}/edit`}>
                       <Button size="sm" color="primary">
                         <i className="fa fa-edit"></i> Edit
                       </Button>

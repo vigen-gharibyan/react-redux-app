@@ -136,6 +136,9 @@ function updateCurrent(user) {
 }
 
 function update(id, user) {
+
+    console.log('user:', user)
+
     const requestOptions = {
         method: 'PUT',
         headers: {
