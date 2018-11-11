@@ -5,7 +5,7 @@ import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 
 import PropTypes from 'prop-types';
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-import {Can} from "../../../helpers/Can";
+import {Can} from "../../../helpers";
 
 import logo from '../assets/img/brand/logo.svg';
 import sygnet from '../assets/img/brand/sygnet.svg';

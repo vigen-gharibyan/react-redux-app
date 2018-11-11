@@ -2,31 +2,29 @@ import React from 'react';
 import {Router, Route, Switch} from 'react-router-dom';
 
 import {history} from './helpers';
-import {PublicRoute} from './layouts';
-import {PrivateRoute} from './layouts';
-import { Login, Page404, Page500, Register } from './layouts/public/views/Pages';
-import {CoreuiLayout} from './layouts';
+import {DefaultRoute, MainLayout} from './layouts';
+import {Login, Page404, Page500, Register} from './components/views/Pages';
 
 /*
-import {HomePage} from './components/HomePage';
-import {LoginPage} from './components/LoginPage';
-import {RegisterPage} from './components/RegisterPage';
-*/
+ import {HomePage} from './components/HomePage';
+ import {LoginPage} from './components/LoginPage';
+ import {RegisterPage} from './components/RegisterPage';
+ */
 
 class Routes extends React.Component {
-    render() {
-        return (
-            <Router history={history}>
-                <Switch>
-                    <PublicRoute path="/404" component={Page404}/>
-                    <PublicRoute path="/500" component={Page500}/>
-                    <PublicRoute path="/login" component={Login}/>
-                    <PublicRoute path="/register" component={Register}/>
-                    <PrivateRoute path="/" component={CoreuiLayout}/>
-                </Switch>
-            </Router>
-        )
-    }
+  render() {
+    return (
+      <Router history={history}>
+        <Switch>
+          <DefaultRoute path="/404" component={Page404}/>
+          <DefaultRoute path="/500" component={Page500}/>
+          <DefaultRoute path="/login" component={Login}/>
+          <DefaultRoute path="/register" component={Register}/>
+          <Route path="/" component={MainLayout}/>
+        </Switch>
+      </Router>
+    )
+  }
 }
 
 export default Routes;

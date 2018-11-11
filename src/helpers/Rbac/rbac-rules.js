@@ -10,8 +10,10 @@ const rules = {
       "home-page:visit"
     ]
   },
-  writer: {
+  [ROLE_USER]: {
     static: [
+      'profile:update',
+
       "posts:list",
       "posts:create",
       "users:getSelf",
@@ -27,11 +29,13 @@ const rules = {
   },
   [ROLE_ADMIN]: {
     static: [
+      'profile:update',
+      'users:list',
+
       "posts:list",
       "posts:create",
       "posts:edit",
       "posts:delete",
-      "users:list",
       "users:get",
       "users:getSelf",
       "home-page:visit",

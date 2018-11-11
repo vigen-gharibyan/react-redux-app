@@ -13,13 +13,13 @@ import {
   Row
 } from 'reactstrap';
 
-import {userActions, validationActions} from '../../../../../actions';
+import {userActions, validationActions} from '../../../../actions';
 import {
   validations,
   Form,
   Input,
   Button as CoreuiButton
-} from '../../../../../helpers';
+} from '../../../../helpers';
 
 class Register extends Component {
 

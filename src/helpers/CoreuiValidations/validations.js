@@ -37,7 +37,7 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => {
             </InputGroupText>
           </InputGroupAddon>
         }
-        <Input invalid={hasError} {...props}/>
+        <Input invalid={!!hasError} {...props}/>
       </InputGroup>
       <FormFeedback invalid={hasError}>{error}</FormFeedback>
     </FormGroup>
@@ -47,10 +47,10 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => {
 
 // Define own Textarea component
 const CustomTextarea = ({error, isChanged, isUsed, ...props}) => {
-  const hasError = isChanged && isUsed && !!error;
+  const hasError = !!(isChanged && isUsed && !!error);
 
   return (
-    <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
+    <div className={(isChanged && isUsed && !!error) ? 'has-error' : ''}>
       <textarea invalid={hasError} {...props}>{ props.value }</textarea>
       <FormFeedback>{error}</FormFeedback>
     </div>
@@ -80,7 +80,7 @@ const CustomCheckbox = ({error, isChanged, isUsed, ...props}) => {
   delete props.children;
 
   return (
-    <div className={(isChanged && isUsed && error) ? 'has-error' : ''}>
+    <div className={hasError ? 'has-error' : ''}>
       <div className="checkbox">
         <label><input type="checkbox" {...props}/>{ children }</label>
       </div>

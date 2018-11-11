@@ -29,4 +29,4 @@ class Layout extends Component {
 }
 
 
-export {Layout as PublicLayout};
+export {Layout as DefaultLayout};

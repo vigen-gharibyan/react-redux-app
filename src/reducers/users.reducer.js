@@ -1,7 +1,9 @@
 import {userConstants} from '../_constants';
+import {userService} from '../services';
 var _ = require('lodash');
 
-let initialState = {currentUser: null};
+let currentUser = userService.getCurrentFromStorage();
+let initialState = {currentUser};
 
 function getState (state) {
   let newState = _.pick(state, ['currentUser']);
@@ -22,6 +24,7 @@ const users = (state = initialState, action) => {
     case userConstants.GETCURRENT_SUCCESS: {
       const newState = getState(state);
       const {user} = action;
+      localStorage.setItem('user', JSON.stringify(user));
 
       return {
         ...newState,

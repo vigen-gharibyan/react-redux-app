@@ -1,3 +1,2 @@
-export * from './public';
-export * from './private';
-export * from './coreui';
+export * from './default';
+export * from './main';
