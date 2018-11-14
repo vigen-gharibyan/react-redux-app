@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable'
 
-import {CoreuiLayout} from './Layout';
+import {MainLayout} from './Layout';
 import Dashboard from './views/Dashboard';
 import Profile from './views/Profile/Profile';
 import EditProfile from './views/Profile/EditProfile';
@@ -60,7 +60,7 @@ const routes = [
     path: '/',
     exact: true,
     name: 'Home',
-    component: CoreuiLayout
+    component: MainLayout
   },
   {
     path: '/dashboard',
@@ -72,37 +72,40 @@ const routes = [
     exact: true,
     name: 'Profile',
     component: Profile,
-    perform: "profile:update"
+    perform: 'profile:update'
   },
   {
     path: '/profile/edit',
     name: 'Edit Profile',
     component: EditProfile,
-    perform: "profile:update"
+    perform: 'profile:update'
   },
   {
     path: '/profile/change-password',
     name: 'Change Password',
     component: ChangePassword,
-    perform: "profile:update"
+    perform: 'profile:update'
   },
   {
     path: '/users',
     exact: true,
     name: 'Users',
-    component: Users
+    component: Users,
+    perform: 'users:list'
   },
   {
     path: '/users/:id',
     exact: true,
     name: 'User Details',
-    component: User
+    component: User,
+    perform: 'users:get'
   },
   {
     path: '/users/:id/edit',
     exact: true,
     name: 'Edit',
-    component: UserEdit
+    component: UserEdit,
+    perform: 'users:update'
   },
   {path: '/theme', exact: true, name: 'Theme', component: Colors},
   {path: '/theme/colors', name: 'Colors', component: Colors},
@@ -140,6 +143,7 @@ const routes = [
   {path: '/notifications/badges', name: 'Badges', component: Badges},
   {path: '/notifications/modals', name: 'Modals', component: Modals},
   {path: '/widgets', name: 'Widgets', component: Widgets},
+  {path: '/charts', name: 'Charts', component: Charts},
   {path: '/charts', name: 'Charts', component: Charts}
 ];
 

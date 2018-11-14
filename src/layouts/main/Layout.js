@@ -67,7 +67,8 @@ class Layout extends Component {
                     }
                   )
                 }
-                <Redirect from="/" to="/dashboard"/>
+                <Redirect exact from="/" to="/dashboard"/>
+                <Redirect from='/*' to='/404'/>
               </Switch>
             </Container>
           </main>

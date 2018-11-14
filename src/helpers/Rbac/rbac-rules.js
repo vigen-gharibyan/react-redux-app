@@ -31,6 +31,8 @@ const rules = {
     static: [
       'profile:update',
       'users:list',
+      'users:get',
+      'users:update',
 
       "posts:list",
       "posts:create",

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router, Route, Switch} from 'react-router-dom';
+import {Router, Route, Redirect, Switch} from 'react-router-dom';
 
 import {history} from './helpers';
 import {DefaultRoute, MainLayout} from './layouts';
@@ -21,6 +21,7 @@ class Routes extends React.Component {
           <DefaultRoute path="/login" component={Login}/>
           <DefaultRoute path="/register" component={Register}/>
           <Route path="/" component={MainLayout}/>
+          <Redirect from='*' to='/404'/>
         </Switch>
       </Router>
     )
