@@ -24,7 +24,7 @@ import {
 
 import {history} from '../../../../../helpers';
 import {userActions, validationActions} from '../../../../../actions';
-import {validations, Form, Input, Button as CoreuiButton} from '../../../../../helpers';
+import {validations, Form, Input, File, Button as CoreuiButton} from '../../../../../helpers';
 
 class EditProfile extends Component {
   constructor(props) {
@@ -34,10 +34,12 @@ class EditProfile extends Component {
       user: {
         username: '',
         email: ''
-      }
+      },
+      photo: '-'
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeFile = this.handleChangeFile.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
@@ -53,7 +55,7 @@ class EditProfile extends Component {
       this.setState({user});
     }
 
-    if(updatedCurrent) {
+    if (updatedCurrent) {
       history.push('/profile');
     }
   }
@@ -75,6 +77,15 @@ class EditProfile extends Component {
     this.removeApiError(name);
   }
 
+  handleChangeFile(event) {
+    const files = Array.from(event.target.files);
+
+    const formData = new FormData();
+    files.forEach((file, i) => {
+      formData.append(i, file)
+    });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
@@ -91,7 +102,7 @@ class EditProfile extends Component {
   }
 
   render() {
-    const {user} = this.state;
+    const {user, photo} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -107,6 +118,15 @@ class EditProfile extends Component {
                 <strong>Edit Profile</strong>
               </CardHeader>
               <CardBody>
+                <FormGroup>
+                  <Label htmlFor="photo">Photo</Label>
+                  <File
+                    name="photo" id="photo"
+                    label="Photo"
+                    onChange={this.handleChangeFile}
+                    //apierror={this.props.validation.photo}
+                    validations={[validations.required, validations.apiError]}/>
+                </FormGroup>
                 <FormGroup>
                   <Label htmlFor="username">Username</Label>
                   <Input type="text"
@@ -141,6 +161,17 @@ class EditProfile extends Component {
                 </Button>
               </CardFooter>
             </Form>
+          </Card>
+        </Col>
+        <Col sm="12" md="8" xl="6">
+          <Card>
+            <CardHeader>
+              <strong>Profile Image</strong>
+            </CardHeader>
+            <CardBody>
+
+            </CardBody>
+            <CardFooter></CardFooter>
           </Card>
         </Col>
       </div>

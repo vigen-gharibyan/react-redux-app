@@ -41,7 +41,20 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => {
       </InputGroup>
       <FormFeedback invalid={hasError}>{error}</FormFeedback>
     </FormGroup>
+  );
+};
 
+// Define own File component
+const CustomFile = ({error, isChanged, isUsed, ...props}) => {
+  const hasError = isChanged && isUsed && !!error;
+
+  return (
+    <FormGroup className={hasError ? 'has-error' : ''}>
+      <InputGroup>
+        <Input type="file" {...props}/>
+      </InputGroup>
+      <FormFeedback invalid={hasError}>{error}</FormFeedback>
+    </FormGroup>
   );
 };
 
@@ -102,6 +115,7 @@ const CustomButton = ({hasErrors, ...props}) => {
 // Now call HOCs on components
 const CoreuiForm = form(CustomForm);
 const CoreuiInput = control(CustomInput);
+const CoreuiFile = control(CustomFile);
 const CoreuiTextarea = control(CustomTextarea);
 const CoreuiSelect = control(CustomSelect);
 const CoreuiCheckbox = control(CustomCheckbox);
@@ -111,6 +125,7 @@ export {
   validations,
   CoreuiForm as Form,
   CoreuiInput as Input,
+  CoreuiFile as File,
   CoreuiTextarea as Textarea,
   CoreuiSelect as Select,
   CoreuiCheckbox as Checkbox,

@@ -12,6 +12,7 @@ export const userActions = {
   update: updateById,
   getCurrent,
   updateCurrent,
+  updatePhoto,
   changePassword,
   delete: _delete
 };
@@ -209,6 +210,56 @@ function updateCurrent(user) {
   function failure(error) {
     return {
       type: userConstants.UPDATECURRENT_FAILURE,
+      error
+    };
+  }
+}
+
+function updatePhoto(formData) {
+  return dispatch => {
+    dispatch(request());
+
+    userService.updatePhoto(formData)
+      .then(response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+            dispatch(alertActions.success('Updated successfully'));
+          }
+        }, error => {
+          dispatch(failure(error));
+          error.then(response => {
+            const {data} = response;
+            if (data) {
+              dispatch(failure(error));
+              dispatch(validationActions.apiError(data));
+            }
+          });
+        })
+        .catch(err => {
+          let error = 'Server error';
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        });
+  };
+
+  function request() {
+    return {
+      type: userConstants.UPDATEPHOTO_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.UPDATEPHOTO_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.UPDATEPHOTO_FAILURE,
       error
     };
   }
