@@ -48,7 +48,7 @@ class Profile extends Component {
         <Col sm="12" md="8" xl="6">
           <Card>
             <CardHeader>
-              Profile
+              <i className="fa fa-user"></i> <strong>Profile</strong>
             </CardHeader>
             <CardBody>
               <dl className="row">

@@ -156,9 +156,10 @@ function updatePhoto(formData) {
     method: 'POST',
     headers: {
       ...authHeader(),
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
+      'boundary': '----WebKitFormBoundary7MA4YWxkTrZu0gW'
     },
-    body: (formData)
+    body: formData
   };
 
   return fetch(`${apiUrl}/users/photo`, requestOptions)

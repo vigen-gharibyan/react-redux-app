@@ -120,7 +120,7 @@ class Edit extends Component {
                   }}
                   onSubmit={this.handleSubmit}>
               <CardHeader>
-                <strong><i className="icon-pencil pr-1"></i>Edit User: {user.username}</strong>
+                <i className="fa fa-user-edit"></i> <strong>Edit: {user.username}</strong>
               </CardHeader>
               <CardBody>
                 <FormGroup>

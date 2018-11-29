@@ -57,7 +57,7 @@ class User extends Component {
           <Col lg={6}>
             <Card>
               <CardHeader>
-                <strong><i className="icon-info pr-1"></i>User details</strong>
+                <i className="fa fa-user"></i> <strong>User details</strong>
               </CardHeader>
               <CardBody>
                 <dl className="row">

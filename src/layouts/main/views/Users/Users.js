@@ -73,7 +73,7 @@ class Users extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Users
+                <i className="fa fa-users"></i> <strong>Users</strong>
               </CardHeader>
               <CardBody>
                 {

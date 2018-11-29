@@ -88,7 +88,7 @@ class ChangePassword extends Component {
                   }}
                   onSubmit={this.handleSubmit}>
               <CardHeader>
-                <strong>Change Password</strong>
+                <i className="fa fa-unlock-alt"></i> <strong>Change Password</strong>
               </CardHeader>
               <CardBody>
                 <FormGroup>
