@@ -155,9 +155,7 @@ function updatePhoto(formData) {
   const requestOptions = {
     method: 'POST',
     headers: {
-      ...authHeader(),
-      'Content-Type': 'multipart/form-data',
-      'boundary': '----WebKitFormBoundary7MA4YWxkTrZu0gW'
+      ...authHeader()
     },
     body: formData
   };

@@ -225,7 +225,7 @@ function updatePhoto(formData) {
 
           if (response.success) {
             dispatch(success(data));
-            dispatch(alertActions.success('Updated successfully'));
+            dispatch(alertActions.success('Photo updated successfully'));
           }
         }, error => {
           dispatch(failure(error));
