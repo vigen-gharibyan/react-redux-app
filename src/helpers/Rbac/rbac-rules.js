@@ -3,52 +3,82 @@ const ROLE_WORKER = 2;
 const ROLE_MODERATOR = 5;
 const ROLE_ADMIN = 10;
 
-const rules = {
-  visitor: {
-    static: [
-      "posts:list",
-      "home-page:visit"
-    ]
-  },
-  [ROLE_USER]: {
-    static: [
-      'profile:update',
+const addChild = (child, parent) => {
+  const parentStatic = parent.static || [];
+  const parentDynamic = parent.dynamic || {};
 
-      "posts:list",
-      "posts:create",
-      "users:getSelf",
-      "home-page:visit",
-      "dashboard-page:visit"
+  const childStatic = child.static || [];
+  const childDynamic = child.dynamic || {};
+
+  let permissionsStatic = [
+    ...parentStatic,
+    ...childStatic
+  ];
+
+  const permissionsDynamic = {
+    ...childDynamic,
+    ...parentDynamic
+  };
+
+  return {
+    static: [
+      ...permissionsStatic
     ],
     dynamic: {
-      "posts:edit": ({userId, postOwnerId}) => {
-        if (!userId || !postOwnerId) return false;
-        return userId === postOwnerId;
-      }
+      ...permissionsDynamic
     }
-  },
-  [ROLE_WORKER]: {
-    static: [
-      'profile:update'
-    ]
-  },
-  [ROLE_ADMIN]: {
-    static: [
-      'profile:update',
-      'users:list',
-      'users:get',
-      'users:update',
-
-      "posts:list",
-      "posts:create",
-      "posts:edit",
-      "posts:delete",
-      "users:get",
-      "users:getSelf",
-      "home-page:visit",
-      "dashboard-page:visit"
-    ]
   }
+}
+
+const permissionsVisitor = {
+  static: [
+    "posts:list",
+    "home-page:visit"
+  ]
+};
+
+const permissionsUser = addChild({
+  static: [
+    'profile:update',
+
+    /*
+     "posts:create",
+     "users:getSelf",
+     "dashboard-page:visit"
+     */
+  ],
+  dynamic: {
+    "posts:edit": ({userId, postOwnerId}) => {
+      if (!userId || !postOwnerId) return false;
+      return userId === postOwnerId;
+    }
+  }
+}, permissionsVisitor);
+
+const permissionsWorker = addChild({}, permissionsUser);
+
+const permissionsModerator = addChild({}, permissionsWorker);
+
+const permissionsAdmin = addChild({
+  static: [
+    'users:list',
+    'users:get',
+    'users:update',
+    /*
+     "posts:edit",
+     "posts:delete",
+     "users:get"
+     */
+  ],
+  dynamic: {}
+}, permissionsModerator);
+
+const rules = {
+  visitor: permissionsVisitor,
+  [ROLE_USER]: permissionsUser,
+  [ROLE_WORKER]: permissionsWorker,
+  [ROLE_MODERATOR]: permissionsModerator,
+  [ROLE_ADMIN]: permissionsAdmin
 };
 
 export {rules};

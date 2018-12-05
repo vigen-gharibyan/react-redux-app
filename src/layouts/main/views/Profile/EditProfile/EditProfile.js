@@ -209,9 +209,12 @@ class EditProfile extends Component {
                   <CoreuiButton type="submit" size="sm" color="primary">
                     <i className="fa fa-cloud-upload"></i> Update
                   </CoreuiButton>
-                  <Button type="button" onClick={this.handleRemovePhoto} size="sm" color="danger">
-                    <i className="fa fa-remove"></i> Remove
-                  </Button>
+                  {
+                    !!user.photo &&
+                    <Button type="button" onClick={this.handleRemovePhoto} size="sm" color="danger">
+                      <i className="fa fa-remove"></i> Remove
+                    </Button>
+                  }
                 </CardFooter>
               </Form>
             </Card>
