@@ -51,13 +51,43 @@ const users = (state = initialState, action) => {
     }
     case userConstants.UPDATECURRENT_SUCCESS: {
       const newState = getState(state);
+      const {user} = action;
 
       return {
         ...newState,
+        currentUser: user,
         updatedCurrent: true
       };
     }
     case userConstants.UPDATECURRENT_FAILURE: {
+      const newState = getState(state);
+      const {error} = action;
+
+      return {
+        ...newState,
+        error
+      };
+    }
+
+    case userConstants.UPDATEPHOTO_REQUEST: {
+      const newState = getState(state);
+
+      return {
+        ...newState,
+        loading: true
+      };
+    }
+    case userConstants.UPDATEPHOTO_SUCCESS: {
+      const newState = getState(state);
+      const {user} = action;
+
+      return {
+        ...newState,
+        currentUser: user,
+        updatedCurrentPhoto: true
+      };
+    }
+    case userConstants.UPDATEPHOTO_FAILURE: {
       const newState = getState(state);
       const {error} = action;
 

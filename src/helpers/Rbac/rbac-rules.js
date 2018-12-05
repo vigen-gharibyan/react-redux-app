@@ -27,6 +27,11 @@ const rules = {
       }
     }
   },
+  [ROLE_WORKER]: {
+    static: [
+      'profile:update'
+    ]
+  },
   [ROLE_ADMIN]: {
     static: [
       'profile:update',

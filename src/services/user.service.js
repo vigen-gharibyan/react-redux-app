@@ -149,9 +149,6 @@ function updateCurrent(user) {
 }
 
 function updatePhoto(formData) {
-
-  console.log('formData:', formData)
-
   const requestOptions = {
     method: 'POST',
     headers: {

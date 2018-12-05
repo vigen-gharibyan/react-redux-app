@@ -25,8 +25,9 @@ import Footer from './sections/Footer';
 import Header from './sections/Header';
 import Notifications from './sections/Notifications';
 import {userActions} from '../../actions';
-
 import {PrivateRoute} from '../../helpers';
+
+import './assets/css/style.css';
 
 class Layout extends Component {
 

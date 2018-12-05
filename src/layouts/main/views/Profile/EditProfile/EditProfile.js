@@ -26,6 +26,9 @@ import {history} from '../../../../../helpers';
 import {userActions, validationActions} from '../../../../../actions';
 import {validations, Form, Input, File, Button as CoreuiButton} from '../../../../../helpers';
 
+//todo
+const defaultProfileImg = '/assets/img/users/default-profile.png';
+
 class EditProfile extends Component {
   constructor(props) {
     super(props);
@@ -57,7 +60,7 @@ class EditProfile extends Component {
     }
 
     if (updatedCurrent) {
-      history.push('/profile');
+    //  history.push('/profile');
     }
   }
 
@@ -79,14 +82,8 @@ class EditProfile extends Component {
   }
 
   handleChangeFile(event) {
-    const files = Array.from(event.target.files);
-
-    console.log('files:', files)
-
-    const formData = new FormData();
-    files.forEach((file, i) => {
-      formData.append(i, file)
-    });
+    let {name} = event.target;
+    this.removeApiError(name);
   }
 
   handleSubmit(event) {
@@ -124,7 +121,7 @@ class EditProfile extends Component {
         <Row>
           <Col sm="12" md="8" xl="6">
             <Card>
-              <Form name="form"
+              <Form name="profile-form"
                     noValidate
                     ref={c => {
                       this.form = c
@@ -172,7 +169,8 @@ class EditProfile extends Component {
           </Col>
           <Col sm="12" md="8" xl="6">
             <Card>
-              <Form name="form"
+              <Form name="profile-image-form"
+                    id="profile-image-form"
                     noValidate
                     ref={c => {
                       this.formUpload = c
@@ -182,15 +180,23 @@ class EditProfile extends Component {
                   <i className="fa fa-cloud-upload"></i> <strong>Change Profile Image</strong>
                 </CardHeader>
                 <CardBody>
-                  <FormGroup>
-                    <Label htmlFor="photo">Photo</Label>
-                    <File
-                      name="photo" id="photo"
-                      label="Photo"
-                      onChange={this.handleChangeFile}
-                    //apierror={this.props.validation.photo}
-                      validations={[validations.required, validations.apiError]}/>
-                  </FormGroup>
+                  <Row>
+                    <Col sm="3">
+                      <img src={ user.photo || defaultProfileImg }
+                           className="img-avatar"/>
+                    </Col>
+                    <Col sm="9">
+                      <FormGroup>
+                        <Label htmlFor="photo">Photo</Label>
+                        <File
+                          name="photo" id="photo"
+                          label="Photo"
+                          apierror={this.props.validation.photo}
+                          onChange={this.handleChangeFile}
+                          validations={[validations.required, validations.apiError]}/>
+                      </FormGroup>
+                    </Col>
+                  </Row>
                 </CardBody>
                 <CardFooter>
                   <CoreuiButton type="submit" size="sm" color="primary">
@@ -207,12 +213,20 @@ class EditProfile extends Component {
 }
 
 function mapStateToProps(state) {
-  const {validation, users: {currentUser, updatedCurrent}} = state;
+  const {
+    validation,
+    users: {
+      currentUser,
+      updatedCurrent,
+      updatedCurrentPhoto
+    }
+  } = state;
 
   return {
     validation,
     user: currentUser,
-    updatedCurrent
+    updatedCurrent,
+    updatedCurrentPhoto
   };
 }
 
