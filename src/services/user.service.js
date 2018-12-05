@@ -13,7 +13,8 @@ export const userService = {
   get: getById,
   getCurrent,
   updateCurrent,
-  updatePhoto,
+  updateCurrentPhoto,
+  removeCurrentPhoto,
   update,
   changePassword,
   delete: _delete
@@ -148,13 +149,26 @@ function updateCurrent(user) {
     .then(handleResponse);
 }
 
-function updatePhoto(formData) {
+function updateCurrentPhoto(formData) {
   const requestOptions = {
     method: 'POST',
     headers: {
       ...authHeader()
     },
     body: formData
+  };
+
+  return fetch(`${apiUrl}/users/photo`, requestOptions)
+    .then(handleResponse);
+}
+
+function removeCurrentPhoto() {
+  const requestOptions = {
+    method: 'PUT',
+    headers: {
+      ...authHeader(),
+      'Content-Type': 'application/json'
+    }
   };
 
   return fetch(`${apiUrl}/users/photo`, requestOptions)

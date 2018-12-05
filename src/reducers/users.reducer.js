@@ -5,7 +5,7 @@ var _ = require('lodash');
 let currentUser = userService.getCurrentFromStorage();
 let initialState = {currentUser};
 
-function getState (state) {
+function getState(state) {
   let newState = _.pick(state, ['currentUser']);
 
   return newState;
@@ -69,7 +69,8 @@ const users = (state = initialState, action) => {
       };
     }
 
-    case userConstants.UPDATEPHOTO_REQUEST: {
+    case userConstants.UPDATECURRENTPHOTO_REQUEST:
+    case userConstants.REMOVECURRENTPHOTO_REQUEST: {
       const newState = getState(state);
 
       return {
@@ -77,7 +78,8 @@ const users = (state = initialState, action) => {
         loading: true
       };
     }
-    case userConstants.UPDATEPHOTO_SUCCESS: {
+    case userConstants.UPDATECURRENTPHOTO_SUCCESS:
+    case userConstants.REMOVECURRENTPHOTO_SUCCESS: {
       const newState = getState(state);
       const {user} = action;
 
@@ -87,7 +89,8 @@ const users = (state = initialState, action) => {
         updatedCurrentPhoto: true
       };
     }
-    case userConstants.UPDATEPHOTO_FAILURE: {
+    case userConstants.UPDATECURRENTPHOTO_FAILURE:
+    case userConstants.REMOVECURRENTPHOTO_FAILURE: {
       const newState = getState(state);
       const {error} = action;
 

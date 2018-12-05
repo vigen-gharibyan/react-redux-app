@@ -42,10 +42,11 @@ class EditProfile extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeFile = this.handleChangeFile.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
+    this.handleChangeFile = this.handleChangeFile.bind(this);
+    this.handleUpdatePhoto = this.handleUpdatePhoto.bind(this);
+    this.handleRemovePhoto = this.handleRemovePhoto.bind(this);
   }
 
   componentWillMount() {
@@ -60,7 +61,7 @@ class EditProfile extends Component {
     }
 
     if (updatedCurrent) {
-    //  history.push('/profile');
+      history.push('/profile');
     }
   }
 
@@ -101,7 +102,7 @@ class EditProfile extends Component {
     console.log('reset ...')
   }
 
-  handleUpload(event) {
+  handleUpdatePhoto(event) {
     event.preventDefault();
 
     const files = Array.from(event.target.photo.files);
@@ -111,6 +112,12 @@ class EditProfile extends Component {
     });
 
     this.props.updatePhoto(formData);
+  }
+
+  handleRemovePhoto() {
+    console.log('handleRemovePhoto')
+
+    this.props.removePhoto();
   }
 
   render() {
@@ -175,7 +182,7 @@ class EditProfile extends Component {
                     ref={c => {
                       this.formUpload = c
                     }}
-                    onSubmit={this.handleUpload}>
+                    onSubmit={this.handleUpdatePhoto}>
                 <CardHeader>
                   <i className="fa fa-cloud-upload"></i> <strong>Change Profile Image</strong>
                 </CardHeader>
@@ -200,8 +207,11 @@ class EditProfile extends Component {
                 </CardBody>
                 <CardFooter>
                   <CoreuiButton type="submit" size="sm" color="primary">
-                    <i className="fa fa-cloud-upload"></i> Upload
+                    <i className="fa fa-cloud-upload"></i> Update
                   </CoreuiButton>
+                  <Button type="button" onClick={this.handleRemovePhoto} size="sm" color="danger">
+                    <i className="fa fa-remove"></i> Remove
+                  </Button>
                 </CardFooter>
               </Form>
             </Card>
@@ -239,7 +249,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(userActions.updateCurrent(user));
     },
     updatePhoto: (formData) => {
-      dispatch(userActions.updatePhoto(formData));
+      dispatch(userActions.updateCurrentPhoto(formData));
+    },
+    removePhoto: (formData) => {
+      dispatch(userActions.removeCurrentPhoto(formData));
     },
     clearValidationError: (name) => {
       dispatch(validationActions.clear(name));

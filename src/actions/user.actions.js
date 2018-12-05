@@ -12,7 +12,8 @@ export const userActions = {
   update: updateById,
   getCurrent,
   updateCurrent,
-  updatePhoto,
+  updateCurrentPhoto,
+  removeCurrentPhoto,
   changePassword,
   delete: _delete
 };
@@ -215,11 +216,11 @@ function updateCurrent(user) {
   }
 }
 
-function updatePhoto(formData) {
+function updateCurrentPhoto(formData) {
   return dispatch => {
     dispatch(request());
 
-    userService.updatePhoto(formData)
+    userService.updateCurrentPhoto(formData)
       .then(response => {
           const {data} = response;
 
@@ -246,20 +247,70 @@ function updatePhoto(formData) {
 
   function request() {
     return {
-      type: userConstants.UPDATEPHOTO_REQUEST
+      type: userConstants.UPDATECURRENTPHOTO_REQUEST
     };
   }
 
   function success(user) {
     return {
-      type: userConstants.UPDATEPHOTO_SUCCESS,
+      type: userConstants.UPDATECURRENTPHOTO_SUCCESS,
       user
     };
   }
 
   function failure(error) {
     return {
-      type: userConstants.UPDATEPHOTO_FAILURE,
+      type: userConstants.UPDATECURRENTPHOTO_FAILURE,
+      error
+    };
+  }
+}
+
+function removeCurrentPhoto() {
+  return dispatch => {
+    dispatch(request());
+
+    userService.removeCurrentPhoto()
+      .then(response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+            dispatch(alertActions.success('Photo removed successfully'));
+          }
+        }, error => {
+          dispatch(failure(error));
+          error.then(response => {
+            const {data} = response;
+            if (data) {
+              dispatch(failure(error));
+              dispatch(validationActions.apiError(data));
+            }
+          });
+        })
+        .catch(err => {
+          let error = 'Server error';
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        });
+  };
+
+  function request() {
+    return {
+      type: userConstants.REMOVECURRENTPHOTO_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.REMOVECURRENTPHOTO_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.REMOVECURRENTPHOTO_FAILURE,
       error
     };
   }

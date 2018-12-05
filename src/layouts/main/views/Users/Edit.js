@@ -20,6 +20,9 @@ import {validations, Form, Input, Select, Button as CoreuiButton} from '../../..
 
 var _ = require('lodash');
 
+//todo
+const defaultProfileImg = '/assets/img/users/default-profile.png';
+
 class Edit extends Component {
 
   constructor(props) {
@@ -120,45 +123,57 @@ class Edit extends Component {
                   }}
                   onSubmit={this.handleSubmit}>
               <CardHeader>
-                <i className="fa fa-user-edit"></i> <strong>Edit: {user.username}</strong>
+                <i className="fa fa-user"></i> <strong>Edit: {user.username}</strong>
               </CardHeader>
               <CardBody>
-                <FormGroup>
-                  <Label htmlFor="role">Role</Label>
-                  <Select
-                    name="role" id="role"
-                    label="Role"
-                    value={user.role.id}
-                    onChange={this.handleChange}
-                    apierror={this.props.validation.role}
-                    validations={[validations.required, validations.apiError]}>
-                    <option value="">Select</option>
-                    {
-                      !!roles &&
-                      Object.keys(roles).map((index, k) => (
-                        <option key={k} value={index}>{roles[index]}</option>
-                      ))
-                    }
-                  </Select>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="status">Status</Label>
-                  <Select
-                    name="status" id="status"
-                    label="Status"
-                    value={user.status.id}
-                    onChange={this.handleChange}
-                    apierror={this.props.validation.status}
-                    validations={[validations.required, validations.apiError]}>
-                    <option value="">Select</option>
-                    {
-                      !!statuses &&
-                      Object.keys(statuses).map((index, k) => (
-                        <option key={k} value={index}>{statuses[index]}</option>
-                      ))
-                    }
-                  </Select>
-                </FormGroup>
+                <Row>
+                  <Col sm="4">
+                    <div className="profile-img-container">
+                      <img src={ user.photo || defaultProfileImg }
+                           className=""/>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm="6">
+                    <FormGroup>
+                      <Label htmlFor="role">Role</Label>
+                      <Select
+                        name="role" id="role"
+                        label="Role"
+                        value={user.role.id}
+                        onChange={this.handleChange}
+                        apierror={this.props.validation.role}
+                        validations={[validations.required, validations.apiError]}>
+                        <option value="">Select</option>
+                        {
+                          !!roles &&
+                          Object.keys(roles).map((index, k) => (
+                            <option key={k} value={index}>{roles[index]}</option>
+                          ))
+                        }
+                      </Select>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label htmlFor="status">Status</Label>
+                      <Select
+                        name="status" id="status"
+                        label="Status"
+                        value={user.status.id}
+                        onChange={this.handleChange}
+                        apierror={this.props.validation.status}
+                        validations={[validations.required, validations.apiError]}>
+                        <option value="">Select</option>
+                        {
+                          !!statuses &&
+                          Object.keys(statuses).map((index, k) => (
+                            <option key={k} value={index}>{statuses[index]}</option>
+                          ))
+                        }
+                      </Select>
+                    </FormGroup>
+                  </Col>
+                </Row>
               </CardBody>
               <CardFooter>
                 <CoreuiButton type="submit" size="sm" color="primary">

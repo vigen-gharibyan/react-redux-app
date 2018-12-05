@@ -1,21 +1,31 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 
 import {userActions} from '../../../../actions';
-import usersData from './UsersData'
+//import usersData from './UsersData'
+
+//todo
+const defaultProfileImg = '/assets/img/users/default-profile.png';
 
 function UserRow(props) {
   const {index, user} = props;
   const userLink = `/users/${user.id}`;
 
+  const STATUS_DELETED = 0;
+  const STATUS_INACTIVE = 1;
+  const STATUS_ACTIVE = 10;
+
   const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
-            'primary'
+    return (
+      status === STATUS_ACTIVE ? 'success' :
+        status === STATUS_INACTIVE ? 'secondary' :
+          status === 'Pending' ? 'warning' :
+            status === 'Banned' ? 'danger' :
+              status === STATUS_DELETED ? 'danger' :
+                'primary'
+    )
   }
 
   return (
@@ -23,6 +33,12 @@ function UserRow(props) {
       <th scope="row">
         {index + 1}
       </th>
+      <td>
+        <Link to={userLink}>
+          <img src={ user.photo || defaultProfileImg }
+               className="img-avatar"/>
+        </Link>
+      </td>
       <td>
         <Link to={userLink}>{user.username}</Link>
       </td>
@@ -78,16 +94,19 @@ class Users extends Component {
               <CardBody>
                 {
                   (items.length > 0) ?
-                    <Table responsive hover>
+                    <Table
+                      id="users-table"
+                      responsive hover>
                       <thead>
-                        <tr>
-                          <th scope="col"></th>
-                          <th scope="col">Username</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Registered</th>
-                          <th scope="col">Role</th>
-                          <th scope="col">Status</th>
-                        </tr>
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Registered</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Status</th>
+                      </tr>
                       </thead>
                       <tbody>
                       {
@@ -97,7 +116,7 @@ class Users extends Component {
                       }
                       </tbody>
                     </Table>
-                      :
+                    :
                     <h4>There is no data to show</h4>
                 }
               </CardBody>

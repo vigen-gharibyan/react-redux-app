@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import { Button,
+import {
+  Button,
   Card,
   CardBody,
   CardHeader,
+  CardFooter,
   Col,
   Row,
   Table
@@ -12,7 +14,8 @@ import { Button,
 
 import {userActions} from '../../../../actions';
 
-import usersData from './UsersData'
+//todo
+const defaultProfileImg = '/assets/img/users/default-profile.png';
 
 class User extends Component {
 
@@ -54,37 +57,48 @@ class User extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col lg={6}>
+          <Col sm="12" md="8" xl="6">
             <Card>
               <CardHeader>
                 <i className="fa fa-user"></i> <strong>User details</strong>
               </CardHeader>
               <CardBody>
-                <dl className="row">
-                  <dt className="col-sm-3">Username:</dt>
-                  <dd className="col-sm-9">{user.username}</dd>
+                <Row>
+                  <Col sm="4">
+                    <div className="profile-img-container">
+                      <img src={ user.photo || defaultProfileImg }
+                           className=""/>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm="10">
+                    <dl className="row">
+                      <dt className="col-sm-3">Username:</dt>
+                      <dd className="col-sm-9">{user.username}</dd>
 
-                  <dt className="col-sm-3">Email:</dt>
-                  <dd className="col-sm-9">{user.email}</dd>
+                      <dt className="col-sm-3">Email:</dt>
+                      <dd className="col-sm-9">{user.email}</dd>
 
-                  <dt className="col-sm-3">Role:</dt>
-                  <dd className="col-sm-9">{user.role.name}</dd>
+                      <dt className="col-sm-3">Role:</dt>
+                      <dd className="col-sm-9">{user.role.name}</dd>
 
-                  <dt className="col-sm-3">Status:</dt>
-                  <dd className="col-sm-9">{user.status.name}</dd>
+                      <dt className="col-sm-3">Status:</dt>
+                      <dd className="col-sm-9">{user.status.name}</dd>
 
-                  <dt className="col-sm-3">Registered:</dt>
-                  <dd className="col-sm-9">{user.created_at}</dd>
-
-                  <dd className="col-sm-9">
-                    <Link to={`/users/${user.id}/edit`}>
-                      <Button size="sm" color="primary">
-                        <i className="fa fa-edit"></i> Edit
-                      </Button>
-                    </Link>
-                  </dd>
-                </dl>
+                      <dt className="col-sm-3">Registered:</dt>
+                      <dd className="col-sm-9">{user.created_at}</dd>
+                    </dl>
+                  </Col>
+                </Row>
               </CardBody>
+              <CardFooter>
+                <Link to={`/users/${user.id}/edit`}>
+                  <Button size="sm" color="primary">
+                    <i className="fa fa-edit"></i> Edit
+                  </Button>
+                </Link>
+              </CardFooter>
             </Card>
           </Col>
         </Row>
