@@ -20,8 +20,8 @@ export const userActions = {
 
 function register(user) {
   return dispatch => {
-    dispatch(request(user));
     dispatch(alertActions.clear());
+    dispatch(request(user));
 
     userService.register(user)
       .then(response => {
@@ -72,8 +72,8 @@ function register(user) {
 
 function login(username, password) {
   return dispatch => {
-    dispatch(request({username}));
     dispatch(alertActions.clear());
+    dispatch(request({username}));
 
     userService.login(username, password)
       .then(response => {
@@ -318,8 +318,8 @@ function removeCurrentPhoto() {
 
 function changePassword(data) {
   return dispatch => {
-    dispatch(request());
     dispatch(alertActions.clear());
+    dispatch(request());
 
     userService.changePassword(data)
       .then(response => {

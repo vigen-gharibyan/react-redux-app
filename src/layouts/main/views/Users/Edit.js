@@ -16,7 +16,14 @@ import {
 
 import {history} from '../../../../helpers';
 import {userActions, validationActions} from '../../../../actions';
-import {validations, Form, Input, Select, Button as CoreuiButton} from '../../../../helpers';
+import {
+  validations,
+  Form,
+  Input,
+  Select,
+  Button as CoreuiButton,
+  LoadingImg
+} from '../../../../helpers';
 
 var _ = require('lodash');
 
@@ -109,6 +116,7 @@ class Edit extends Component {
   }
 
   render() {
+    const {loading} = this.props;
     const {user} = this.state;
     const {roles, statuses} = user;
 
@@ -182,6 +190,7 @@ class Edit extends Component {
                 <Button onClick={this.handleReset} type="reset" size="sm" color="danger">
                   <i className="fa fa-ban"></i> Reset
                 </Button>
+                <LoadingImg loading={loading}/>
               </CardFooter>
             </Form>
           </Card>
@@ -192,10 +201,17 @@ class Edit extends Component {
 }
 
 function mapStateToProps(state) {
-  const {users, validation} = state;
-  const {user, updated} = users;
+  const {
+    validation,
+    users: {
+      updateByIdloading,
+      user,
+      updated
+    }
+  } = state;
 
   return {
+    loading: updateByIdloading,
     validation,
     user,
     updated

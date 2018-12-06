@@ -46,7 +46,7 @@ const users = (state = initialState, action) => {
 
       return {
         ...newState,
-        loading: true
+        updateCurrentLoading: true
       };
     }
     case userConstants.UPDATECURRENT_SUCCESS: {
@@ -75,7 +75,7 @@ const users = (state = initialState, action) => {
 
       return {
         ...newState,
-        loading: true
+        updateCurrentPhotoLoading: true
       };
     }
     case userConstants.UPDATECURRENTPHOTO_SUCCESS:
@@ -105,7 +105,7 @@ const users = (state = initialState, action) => {
 
       return {
         ...newState,
-        loading: true
+        changePasswordLoading: true
       };
     }
     case userConstants.CHANGEPASSWORD_SUCCESS: {
@@ -185,7 +185,7 @@ const users = (state = initialState, action) => {
 
       return {
         ...newState,
-        loading: true
+        updateByIdloading: true
       };
     }
     case userConstants.UPDATEBYID_SUCCESS: {

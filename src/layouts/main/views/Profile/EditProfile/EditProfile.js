@@ -2,32 +2,21 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {
-  Badge,
   Button,
-  ButtonDropdown,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
   Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
   FormGroup,
-  FormText,
-  FormFeedback,
   Label,
   Row,
 } from 'reactstrap';
 
 import {history} from '../../../../../helpers';
 import {userActions, validationActions} from '../../../../../actions';
-import {validations, Form, Input, File, Button as CoreuiButton} from '../../../../../helpers';
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
+import {validations, Form, Input, Button as CoreuiButton, LoadingImg} from '../../../../../helpers';
+import EditPhoto from '../EditPhoto';
 
 class EditProfile extends Component {
   constructor(props) {
@@ -37,16 +26,12 @@ class EditProfile extends Component {
       user: {
         username: '',
         email: ''
-      },
-      photo: '-'
+      }
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
-    this.handleChangeFile = this.handleChangeFile.bind(this);
-    this.handleUpdatePhoto = this.handleUpdatePhoto.bind(this);
-    this.handleRemovePhoto = this.handleRemovePhoto.bind(this);
   }
 
   componentWillMount() {
@@ -82,11 +67,6 @@ class EditProfile extends Component {
     this.removeApiError(name);
   }
 
-  handleChangeFile(event) {
-    let {name} = event.target;
-    this.removeApiError(name);
-  }
-
   handleSubmit(event) {
     event.preventDefault();
 
@@ -102,26 +82,9 @@ class EditProfile extends Component {
     console.log('reset ...')
   }
 
-  handleUpdatePhoto(event) {
-    event.preventDefault();
-
-    const files = Array.from(event.target.photo.files);
-    let formData = new FormData();
-    files.forEach((file, i) => {
-      formData.append('photo', file);
-    });
-
-    this.props.updatePhoto(formData);
-  }
-
-  handleRemovePhoto() {
-    console.log('handleRemovePhoto')
-
-    this.props.removePhoto();
-  }
-
   render() {
-    const {user, photo} = this.state;
+    const {loading} = this.props;
+    const {user} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -170,54 +133,13 @@ class EditProfile extends Component {
                   <Button onClick={this.handleReset} type="reset" size="sm" color="danger">
                     <i className="fa fa-ban"></i> Reset
                   </Button>
+                  <LoadingImg loading={loading}/>
                 </CardFooter>
               </Form>
             </Card>
           </Col>
           <Col sm="12" md="8" xl="6">
-            <Card>
-              <Form name="profile-image-form"
-                    id="profile-image-form"
-                    noValidate
-                    ref={c => {
-                      this.formUpload = c
-                    }}
-                    onSubmit={this.handleUpdatePhoto}>
-                <CardHeader>
-                  <i className="fa fa-cloud-upload"></i> <strong>Change Profile Image</strong>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <Col sm="3">
-                      <img src={ user.photo || defaultProfileImg }
-                           className="img-avatar"/>
-                    </Col>
-                    <Col sm="9">
-                      <FormGroup>
-                        <Label htmlFor="photo">Photo</Label>
-                        <File
-                          name="photo" id="photo"
-                          label="Photo"
-                          apierror={this.props.validation.photo}
-                          onChange={this.handleChangeFile}
-                          validations={[validations.required, validations.apiError]}/>
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                </CardBody>
-                <CardFooter>
-                  <CoreuiButton type="submit" size="sm" color="primary">
-                    <i className="fa fa-cloud-upload"></i> Update
-                  </CoreuiButton>
-                  {
-                    !!user.photo &&
-                    <Button type="button" onClick={this.handleRemovePhoto} size="sm" color="danger">
-                      <i className="fa fa-remove"></i> Remove
-                    </Button>
-                  }
-                </CardFooter>
-              </Form>
-            </Card>
+            <EditPhoto/>
           </Col>
         </Row>
       </div>
@@ -229,17 +151,17 @@ function mapStateToProps(state) {
   const {
     validation,
     users: {
+      updateCurrentLoading,
       currentUser,
-      updatedCurrent,
-      updatedCurrentPhoto
+      updatedCurrent
     }
   } = state;
 
   return {
+    loading: updateCurrentLoading,
     validation,
     user: currentUser,
-    updatedCurrent,
-    updatedCurrentPhoto
+    updatedCurrent
   };
 }
 
@@ -250,12 +172,6 @@ function mapDispatchToProps(dispatch) {
     },
     updateCurrentUser: (user) => {
       dispatch(userActions.updateCurrent(user));
-    },
-    updatePhoto: (formData) => {
-      dispatch(userActions.updateCurrentPhoto(formData));
-    },
-    removePhoto: (formData) => {
-      dispatch(userActions.removeCurrentPhoto(formData));
     },
     clearValidationError: (name) => {
       dispatch(validationActions.clear(name));
