@@ -221,6 +221,7 @@ export default {
         text: 'NEW',
       },
     },
+    /*
     {
       divider: true,
     },
@@ -255,6 +256,7 @@ export default {
         },
       ],
     },
+    */
     {
       name: 'Download CoreUI',
       url: 'http://coreui.io/react/',

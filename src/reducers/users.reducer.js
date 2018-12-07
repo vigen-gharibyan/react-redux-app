@@ -131,7 +131,7 @@ const users = (state = initialState, action) => {
 
       return {
         ...newState,
-        loading: true
+        getAllLoading: true
       };
     }
     case userConstants.GETALL_SUCCESS: {

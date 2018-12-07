@@ -13,6 +13,6 @@
 #profile-image-form .img-avatar {
     width: 100%;
 }
-#users-table .img-avatar {
+.datatable .img-avatar {
     width: 32px;
 }
