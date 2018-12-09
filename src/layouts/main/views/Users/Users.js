@@ -3,15 +3,18 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, {textFilter} from 'react-bootstrap-table2-filter';
+import filterFactory, {textFilter, selectFilter, multiSelectFilter} from 'react-bootstrap-table2-filter';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
 import {userActions} from '../../../../actions';
+import {roles} from '../../../../helpers';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';
 
+//todo: remove
 function UserRow(props) {
   const {index, user} = props;
   const userLink = `/users/${user.id}`;
@@ -68,6 +71,12 @@ const UserDataTable = (props) => {
   const STATUS_INACTIVE = 1;
   const STATUS_ACTIVE = 10;
 
+  const statuses = {
+    [STATUS_ACTIVE]: 'Active',
+    [STATUS_INACTIVE]: 'Inactive',
+    [STATUS_DELETED]: 'Deleted'
+  }
+
   const getBadge = (status) => {
     return (
       status === STATUS_ACTIVE ? 'success' :
@@ -79,9 +88,14 @@ const UserDataTable = (props) => {
     )
   }
 
+  const defaultSorted = [{
+    dataField: 'created_at',
+    order: 'asc'
+  }];
+
   const columns = [{
     dataField: 'photo',
-    text: 'Photo',
+    text: '',
     formatter: (cell, row) => {
       const userLink = `/users/${row.id}`;
       return (
@@ -90,6 +104,9 @@ const UserDataTable = (props) => {
                className="img-avatar"/>
         </Link>
       );
+    },
+    align: (cell, row, rowIndex, colIndex) => {
+      return 'center';
     }
   }, {
     dataField: 'username',
@@ -98,9 +115,9 @@ const UserDataTable = (props) => {
     headerFormatter: (column, colIndex, {sortElement, filterElement}) => {
       return (
         <div style={ {display: 'flex', flexDirection: 'column'} }>
-          { filterElement }
           { column.text }
           { sortElement }
+          { filterElement }
         </div>
       );
     },
@@ -109,30 +126,62 @@ const UserDataTable = (props) => {
       return (
         <Link to={userLink}>{ cell }</Link>
       );
-    }
+    },
+    headerAlign: 'center',
+    align: 'center'
   }, {
     dataField: 'email',
-    text: 'Email'
+    text: 'Email',
+    filter: textFilter(),
+    headerAlign: 'center',
+    align: 'center'
   }, {
-    dataField: 'role.name',
+    dataField: 'role.id',
     text: 'Role',
     formatter: (cell, row) => {
       return (
-        <span>{cell.name}</span>
+        <span>{roles[cell]}</span>
       );
     },
+    filter: selectFilter({
+      options: roles
+    }),
+    headerAlign: 'center',
+    align: 'center'
   }, {
-    dataField: 'status',
+    dataField: 'status.id',
     text: 'Status',
-    formatter: (column) => {
+    formatter: (cell) => {
       return (
-        <Badge color={getBadge(column.id)}>{column.name}</Badge>
+        <Badge color={getBadge(cell)}>{statuses[cell]}</Badge>
       );
-    }
+    },
+    filter: selectFilter({
+      options: statuses,
+      defaultValue: STATUS_ACTIVE
+    }),
+    headerAlign: 'center',
+    align: 'center'
   }, {
     dataField: 'created_at',
     text: 'Registered',
-    sort: true
+    formatter: (cell) => {
+      let date = new Date(cell);
+      date = date.toDateString();
+      return date;
+    },
+    headerAlign: 'center',
+    align: 'right',
+    sort: true,
+    sortFunc: (d1, d2, order, dataField) => {
+      d1 = new Date(d1).getTime();
+      d2 = new Date(d2).getTime();
+
+      if (order === 'asc') {
+        return d2 - d1;
+      }
+      return d1 - d2; // desc
+    }
   }];
 
   return (
@@ -140,7 +189,10 @@ const UserDataTable = (props) => {
                     data={ items }
                     columns={ columns }
                     filter={ filterFactory()}
-    />
+                    bordered={ false }
+                    defaultSorted={ defaultSorted }
+                    pagination={ paginationFactory() }
+                    noDataIndication="There is no data to show"/>
   )
 }
 
@@ -148,34 +200,14 @@ class Users extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      sortName: undefined,
-      sortOrder: undefined
-    };
-    this.onSortChange = this.onSortChange.bind(this);
   }
 
   componentWillMount() {
     this.props.dispatch(userActions.getAll());
   }
 
-  onSortChange(sortName, sortOrder) {
-    console.info('onSortChange', arguments);
-    this.setState({
-      sortName,
-      sortOrder
-    });
-  }
-
   render() {
     const {items, loading} = this.props;
-
-    const options = {
-      sortName: this.state.sortName,
-      sortOrder: this.state.sortOrder,
-      onSortChange: this.onSortChange
-    };
 
     return (
       <div className="animated fadeIn">
@@ -186,14 +218,9 @@ class Users extends Component {
                 <i className="fa fa-users"></i> <strong>Users</strong>
               </CardHeader>
               <CardBody>
-                {
-                  (items && items.length > 0) ?
-                    <div id="user-datatable" className="datatable">
-                      <UserDataTable items={items}/>
-                    </div>
-                    :
-                    <h4>There is no data to show</h4>
-                }
+                <div id="user-datatable" className="datatable">
+                  <UserDataTable items={items || []}/>
+                </div>
               </CardBody>
             </Card>
           </Col>

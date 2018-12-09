@@ -3,6 +3,13 @@ const ROLE_WORKER = 2;
 const ROLE_MODERATOR = 5;
 const ROLE_ADMIN = 10;
 
+const roles = {
+  [ROLE_USER]: 'User',
+  [ROLE_WORKER]: 'Worker',
+  [ROLE_MODERATOR]: 'Moderator',
+//[ROLE_ADMIN]: 'Administrator'
+}
+
 const addChild = (child, parent) => {
   const parentStatic = parent.static || [];
   const parentDynamic = parent.dynamic || {};
@@ -81,4 +88,4 @@ const rules = {
   [ROLE_ADMIN]: permissionsAdmin
 };
 
-export {rules};
+export {rules, roles};
