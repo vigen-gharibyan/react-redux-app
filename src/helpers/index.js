@@ -6,3 +6,4 @@ export * from './fetcher';
 export * from './CoreuiValidations/validations';
 export * from './Rbac/Can';
 export * from './Rbac/rbac-rules';
+export * from './date';

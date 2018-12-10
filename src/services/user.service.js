@@ -105,13 +105,24 @@ function logout() {
   localStorage.removeItem('token');
 }
 
-function getAll() {
+function getAll(page, sort, search) {
   const requestOptions = {
     method: 'GET',
     headers: authHeader()
   };
 
-  return fetch(`${apiUrl}/users`, requestOptions)
+  let query = '';
+  console.log('page:', page)
+
+  if(page) {
+    query += `page=${page}`;
+  }
+
+  if(query) {
+    query = `?${query}`;
+  }
+
+  return fetch(`${apiUrl}/users${query}`, requestOptions)
     .then(handleResponse);
 }
 

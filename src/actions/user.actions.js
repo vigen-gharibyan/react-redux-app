@@ -367,11 +367,11 @@ function changePassword(data) {
   }
 }
 
-function getAll() {
+function getAll(page, sort, search) {
   return dispatch => {
     dispatch(request());
 
-    userService.getAll()
+    userService.getAll(page, sort, search)
       .then(
         response => {
           const {data} = response;
