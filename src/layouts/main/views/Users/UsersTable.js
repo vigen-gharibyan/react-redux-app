@@ -149,35 +149,39 @@ class UsersTable extends Component {
   constructor(props) {
     super(props);
 
-    const {items} = props;
+    const {items, totalSize} = props;
 
     this.state = {
       items,
       page: 1,
-      data: items.slice(0, 10),
-      sizePerPage: 10,
-      totalSize: 120
+      data: items,
+      sizePerPage: 20,
+      totalSize: totalSize
     };
 
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    const {items} = nextProps;
+    const {items, totalSize} = nextProps;
 
     if (items) {
       this.setState({items});
     }
+
+    if (totalSize) {
+      this.setState({totalSize});
+    }
   }
 
   handleTableChange (type, { page, sizePerPage }) {
-    const {items} = this.state;
-
-    const currentIndex = (page - 1) * sizePerPage;
+  //const {items} = this.state;
 
     this.props.getAll(page, null, null);
 
     /*
+    const currentIndex = (page - 1) * sizePerPage;
+
     setTimeout(() => {
       this.setState(() => ({
         page,

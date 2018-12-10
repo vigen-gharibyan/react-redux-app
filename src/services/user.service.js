@@ -112,7 +112,6 @@ function getAll(page, sort, search) {
   };
 
   let query = '';
-  console.log('page:', page)
 
   if(page) {
     query += `page=${page}`;
@@ -187,9 +186,6 @@ function removeCurrentPhoto() {
 }
 
 function update(id, user) {
-
-  console.log('user:', user)
-
   const requestOptions = {
     method: 'PUT',
     headers: {

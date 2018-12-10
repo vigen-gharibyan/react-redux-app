@@ -136,11 +136,13 @@ const users = (state = initialState, action) => {
     }
     case userConstants.GETALL_SUCCESS: {
       const newState = getState(state);
-      const items = action.users;
+    //const data = action.users;
+      const {items, total} = action.users;
 
       return {
         ...newState,
-        items
+        items,
+        total
       };
     }
     case userConstants.GETALL_FAILURE: {

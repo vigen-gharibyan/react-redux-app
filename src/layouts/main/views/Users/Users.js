@@ -62,7 +62,8 @@ class Users extends Component {
     super(props);
 
     this.state = {
-      items: []
+      items: [],
+      total: 0
     };
 
     this.getAll = this.getAll.bind(this)
@@ -73,10 +74,14 @@ class Users extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {items} = nextProps;
+    const {items, total} = nextProps;
 
     if (items) {
       this.setState({items});
+    }
+
+    if (total) {
+      this.setState({total});
     }
   }
 
@@ -86,7 +91,7 @@ class Users extends Component {
 
   render() {
     const {loading} = this.props;
-    const {items} = this.state;
+    const {items, total} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -97,7 +102,7 @@ class Users extends Component {
                 <i className="fa fa-users"></i> <strong>Users</strong>
               </CardHeader>
               <CardBody>
-                <UsersTable items={items} getAll={this.getAll}/>
+                <UsersTable items={items} totalSize={total} getAll={this.getAll}/>
               </CardBody>
             </Card>
           </Col>
@@ -112,7 +117,8 @@ function mapStateToProps(state) {
     users: {
       getAllLoading,
       user,
-      items
+      items,
+      total
     }
   } = state;
 
@@ -120,7 +126,8 @@ function mapStateToProps(state) {
     ...state,
     loading: getAllLoading,
     user,
-    items
+    items,
+    total
   };
 }
 
