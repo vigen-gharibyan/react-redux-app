@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Badge} from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -8,6 +9,7 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
 import {roles, date} from '../../../../helpers';
+import {userActions} from '../../../../actions';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';
@@ -33,27 +35,32 @@ const getBadge = (status) => {
   )
 }
 
-const RemotePagination = ({data, page, sizePerPage, onTableChange, totalSize}) => (
-  <div>
-    <BootstrapTable
-      remote
-      keyField='username'
-      data={ data }
-      columns={ columns }
-      filter={ filterFactory()}
-      bordered={ false }
-      defaultSorted={ defaultSorted }
-      pagination={ paginationFactory({page, sizePerPage, totalSize}) }
-      onTableChange={ onTableChange }
-      noDataIndication="There is no data to show"/>
-    {/*<Code>{ sourceCode }</Code>*/}
-  </div>
-);
+const UsersDataTable = (props) => {
+  const {data, page, sizePerPage, onTableChange, totalSize} = props;
 
-const defaultSorted = [{
-  dataField: 'created_at',
-  order: 'asc'
-}];
+  return (
+    <div>
+      <BootstrapTable
+        remote
+        keyField='username'
+        data={ data }
+        columns={ columns }
+        filter={ filterFactory()}
+        bordered={ false }
+        pagination={ paginationFactory({page, sizePerPage, totalSize}) }
+        onTableChange={ onTableChange }
+        noDataIndication="There is no data to show"/>
+      {/*<Code>{ sourceCode }</Code>*/}
+    </div>
+  )
+};
+
+/*
+ const defaultSorted = [{
+ dataField: 'created_at',
+ order: 'asc'
+ }];
+ */
 
 const columns = [{
   dataField: 'photo',
@@ -98,7 +105,7 @@ const columns = [{
   headerAlign: 'center',
   align: 'center'
 }, {
-  dataField: 'role.id',
+  dataField: 'role',
   text: 'Role',
   formatter: (cell, row) => {
     return (
@@ -111,7 +118,7 @@ const columns = [{
   headerAlign: 'center',
   align: 'center'
 }, {
-  dataField: 'status.id',
+  dataField: 'status',
   text: 'Status',
   formatter: (cell) => {
     return (
@@ -132,16 +139,7 @@ const columns = [{
   },
   headerAlign: 'center',
   align: 'center',
-  sort: true,
-  sortFunc: (d1, d2, order, dataField) => {
-    d1 = new Date(d1).getTime();
-    d2 = new Date(d2).getTime();
-
-    if (order === 'asc') {
-      return d2 - d1;
-    }
-    return d1 - d2; // desc
-  }
+  sort: true
 }];
 
 class UsersTable extends Component {
@@ -149,59 +147,63 @@ class UsersTable extends Component {
   constructor(props) {
     super(props);
 
-    const {items, totalSize} = props;
+    const {items, total} = props;
 
     this.state = {
       items,
-      page: 1,
-      data: items,
+      total,
+      search: {},
+      page: 0,
       sizePerPage: 20,
-      totalSize: totalSize
+      sortField: null
     };
 
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {items, totalSize} = nextProps;
-
-    if (items) {
-      this.setState({items});
-    }
-
-    if (totalSize) {
-      this.setState({totalSize});
-    }
+  componentWillMount() {
+    this.props.dispatch(userActions.getAll());
   }
 
-  handleTableChange (type, { page, sizePerPage }) {
-  //const {items} = this.state;
+  componentWillReceiveProps(nextProps) {
+    const {items, total} = nextProps;
 
-    this.props.getAll(page, null, null);
+    !!items && this.setState({items});
+    !!total && this.setState({total});
+  }
 
-    /*
-    const currentIndex = (page - 1) * sizePerPage;
+  handleTableChange(type, {page, sizePerPage, filters, sortField, sortOrder}) {
+    // Handle pagination
+    this.setState({page});
+    this.setState({sizePerPage});
 
-    setTimeout(() => {
-      this.setState(() => ({
-        page,
-        data: items.slice(currentIndex, currentIndex + sizePerPage),
-        sizePerPage
-      }));
-    }, 2000);
-    */
+    // Handle column sort
+    if(sortField) {
+      if (sortOrder === 'asc') {
+        this.setState({sortField});
+      } else {
+        sortField = `-${sortField}`;
+        this.setState({sortField});
+      }
+    }
+
+    this.getAll(page, sortField, filters, sizePerPage);
+  }
+
+  getAll(page, sort, search, pageSize) {
+    this.props.dispatch(userActions.getAll(page, sort, search, pageSize));
   }
 
   render() {
-    const {items, page, data, sizePerPage, totalSize} = this.state;
+    const {items, total, page, sizePerPage, search} = this.state;
 
     return (
       <div id="user-datatable" className="datatable">
-        <RemotePagination
-          data={ items }
+        <UsersDataTable
+          data={ items || [] }
           page={ page }
           sizePerPage={ sizePerPage }
-          totalSize={ totalSize }
+          totalSize={ total }
           onTableChange={ this.handleTableChange }
         />
       </div>
@@ -209,4 +211,21 @@ class UsersTable extends Component {
   };
 }
 
-export default UsersTable;
+function mapStateToProps(state) {
+  const {
+    users: {
+      getAllLoading,
+      items,
+      total
+    }
+  } = state;
+
+  return {
+    ...state,
+    loading: getAllLoading,
+    items,
+    total
+  };
+}
+
+export default connect(mapStateToProps)(UsersTable);

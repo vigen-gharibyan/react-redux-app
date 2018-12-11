@@ -2,22 +2,31 @@ import {config} from '../config';
 const apiUrl = config.apiUrl;
 
 export function authHeader() {
-    // return authorization header with jwt token
-    // let user = JSON.parse(localStorage.getItem('user'));
-    const token = localStorage.getItem('token');
+  // return authorization header with jwt token
+  // let user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
 
-    if (token) {
-        return { Authorization: `Bearer ${token}` };
-    }
+  if (token) {
+    return {Authorization: `Bearer ${token}`};
+  }
 
-    return {};
+  return {};
+}
+
+export function doFetch(url, requestOptions) {
+
+  let fullUrl = `${apiUrl}/${url}`;
+  fullUrl = encodeURI(url);
+
+  return fetch(fullUrl, requestOptions)
+    .then(handleResponse);
 }
 
 export function handleResponse(response) {
-    if (!response.ok) {
-        return Promise.reject(response.json());
-        //  throw response.json();
-    }
+  if (!response.ok) {
+    return Promise.reject(response.json());
+    //  throw response.json();
+  }
 
-    return response.json();
+  return response.json();
 }

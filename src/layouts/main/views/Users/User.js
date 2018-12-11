@@ -13,6 +13,7 @@ import {
 } from 'reactstrap';
 
 import {userActions} from '../../../../actions';
+import {date} from '../../../../helpers';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';
@@ -81,13 +82,13 @@ class User extends Component {
                       <dd className="col-sm-9">{user.email}</dd>
 
                       <dt className="col-sm-3">Role:</dt>
-                      <dd className="col-sm-9">{user.role.name}</dd>
+                      <dd className="col-sm-9">{!!user.roles && user.roles[user.role]}</dd>
 
                       <dt className="col-sm-3">Status:</dt>
-                      <dd className="col-sm-9">{user.status.name}</dd>
+                      <dd className="col-sm-9">{!!user.statuses && user.statuses[user.status]}</dd>
 
                       <dt className="col-sm-3">Registered:</dt>
-                      <dd className="col-sm-9">{user.created_at}</dd>
+                      <dd className="col-sm-9">{date.format(user.created_at)}</dd>
                     </dl>
                   </Col>
                 </Row>
@@ -108,8 +109,11 @@ class User extends Component {
 }
 
 function mapStateToProps(state) {
-  const {users} = state;
-  const {user} = users;
+  const {
+    users: {
+      user
+    }
+  } = state;
 
   return {
     user

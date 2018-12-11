@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
+import {Badge, Card, CardBody, CardHeader, Col, Row} from 'reactstrap';
 
-import {userActions} from '../../../../actions';
 import UsersTable from './UsersTable';
 
 //todo: remove
@@ -58,41 +56,7 @@ function UserRow(props) {
 
 class Users extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      items: [],
-      total: 0
-    };
-
-    this.getAll = this.getAll.bind(this)
-  }
-
-  componentWillMount() {
-    this.props.dispatch(userActions.getAll());
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {items, total} = nextProps;
-
-    if (items) {
-      this.setState({items});
-    }
-
-    if (total) {
-      this.setState({total});
-    }
-  }
-
-  getAll(page) {
-    this.props.dispatch(userActions.getAll(page, null, null));
-  }
-
   render() {
-    const {loading} = this.props;
-    const {items, total} = this.state;
-
     return (
       <div className="animated fadeIn">
         <Row>
@@ -102,7 +66,7 @@ class Users extends Component {
                 <i className="fa fa-users"></i> <strong>Users</strong>
               </CardHeader>
               <CardBody>
-                <UsersTable items={items} totalSize={total} getAll={this.getAll}/>
+                <UsersTable/>
               </CardBody>
             </Card>
           </Col>
@@ -112,23 +76,4 @@ class Users extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const {
-    users: {
-      getAllLoading,
-      user,
-      items,
-      total
-    }
-  } = state;
-
-  return {
-    ...state,
-    loading: getAllLoading,
-    user,
-    items,
-    total
-  };
-}
-
-export default connect(mapStateToProps)(Users);
+export default Users;

@@ -1,6 +1,9 @@
-import {authHeader, handleResponse} from '../helpers';
+import {authHeader, doFetch, handleResponse} from '../helpers';
 import {config} from '../config';
+
 var jwt = require('jsonwebtoken');
+var _ = require('lodash');
+
 const apiUrl = config.apiUrl;
 
 export const userService = {
@@ -105,24 +108,35 @@ function logout() {
   localStorage.removeItem('token');
 }
 
-function getAll(page, sort, search) {
+function getAll(page, sort, filters, pageSize) {
+  let params = [];
+
+  if(filters) {
+    _.forEach(filters, (value, key) => {
+      params.push(`UserSearch[${key}]=${value.filterVal}`)
+    });
+  }
+
+  !!pageSize && params.push(`per-page=${pageSize}`);
+  !!page && params.push(`page=${page}`);
+  !!sort && params.push(`sort=${sort}`);
+
+  let query = '';
+  if (params.length > 0) {
+    query = params.join('&');
+  }
+
+  if (query) {
+    query = `?${query}`;
+  }
+
   const requestOptions = {
     method: 'GET',
     headers: authHeader()
   };
 
-  let query = '';
-
-  if(page) {
-    query += `page=${page}`;
-  }
-
-  if(query) {
-    query = `?${query}`;
-  }
-
-  return fetch(`${apiUrl}/users${query}`, requestOptions)
-    .then(handleResponse);
+  let url = `${apiUrl}/users${query}`;
+  return doFetch(url, requestOptions);
 }
 
 function getById(id) {

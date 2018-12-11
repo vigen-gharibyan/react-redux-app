@@ -15,6 +15,7 @@ import {userActions} from '../../../../../actions';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';
+import {date} from '../../../../../helpers';
 
 class Profile extends Component {
   constructor(props) {
@@ -24,9 +25,7 @@ class Profile extends Component {
       user: {
         username: '',
         email: '',
-        role: {
-          name: ''
-        },
+        role: undefined,
         created_at: ''
       }
     };
@@ -73,10 +72,10 @@ class Profile extends Component {
                       <dd className="col-sm-9">{user.email}</dd>
 
                       <dt className="col-sm-3">Role:</dt>
-                      <dd className="col-sm-9">{user.role.name}</dd>
+                      <dd className="col-sm-9">{!!user.roles && user.roles[user.role]}</dd>
 
                       <dt className="col-sm-3">Registered:</dt>
-                      <dd className="col-sm-9">{user.created_at}</dd>
+                      <dd className="col-sm-9">{date.format(user.created_at)}</dd>
                     </dl>
                   </Col>
                 </Row>
@@ -102,7 +101,12 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-  const {validation, users: {currentUser}} = state;
+  const {
+    validation,
+    users: {
+      currentUser
+    }
+  } = state;
 
   return {
     validation,

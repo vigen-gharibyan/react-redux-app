@@ -35,7 +35,7 @@ const Can = props => {
 
   if(typeof role == 'undefined') {
     if(currentUser) {
-      role = currentUser.role.id;
+      role = currentUser.role;
     }
   }
 

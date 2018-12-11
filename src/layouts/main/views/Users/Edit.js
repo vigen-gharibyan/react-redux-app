@@ -25,8 +25,6 @@ import {
   LoadingImg
 } from '../../../../helpers';
 
-var _ = require('lodash');
-
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';
 
@@ -40,12 +38,8 @@ class Edit extends Component {
       user: {
         username: '',
         email: '',
-        role: {
-          name: ''
-        },
-        status: {
-          name: ''
-        }
+        role: undefined,
+        status: undefined
       }
     }
 
@@ -88,7 +82,7 @@ class Edit extends Component {
     }
 
     const {user} = this.state;
-    user[name].id = value;
+    user[name] = value;
     this.setState({user});
     this.removeApiError(name);
   }
@@ -102,8 +96,8 @@ class Edit extends Component {
     //todo
     let {user} = this.state;
     const data = {
-      role: user.role.id,
-      status: user.status.id
+      role: user.role,
+      status: user.status
     };
 
     if (1) {
@@ -149,7 +143,7 @@ class Edit extends Component {
                       <Select
                         name="role" id="role"
                         label="Role"
-                        value={user.role.id}
+                        value={user.role}
                         onChange={this.handleChange}
                         apierror={this.props.validation.role}
                         validations={[validations.required, validations.apiError]}>
@@ -167,7 +161,7 @@ class Edit extends Component {
                       <Select
                         name="status" id="status"
                         label="Status"
-                        value={user.status.id}
+                        value={user.status}
                         onChange={this.handleChange}
                         apierror={this.props.validation.status}
                         validations={[validations.required, validations.apiError]}>
