@@ -108,26 +108,30 @@ function logout() {
   localStorage.removeItem('token');
 }
 
-function getAll(page, sort, filters, pageSize) {
+function getAll(queryParams) {
   let params = [];
-
-  if(filters) {
-    _.forEach(filters, (value, key) => {
-      params.push(`UserSearch[${key}]=${value.filterVal}`)
-    });
-  }
-
-  !!pageSize && params.push(`per-page=${pageSize}`);
-  !!page && params.push(`page=${page}`);
-  !!sort && params.push(`sort=${sort}`);
-
   let query = '';
-  if (params.length > 0) {
-    query = params.join('&');
-  }
 
-  if (query) {
-    query = `?${query}`;
+  if (queryParams) {
+    const {page, sortField, filters, perPage} = queryParams;
+
+    if (filters) {
+      _.forEach(filters, (value, key) => {
+        params.push(`UserSearch[${key}]=${value}`)
+      });
+    }
+
+    !!perPage && params.push(`per-page=${perPage}`);
+    !!page && params.push(`page=${page}`);
+    !!sortField && params.push(`sort=${sortField}`);
+
+    if (params.length > 0) {
+      query = params.join('&');
+    }
+
+    if (query) {
+      query = `?${query}`;
+    }
   }
 
   const requestOptions = {
@@ -135,7 +139,7 @@ function getAll(page, sort, filters, pageSize) {
     headers: authHeader()
   };
 
-  let url = `${apiUrl}/users${query}`;
+  let url = `users${query}`;
   return doFetch(url, requestOptions);
 }
 

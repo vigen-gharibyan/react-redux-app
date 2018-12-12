@@ -8,6 +8,8 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
+var _ = require('lodash');
+
 import {roles, date} from '../../../../helpers';
 import {userActions} from '../../../../actions';
 
@@ -45,7 +47,7 @@ const UsersDataTable = (props) => {
         keyField='username'
         data={ data }
         columns={ columns }
-        filter={ filterFactory()}
+        filter={ filterFactory() }
         bordered={ false }
         pagination={ paginationFactory({page, sizePerPage, totalSize}) }
         onTableChange={ onTableChange }
@@ -54,13 +56,6 @@ const UsersDataTable = (props) => {
     </div>
   )
 };
-
-/*
- const defaultSorted = [{
- dataField: 'created_at',
- order: 'asc'
- }];
- */
 
 const columns = [{
   dataField: 'photo',
@@ -127,7 +122,7 @@ const columns = [{
   },
   filter: selectFilter({
     options: statuses,
-    defaultValue: STATUS_ACTIVE
+  //  defaultValue: STATUS_ACTIVE
   }),
   headerAlign: 'center',
   align: 'center'
@@ -147,22 +142,42 @@ class UsersTable extends Component {
   constructor(props) {
     super(props);
 
-    const {items, total} = props;
+    let {params} = this.props;
+
+    let filters = _.pick(params, [
+      'username',
+      'email',
+      'role',
+      'status'
+    ]);
+
+    const {
+      items,
+      total,
+      params: {
+        page,
+        perPage,
+        sort
+      }
+    } = props;
 
     this.state = {
       items,
       total,
-      search: {},
-      page: 0,
-      sizePerPage: 20,
-      sortField: null
+      filters,
+      page: +page || 1,
+      perPage: +perPage || 20,
+      sortField: sort || null
     };
 
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
   componentWillMount() {
-    this.props.dispatch(userActions.getAll());
+    const {page, perPage, sortField} = this.state;
+    const params = {page, perPage, sortField};
+
+    this.props.dispatch(userActions.getAll(params));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -173,12 +188,14 @@ class UsersTable extends Component {
   }
 
   handleTableChange(type, {page, sizePerPage, filters, sortField, sortOrder}) {
+    const perPage = sizePerPage;
+
     // Handle pagination
     this.setState({page});
-    this.setState({sizePerPage});
+    this.setState({perPage});
 
     // Handle column sort
-    if(sortField) {
+    if (sortField) {
       if (sortOrder === 'asc') {
         this.setState({sortField});
       } else {
@@ -187,22 +204,54 @@ class UsersTable extends Component {
       }
     }
 
-    this.getAll(page, sortField, filters, sizePerPage);
+    let paramFilters = {};
+    if (filters) {
+      _.forEach(filters, (value, key) => {
+        paramFilters[key] = value.filterVal
+      });
+    }
+
+    let searchParams = {};
+    if(perPage) {
+      searchParams.perPage = perPage;
+    }
+    if(page && page > 1) {
+      searchParams.page = page;
+    }
+    if(sortField) {
+      searchParams.sort = sortField;
+    }
+    if(paramFilters) {
+      _.forEach(paramFilters, (value, key) => {
+        searchParams[key] = value
+      });
+    }
+
+    const params = {
+      page,
+      sortField,
+      filters: paramFilters,
+      perPage
+    };
+
+    this.getAll(params);
+
+    this.props.redirectTo(searchParams);
   }
 
-  getAll(page, sort, search, pageSize) {
-    this.props.dispatch(userActions.getAll(page, sort, search, pageSize));
+  getAll(params) {
+    this.props.dispatch(userActions.getAll(params));
   }
 
   render() {
-    const {items, total, page, sizePerPage, search} = this.state;
+    const {items, total, page, perPage} = this.state;
 
     return (
       <div id="user-datatable" className="datatable">
         <UsersDataTable
           data={ items || [] }
           page={ page }
-          sizePerPage={ sizePerPage }
+          sizePerPage={ perPage }
           totalSize={ total }
           onTableChange={ this.handleTableChange }
         />

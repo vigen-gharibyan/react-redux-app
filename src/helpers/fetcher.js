@@ -15,8 +15,7 @@ export function authHeader() {
 
 export function doFetch(url, requestOptions) {
 
-  let fullUrl = `${apiUrl}/${url}`;
-  fullUrl = encodeURI(url);
+  let fullUrl = encodeURI(`${apiUrl}/${url}`);
 
   return fetch(fullUrl, requestOptions)
     .then(handleResponse);
