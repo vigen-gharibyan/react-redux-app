@@ -38,7 +38,27 @@ const getBadge = (status) => {
 }
 
 const UsersDataTable = (props) => {
-  const {data, page, sizePerPage, onTableChange, totalSize} = props;
+  const {data, page, sizePerPage, totalSize, onTableChange, params} = props;
+  const {sort} = params;
+  const columns = getColumns(params);
+
+  let otherProps = {};
+
+  if (sort) {
+    let dataField = sort;
+    let order = 'asc';
+    if (sort.charAt(0) == '-') {
+      dataField = sort.slice(1);
+      order = 'desc';
+    }
+
+    const defaultSorted = [{
+      dataField,
+      order
+    }];
+
+    otherProps.defaultSorted = defaultSorted;
+  }
 
   return (
     <div>
@@ -51,133 +71,141 @@ const UsersDataTable = (props) => {
         bordered={ false }
         pagination={ paginationFactory({page, sizePerPage, totalSize}) }
         onTableChange={ onTableChange }
+        //  {...otherProps}
         noDataIndication="There is no data to show"/>
       {/*<Code>{ sourceCode }</Code>*/}
     </div>
   )
 };
 
-const columns = [{
-  dataField: 'photo',
-  text: '',
-  formatter: (cell, row) => {
-    const userLink = `/users/${row.id}`;
-    return (
-      <Link to={userLink}>
-        <img src={ cell || defaultProfileImg }
-             className="img-avatar"/>
-      </Link>
-    );
-  },
-  align: (cell, row, rowIndex, colIndex) => {
-    return 'center';
-  }
-}, {
-  dataField: 'username',
-  text: 'Username',
-  filter: textFilter(),
-  headerFormatter: (column, colIndex, {sortElement, filterElement}) => {
-    return (
-      <div style={ {display: 'flex', flexDirection: 'column'} }>
-        { column.text }
-        { sortElement }
-        { filterElement }
-      </div>
-    );
-  },
-  formatter: (cell, row) => {
-    const userLink = `/users/${row.id}`;
-    return (
-      <Link to={userLink}>{ cell }</Link>
-    );
-  },
-  headerAlign: 'center',
-  align: 'center'
-}, {
-  dataField: 'email',
-  text: 'Email',
-  filter: textFilter(),
-  headerAlign: 'center',
-  align: 'center'
-}, {
-  dataField: 'role',
-  text: 'Role',
-  formatter: (cell, row) => {
-    return (
-      <span>{roles[cell]}</span>
-    );
-  },
-  filter: selectFilter({
-    options: roles
-  }),
-  headerAlign: 'center',
-  align: 'center'
-}, {
-  dataField: 'status',
-  text: 'Status',
-  formatter: (cell) => {
-    return (
-      <Badge color={getBadge(cell)}>{statuses[cell]}</Badge>
-    );
-  },
-  filter: selectFilter({
-    options: statuses,
-  //  defaultValue: STATUS_ACTIVE
-  }),
-  headerAlign: 'center',
-  align: 'center'
-}, {
-  dataField: 'created_at',
-  text: 'Registered',
-  formatter: (cell) => {
-    return date.format(cell);
-  },
-  headerAlign: 'center',
-  align: 'center',
-  sort: true
-}];
+function getColumns(params) {
+  const {filters, sort} = params;
+
+  const columns = [{
+    dataField: 'photo',
+    text: '',
+    formatter: (cell, row) => {
+      const userLink = `/users/${row.id}`;
+      return (
+        <Link to={userLink}>
+          <img src={ cell || defaultProfileImg }
+               className="img-avatar"/>
+        </Link>
+      );
+    },
+    align: (cell, row, rowIndex, colIndex) => {
+      return 'center';
+    }
+  }, {
+    dataField: 'username',
+    text: 'Username',
+    filter: textFilter({
+      defaultValue: filters.username
+    }),
+    headerFormatter: (column, colIndex, {sortElement, filterElement}) => {
+      return (
+        <div style={ {display: 'flex', flexDirection: 'column'} }>
+          { column.text }
+          { sortElement }
+          { filterElement }
+        </div>
+      );
+    },
+    formatter: (cell, row) => {
+      const userLink = `/users/${row.id}`;
+      return (
+        <Link to={userLink}>{ cell }</Link>
+      );
+    },
+    headerAlign: 'center',
+    align: 'center'
+  }, {
+    dataField: 'email',
+    text: 'Email',
+    filter: textFilter({
+      defaultValue: filters.email
+    }),
+    headerAlign: 'center',
+    align: 'center'
+  }, {
+    dataField: 'role',
+    text: 'Role',
+    formatter: (cell, row) => {
+      return (
+        <span>{roles[cell]}</span>
+      );
+    },
+    filter: selectFilter({
+      options: roles,
+      defaultValue: filters.role
+    }),
+    headerAlign: 'center',
+    align: 'center'
+  }, {
+    dataField: 'status',
+    text: 'Status',
+    formatter: (cell) => {
+      return (
+        <Badge color={getBadge(cell)}>{statuses[cell]}</Badge>
+      );
+    },
+    filter: selectFilter({
+      options: statuses,
+      defaultValue: filters.status
+    }),
+    headerAlign: 'center',
+    align: 'center'
+  }, {
+    dataField: 'created_at',
+    text: 'Registered',
+    formatter: (cell) => {
+      return date.format(cell);
+    },
+    headerAlign: 'center',
+    align: 'center',
+    sort: true
+  }];
+
+  return columns;
+}
 
 class UsersTable extends Component {
 
   constructor(props) {
     super(props);
 
-    let {params} = this.props;
-
-    let filters = _.pick(params, [
+    const {items, total, params} = this.props;
+    const {page, perPage, sort} = params;
+    const filters = _.pick(params, [
       'username',
       'email',
       'role',
       'status'
     ]);
 
-    const {
-      items,
-      total,
-      params: {
-        page,
-        perPage,
-        sort
-      }
-    } = props;
-
     this.state = {
       items,
       total,
+      //  params: {
       filters,
       page: +page || 1,
       perPage: +perPage || 20,
-      sortField: sort || null
+      sort: sort || null
+      //  }
     };
+
+//    console.log('state in constructor: ', this.state)
 
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
   componentWillMount() {
-    const {page, perPage, sortField} = this.state;
-    const params = {page, perPage, sortField};
+    const {page, perPage, sort, filters} = this.state;
+    const params = {page, perPage, sort, filters};
 
-    this.props.dispatch(userActions.getAll(params));
+    console.log('params in componentWillMount:', params)
+
+    this.getAll(params);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -188,6 +216,17 @@ class UsersTable extends Component {
   }
 
   handleTableChange(type, {page, sizePerPage, filters, sortField, sortOrder}) {
+
+    /*
+     console.log('handleTableChange page:', page)
+     console.log('handleTableChange sizePerPage:', sizePerPage)
+     */
+    console.log('handleTableChange filters:', filters)
+    /*
+     console.log('handleTableChange sortField:', sortField)
+     console.log('handleTableChange sortOrder:', sortOrder)
+     */
+
     const perPage = sizePerPage;
 
     // Handle pagination
@@ -195,44 +234,48 @@ class UsersTable extends Component {
     this.setState({perPage});
 
     // Handle column sort
-    if (sortField) {
-      if (sortOrder === 'asc') {
-        this.setState({sortField});
-      } else {
-        sortField = `-${sortField}`;
-        this.setState({sortField});
+
+    let searchParams = {};
+    if (perPage) {
+      searchParams.perPage = perPage;
+    }
+    if (page && page > 1) {
+      searchParams.page = page;
+    }
+
+    let sort = sortField;
+    if (sort) {
+      if (sortOrder === 'desc') {
+        sort = `-${sortField}`;
       }
     }
+    this.setState({sort});
+    searchParams.sort = sort;
 
     let paramFilters = {};
     if (filters) {
       _.forEach(filters, (value, key) => {
-        paramFilters[key] = value.filterVal
+        paramFilters[key] = value.filterVal;
+        searchParams[key] = value.filterVal;
       });
     }
-
-    let searchParams = {};
-    if(perPage) {
-      searchParams.perPage = perPage;
-    }
-    if(page && page > 1) {
-      searchParams.page = page;
-    }
-    if(sortField) {
-      searchParams.sort = sortField;
-    }
-    if(paramFilters) {
-      _.forEach(paramFilters, (value, key) => {
-        searchParams[key] = value
-      });
-    }
+    /*
+     if (paramFilters) {
+     _.forEach(paramFilters, (value, key) => {
+     searchParams[key] = value
+     });
+     }
+     */
 
     const params = {
       page,
-      sortField,
+      sort,
       filters: paramFilters,
       perPage
     };
+
+    //  console.log('searchParams in handleTableChange:', searchParams)
+    //  console.log('paramFilters in handleTableChange:', paramFilters)
 
     this.getAll(params);
 
@@ -240,19 +283,26 @@ class UsersTable extends Component {
   }
 
   getAll(params) {
+
+//    console.log('params in getAll:', params)
+
     this.props.dispatch(userActions.getAll(params));
   }
 
   render() {
-    const {items, total, page, perPage} = this.state;
+    const {items, total, page, perPage, filters, sort} = this.state;
+    const params = {page, perPage, filters, sort};
+
+    //  console.log('render filters:', filters)
 
     return (
       <div id="user-datatable" className="datatable">
         <UsersDataTable
           data={ items || [] }
+          totalSize={ total }
           page={ page }
           sizePerPage={ perPage }
-          totalSize={ total }
+          params={ params }
           onTableChange={ this.handleTableChange }
         />
       </div>

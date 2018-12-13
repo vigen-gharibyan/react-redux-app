@@ -112,8 +112,10 @@ function getAll(queryParams) {
   let params = [];
   let query = '';
 
+  // console.log('queryParams:', queryParams)
+
   if (queryParams) {
-    const {page, sortField, filters, perPage} = queryParams;
+    const {page, sort, filters, perPage} = queryParams;
 
     if (filters) {
       _.forEach(filters, (value, key) => {
@@ -123,7 +125,7 @@ function getAll(queryParams) {
 
     !!perPage && params.push(`per-page=${perPage}`);
     !!page && params.push(`page=${page}`);
-    !!sortField && params.push(`sort=${sortField}`);
+    !!sort && params.push(`sort=${sort}`);
 
     if (params.length > 0) {
       query = params.join('&');
