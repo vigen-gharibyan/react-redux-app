@@ -39,22 +39,15 @@ const CustomInput = ({error, isChanged, isUsed, ...props}) => {
         }
         <Input invalid={!!hasError} {...props}/>
       </InputGroup>
-      <FormFeedback invalid={hasError}>{error}</FormFeedback>
+      <FormFeedback invalid={(!!hasError).toString()}>{error}</FormFeedback>
     </FormGroup>
   );
 };
 
 // Define own File component
 const CustomFile = ({error, isChanged, isUsed, ...props}) => {
-  const hasError = isChanged && isUsed && !!error;
-
   return (
-    <FormGroup className={hasError ? 'has-error' : ''}>
-      <InputGroup>
-        <Input type="file" {...props}/>
-      </InputGroup>
-      <FormFeedback invalid={hasError}>{error}</FormFeedback>
-    </FormGroup>
+    <CustomInput type="file" {...props}/>
   );
 };
 
@@ -64,8 +57,8 @@ const CustomTextarea = ({error, isChanged, isUsed, ...props}) => {
 
   return (
     <div className={(isChanged && isUsed && !!error) ? 'has-error' : ''}>
-      <textarea invalid={hasError} {...props}>{ props.value }</textarea>
-      <FormFeedback>{error}</FormFeedback>
+      <textarea invalid={!!hasError} {...props}>{ props.value }</textarea>
+      <FormFeedback invalid={(!!hasError).toString()}>{error}</FormFeedback>
     </div>
   )
 };
@@ -77,11 +70,11 @@ const CustomSelect = ({error, isChanged, isUsed, ...props}) => {
   return (
     <FormGroup className={hasError ? 'has-error' : ''}>
       <InputGroup>
-        <Input type="select" invalid={hasError} {...props}>
+        <Input type="select" invalid={!!hasError} {...props}>
           {props.children}
         </Input>
       </InputGroup>
-      <FormFeedback>{error}</FormFeedback>
+      <FormFeedback invalid={(!!hasError).toString()}>{error}</FormFeedback>
     </FormGroup>
   )
 };

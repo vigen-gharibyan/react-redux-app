@@ -71,7 +71,7 @@ const UsersDataTable = (props) => {
         bordered={ false }
         pagination={ paginationFactory({page, sizePerPage, totalSize}) }
         onTableChange={ onTableChange }
-        //  {...otherProps}
+        {...otherProps}
         noDataIndication="There is no data to show"/>
       {/*<Code>{ sourceCode }</Code>*/}
     </div>
@@ -184,6 +184,8 @@ class UsersTable extends Component {
     ]);
 
     this.state = {
+      tableHasNotChangedYet: true,
+
       items,
       total,
       //  params: {
@@ -203,8 +205,6 @@ class UsersTable extends Component {
     const {page, perPage, sort, filters} = this.state;
     const params = {page, perPage, sort, filters};
 
-    console.log('params in componentWillMount:', params)
-
     this.getAll(params);
   }
 
@@ -217,15 +217,16 @@ class UsersTable extends Component {
 
   handleTableChange(type, {page, sizePerPage, filters, sortField, sortOrder}) {
 
-    /*
-     console.log('handleTableChange page:', page)
-     console.log('handleTableChange sizePerPage:', sizePerPage)
-     */
     console.log('handleTableChange filters:', filters)
-    /*
-     console.log('handleTableChange sortField:', sortField)
-     console.log('handleTableChange sortOrder:', sortOrder)
-     */
+
+    //for prevent querying to API twice
+    if(this.state.tableHasNotChangedYet) {
+    //  this.setState({tableHasNotChangedYet: false});
+
+      if(Object.keys(filters).length > 0) {
+    //    return;
+      }
+    }
 
     const perPage = sizePerPage;
 
@@ -259,13 +260,6 @@ class UsersTable extends Component {
         searchParams[key] = value.filterVal;
       });
     }
-    /*
-     if (paramFilters) {
-     _.forEach(paramFilters, (value, key) => {
-     searchParams[key] = value
-     });
-     }
-     */
 
     const params = {
       page,
@@ -274,11 +268,9 @@ class UsersTable extends Component {
       perPage
     };
 
-    //  console.log('searchParams in handleTableChange:', searchParams)
-    //  console.log('paramFilters in handleTableChange:', paramFilters)
-
-    this.getAll(params);
-
+  //  if(Object.keys(filters).length > 0) {
+      this.getAll(params);
+  //  }
     this.props.redirectTo(searchParams);
   }
 
