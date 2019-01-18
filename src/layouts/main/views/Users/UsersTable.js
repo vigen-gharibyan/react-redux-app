@@ -37,11 +37,10 @@ const getBadge = (status) => {
   )
 }
 
-const UsersDataTable = (props) => {
-  const {data, page, sizePerPage, totalSize, onTableChange, params} = props;
-  const {sort} = params;
+const DataTable = (props) => {
+  const {data, totalSize, onTableChange, params} = props;
+  const {sort, page, perPage} = params;
   const columns = getColumns(params);
-
   let otherProps = {};
 
   if (sort) {
@@ -69,7 +68,7 @@ const UsersDataTable = (props) => {
         columns={ columns }
         filter={ filterFactory() }
         bordered={ false }
-        pagination={ paginationFactory({page, sizePerPage, totalSize}) }
+        pagination={ paginationFactory({page, sizePerPage: perPage, totalSize}) }
         onTableChange={ onTableChange }
         {...otherProps}
         noDataIndication="There is no data to show"/>
@@ -184,28 +183,28 @@ class UsersTable extends Component {
     ]);
 
     this.state = {
-      tableHasNotChangedYet: true,
+      isLoaded: false,
 
       items,
       total,
-      //  params: {
-      filters,
-      page: +page || 1,
-      perPage: +perPage || 20,
-      sort: sort || null
-      //  }
+      params: {
+        filters,
+        page: +page || 1,
+        perPage: +perPage || 20,
+        sort: sort || null
+      }
     };
-
-//    console.log('state in constructor: ', this.state)
 
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
   componentWillMount() {
-    const {page, perPage, sort, filters} = this.state;
-    const params = {page, perPage, sort, filters};
-
+    const {params} = this.state;
     this.getAll(params);
+  }
+
+  componentDidMount() {
+    this.setState({isLoaded: true});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -216,84 +215,69 @@ class UsersTable extends Component {
   }
 
   handleTableChange(type, {page, sizePerPage, filters, sortField, sortOrder}) {
-
-    console.log('handleTableChange filters:', filters)
-
-    //for prevent querying to API twice
-    if(this.state.tableHasNotChangedYet) {
-    //  this.setState({tableHasNotChangedYet: false});
-
-      if(Object.keys(filters).length > 0) {
-    //    return;
-      }
+    if (!this.state.isLoaded) {
+      return;
+    }
+    if (!sizePerPage) {
+      return;
     }
 
-    const perPage = sizePerPage;
-
-    // Handle pagination
-    this.setState({page});
-    this.setState({perPage});
-
-    // Handle column sort
-
+    let {params} = this.state;
     let searchParams = {};
-    if (perPage) {
-      searchParams.perPage = perPage;
+
+    if (sizePerPage) {
+      searchParams.perPage = sizePerPage;
+      params.perPage = sizePerPage;
     }
-    if (page && page > 1) {
-      searchParams.page = page;
+    if (page) {
+      if (page > 1) {
+        searchParams.page = page;
+      }
+      params.page = page;
     }
 
-    let sort = sortField;
-    if (sort) {
+    if (sortField) {
+      let sort = sortField;
       if (sortOrder === 'desc') {
         sort = `-${sortField}`;
       }
+      searchParams.sort = sort;
+      params.sort = sort;
     }
-    this.setState({sort});
-    searchParams.sort = sort;
 
-    let paramFilters = {};
     if (filters) {
+      let paramFilters = {};
       _.forEach(filters, (value, key) => {
         paramFilters[key] = value.filterVal;
         searchParams[key] = value.filterVal;
       });
+      params.filters = paramFilters;
     }
 
-    const params = {
-      page,
-      sort,
-      filters: paramFilters,
-      perPage
-    };
-
-  //  if(Object.keys(filters).length > 0) {
-      this.getAll(params);
-  //  }
+    this.setState({params});
     this.props.redirectTo(searchParams);
+    this.getAll(params);
+
+    /*
+    this.setState({params}, () => {
+      this.getAll(params);
+      this.props.redirectTo(searchParams);
+    });
+    */
   }
 
   getAll(params) {
-
-//    console.log('params in getAll:', params)
-
     this.props.dispatch(userActions.getAll(params));
   }
 
   render() {
-    const {items, total, page, perPage, filters, sort} = this.state;
-    const params = {page, perPage, filters, sort};
-
-    //  console.log('render filters:', filters)
+    const {items, total, params} = this.state;
 
     return (
       <div id="user-datatable" className="datatable">
-        <UsersDataTable
+        <DataTable
           data={ items || [] }
           totalSize={ total }
-          page={ page }
-          sizePerPage={ perPage }
           params={ params }
           onTableChange={ this.handleTableChange }
         />
