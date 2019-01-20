@@ -56,33 +56,30 @@ class DataTable extends Component {
   constructor(props) {
     super(props);
 
-    const {items, total, params, fields} = this.props;
+    this.defaultPerPage = 20;
+    if(this.props.defaultPerPage) {
+      this.defaultPerPage = this.props.defaultPerPage;
+    }
+
+    const {items, total} = this.props;
+    const location = this.props.getLocation();
+    const params = queryString.parse(location.search);
     const {page, perPage, sort} = params;
-    const filters = _.pick(params, fields);
+    const filters = _.pick(params, this.props.filters);
 
     this.state = {
       isLoaded: false,
-
       items,
       total,
       params: {
         filters,
         page: +page || 1,
-        perPage: +perPage || 20,
+        perPage: +perPage || this.defaultPerPage,
         sort: sort || null
       }
     };
 
     this.handleTableChange = this.handleTableChange.bind(this);
-  }
-
-  redirectTo(params) {
-    let search = queryString.stringify(params);
-    if (search) {
-      search = `?${search}`;
-    }
-
-    history.push(`${search}`);
   }
 
   componentWillMount() {
@@ -101,6 +98,15 @@ class DataTable extends Component {
     !!total && this.setState({total});
   }
 
+  redirectTo(params) {
+    let paramsString = queryString.stringify(params);
+    if (paramsString) {
+      paramsString = `?${paramsString}`;
+    }
+
+    history.push(`${paramsString}`);
+  }
+
   handleTableChange(type, {page, sizePerPage, filters, sortField, sortOrder}) {
     if (!this.state.isLoaded) {
       return;
@@ -113,7 +119,9 @@ class DataTable extends Component {
     let searchParams = {};
 
     if (sizePerPage) {
-      searchParams.perPage = sizePerPage;
+      if(sizePerPage != this.defaultPerPage) {
+        searchParams.perPage = sizePerPage;
+      }
       params.perPage = sizePerPage;
     }
     if (page) {
@@ -166,9 +174,10 @@ class DataTable extends Component {
 
 DataTable.propTypes = {
   keyField: PropTypes.string.isRequired,
+  defaultPerPage: PropTypes.number,
   data: PropTypes.array,
   totalSize: PropTypes.number,
-  params: PropTypes.object.isRequired,
+  getLocation: PropTypes.func.isRequired,
   getColumns: PropTypes.func.isRequired
 };
 

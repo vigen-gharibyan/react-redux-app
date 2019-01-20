@@ -132,14 +132,10 @@ class Users extends Component {
   constructor(props) {
     super(props);
 
-    const search = props.location.search;
-    const params = queryString.parse(search);
-
     this.state = {
       items: [],
       total: 0,
-      params,
-      fields: [
+      filters: [
         'username',
         'email',
         'role',
@@ -147,7 +143,12 @@ class Users extends Component {
       ]
     };
 
+    this.getLocation = this.getLocation.bind(this);
     this.getAll = this.getAll.bind(this);
+  }
+
+  getLocation() {
+    return this.props.location;
   }
 
   getAll(params) {
@@ -162,7 +163,7 @@ class Users extends Component {
   }
 
   render() {
-    const {items, total, params, fields} = this.state;
+    const {items, total, filters} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -177,11 +178,11 @@ class Users extends Component {
                   keyField='username'
                   items={items}
                   total={total}
-                  fields={fields}
-                  params={params}
+                  filters={filters}
+                  getLocation={this.getLocation}
                   getColumns={getColumns}
                   getAll={this.getAll}
-                  redirectTo={this.redirectTo}/>
+                />
               </CardBody>
             </Card>
           </Col>
