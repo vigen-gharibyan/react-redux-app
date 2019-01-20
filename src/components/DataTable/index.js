@@ -165,12 +165,11 @@ class DataTable extends Component {
 }
 
 DataTable.propTypes = {
-  keyField: PropTypes.string,
+  keyField: PropTypes.string.isRequired,
   data: PropTypes.array,
   totalSize: PropTypes.number,
-  params: PropTypes.object,
-  getColumns: PropTypes.func,
-  onTableChange: PropTypes.func
+  params: PropTypes.object.isRequired,
+  getColumns: PropTypes.func.isRequired
 };
 
 export default DataTable;
