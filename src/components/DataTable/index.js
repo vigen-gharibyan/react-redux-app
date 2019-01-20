@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
-import {history} from '../history';
+import {history} from '../../helpers';
 
 var _ = require('lodash');
 const queryString = require('query-string');
@@ -77,7 +78,7 @@ class DataTable extends Component {
 
   redirectTo(params) {
     let search = queryString.stringify(params);
-    if(search) {
+    if (search) {
       search = `?${search}`;
     }
 
@@ -163,4 +164,13 @@ class DataTable extends Component {
   };
 }
 
-export {DataTable};
+DataTable.propTypes = {
+  keyField: PropTypes.string,
+  data: PropTypes.array,
+  totalSize: PropTypes.number,
+  params: PropTypes.object,
+  getColumns: PropTypes.func,
+  onTableChange: PropTypes.func
+};
+
+export default DataTable;

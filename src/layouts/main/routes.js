@@ -38,7 +38,7 @@ import Modals from './views/Notifications/Modals';
 import Colors from './views/Theme/Colors';
 import Typography from './views/Theme/Typography';
 import Widgets from './views/Widgets/Widgets';
-import Users from './views/Users/Users';
+import Users from './views/Users';
 import User from './views/Users/User';
 import UserEdit from './views/Users/Edit';
 

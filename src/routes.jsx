@@ -3,7 +3,7 @@ import {Router, Route, Redirect, Switch} from 'react-router-dom';
 
 import {history} from './helpers';
 import {DefaultRoute, MainLayout} from './layouts';
-import {Login, Page404, Page500, Register} from './components/views/Pages';
+import {Login, Page404, Page500, Register} from './views/Pages';
 
 /*
  import {HomePage} from './components/HomePage';

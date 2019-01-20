@@ -15,14 +15,14 @@ import {
   Row
 } from 'reactstrap';
 
-import {userActions, validationActions} from '../../../../actions';
+import {userActions, validationActions} from '../../../actions';
 import {
   validations,
   Form,
   Input,
   Button as CoreuiButton,
   LoadingImg
-} from '../../../../helpers';
+} from '../../../helpers';
 
 import './login.css';
 

@@ -3,7 +3,6 @@ export * from './routes';
 export * from './history';
 export * from './store';
 export * from './fetcher';
-export * from './DataTable/DataTable';
 export * from './CoreuiValidations/validations';
 export * from './Rbac/Can';
 export * from './Rbac/rbac-rules';
