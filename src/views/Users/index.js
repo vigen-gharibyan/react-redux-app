@@ -5,10 +5,10 @@ import {textFilter, selectFilter, multiSelectFilter} from 'react-bootstrap-table
 import {Link} from 'react-router-dom';
 import {Badge} from 'reactstrap';
 
-import {roles, date} from '../../../../helpers';
-import {userActions} from '../../../../actions';
+import {roles, date} from '../../helpers';
+import {userActions} from '../../actions';
 
-import DataTable from '../../../../components/DataTable';
+import DataTable from '../../components/DataTable';
 
 const queryString = require('query-string');
 

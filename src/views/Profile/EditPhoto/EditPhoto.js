@@ -13,8 +13,8 @@ import {
   Row,
 } from 'reactstrap';
 
-import {userActions, validationActions} from '../../../../../actions';
-import {validations, Form, File, Button as CoreuiButton, LoadingImg} from '../../../../../helpers';
+import {userActions, validationActions} from '../../../actions';
+import {validations, Form, File, Button as CoreuiButton, LoadingImg} from '../../../helpers';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';

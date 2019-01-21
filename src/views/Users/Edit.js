@@ -14,8 +14,8 @@ import {
   Table
 } from 'reactstrap';
 
-import {history} from '../../../../helpers';
-import {userActions, validationActions} from '../../../../actions';
+import {history} from '../../helpers';
+import {userActions, validationActions} from '../../actions';
 import {
   validations,
   Form,
@@ -23,7 +23,7 @@ import {
   Select,
   Button as CoreuiButton,
   LoadingImg
-} from '../../../../helpers';
+} from '../../helpers';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';

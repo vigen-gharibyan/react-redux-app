@@ -12,8 +12,8 @@ import {
   Table
 } from 'reactstrap';
 
-import {userActions} from '../../../../actions';
-import {date} from '../../../../helpers';
+import {userActions} from '../../actions';
+import {date} from '../../helpers';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';

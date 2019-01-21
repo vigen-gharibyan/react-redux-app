@@ -2,45 +2,45 @@ import React from 'react';
 import Loadable from 'react-loadable'
 
 import {MainLayout} from './Layout';
-import Dashboard from './views/Dashboard';
-import Profile from './views/Profile/Profile';
-import EditProfile from './views/Profile/EditProfile';
-import ChangePassword from './views/Profile/ChangePassword';
-import Breadcrumbs from './views/Base/Breadcrumbs';
-import Cards from './views/Base/Cards';
-import Carousels from './views/Base/Carousels';
-import Collapses from './views/Base/Collapses';
-import Dropdowns from './views/Base/Dropdowns';
-import Forms from './views/Base/Forms';
-import Jumbotrons from './views/Base/Jumbotrons';
-import ListGroups from './views/Base/ListGroups';
-import Navbars from './views/Base/Navbars';
-import Navs from './views/Base/Navs';
-import Paginations from './views/Base/Paginations';
-import Popovers from './views/Base/Popovers';
-import ProgressBar from './views/Base/ProgressBar';
-import Switches from './views/Base/Switches';
-import Tables from './views/Base/Tables';
-import Tabs from './views/Base/Tabs';
-import Tooltips from './views/Base/Tooltips';
-import BrandButtons from './views/Buttons/BrandButtons';
-import ButtonDropdowns from './views/Buttons/ButtonDropdowns';
-import ButtonGroups from './views/Buttons/ButtonGroups';
-import Buttons from './views/Buttons/Buttons';
-import Charts from './views/Charts';
-import CoreUIIcons from './views/Icons/CoreUIIcons';
-import Flags from './views/Icons/Flags';
-import FontAwesome from './views/Icons/FontAwesome';
-import SimpleLineIcons from './views/Icons/SimpleLineIcons';
-import Alerts from './views/Notifications/Alerts';
-import Badges from './views/Notifications/Badges';
-import Modals from './views/Notifications/Modals';
-import Colors from './views/Theme/Colors';
-import Typography from './views/Theme/Typography';
-import Widgets from './views/Widgets/Widgets';
-import Users from './views/Users';
-import User from './views/Users/User';
-import UserEdit from './views/Users/Edit';
+import Dashboard from '../../views/Dashboard';
+import Profile from '../../views/Profile/Profile';
+import EditProfile from '../../views/Profile/EditProfile';
+import ChangePassword from '../../views/Profile/ChangePassword';
+import Breadcrumbs from '../../views/Base/Breadcrumbs';
+import Cards from '../../views/Base/Cards';
+import Carousels from '../../views/Base/Carousels';
+import Collapses from '../../views/Base/Collapses';
+import Dropdowns from '../../views/Base/Dropdowns';
+import Forms from '../../views/Base/Forms';
+import Jumbotrons from '../../views/Base/Jumbotrons';
+import ListGroups from '../../views/Base/ListGroups';
+import Navbars from '../../views/Base/Navbars';
+import Navs from '../../views/Base/Navs';
+import Paginations from '../../views/Base/Paginations';
+import Popovers from '../../views/Base/Popovers';
+import ProgressBar from '../../views/Base/ProgressBar';
+import Switches from '../../views/Base/Switches';
+import Tables from '../../views/Base/Tables';
+import Tabs from '../../views/Base/Tabs';
+import Tooltips from '../../views/Base/Tooltips';
+import BrandButtons from '../../views/Buttons/BrandButtons';
+import ButtonDropdowns from '../../views/Buttons/ButtonDropdowns';
+import ButtonGroups from '../../views/Buttons/ButtonGroups';
+import Buttons from '../../views/Buttons/Buttons';
+import Charts from '../../views/Charts';
+import CoreUIIcons from '../../views/Icons/CoreUIIcons';
+import Flags from '../../views/Icons/Flags';
+import FontAwesome from '../../views/Icons/FontAwesome';
+import SimpleLineIcons from '../../views/Icons/SimpleLineIcons';
+import Alerts from '../../views/Notifications/Alerts';
+import Badges from '../../views/Notifications/Badges';
+import Modals from '../../views/Notifications/Modals';
+import Colors from '../../views/Theme/Colors';
+import Typography from '../../views/Theme/Typography';
+import Widgets from '../../views/Widgets/Widgets';
+import Users from '../../views/Users';
+import User from '../../views/Users/User';
+import UserEdit from '../../views/Users/Edit';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -48,7 +48,7 @@ function Loading() {
 
 /*
  const Dashboard = Loadable({
- loader: () => import('./views/Dashboard')
+ loader: () => import('../../views/Dashboard')
  .then(object => object.default),
  loading: Loading,
  });

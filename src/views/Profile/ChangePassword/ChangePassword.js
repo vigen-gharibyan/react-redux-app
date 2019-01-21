@@ -12,9 +12,9 @@ import {
   Row
 } from 'reactstrap';
 
-import {history} from '../../../../../helpers';
-import {userActions, validationActions} from '../../../../../actions';
-import {validations, Form, Input, Button as CoreuiButton, LoadingImg} from '../../../../../helpers';
+import {history} from '../../../helpers';
+import {userActions, validationActions} from '../../../actions';
+import {validations, Form, Input, Button as CoreuiButton, LoadingImg} from '../../../helpers';
 
 class ChangePassword extends Component {
   constructor(props) {

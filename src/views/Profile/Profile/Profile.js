@@ -11,11 +11,11 @@ import {
   Row
 } from 'reactstrap';
 
-import {userActions} from '../../../../../actions';
+import {userActions} from '../../../actions';
 
 //todo
 const defaultProfileImg = '/assets/img/users/default-profile.png';
-import {date} from '../../../../../helpers';
+import {date} from '../../../helpers';
 
 class Profile extends Component {
   constructor(props) {
