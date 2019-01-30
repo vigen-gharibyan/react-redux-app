@@ -1,0 +1,6 @@
+{
+  "name": "EditPhoto",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditPhoto.js"
+}

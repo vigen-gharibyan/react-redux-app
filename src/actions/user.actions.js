@@ -8,39 +8,44 @@ export const userActions = {
   login,
   logout,
   getAll,
+  get: getById,
+  update: updateById,
   getCurrent,
   updateCurrent,
+  updateCurrentPhoto,
+  removeCurrentPhoto,
   changePassword,
   delete: _delete
 };
 
 function register(user) {
   return dispatch => {
-    dispatch(request(user));
     dispatch(alertActions.clear());
+    dispatch(request(user));
 
     userService.register(user)
-        .then(response => {
-          if (response.success) {
-            dispatch(success());
-            history.push('/login');
-            dispatch(alertActions.success('Registration successful'));
+      .then(response => {
+        if (response.success) {
+          dispatch(success());
+          history.push('/login');
+          const successMessage = "You have succesfully registered. Before login check your email to activate your account.";
+          dispatch(alertActions.success(successMessage));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
           }
-        }, error => {
-          dispatch(failure(error));
-          error.then(response => {
-            const {data} = response;
-            if (data) {
-              dispatch(failure(error));
-              dispatch(validationActions.apiError(data));
-            }
-          });
-        })
-        .catch(err => {
-          let error = 'Server error';
-          dispatch(failure(error));
-          dispatch(alertActions.error(error));
         });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
   };
 
   function request(user) {
@@ -67,8 +72,8 @@ function register(user) {
 
 function login(username, password) {
   return dispatch => {
-    dispatch(request({username}));
     dispatch(alertActions.clear());
+    dispatch(request({username}));
 
     userService.login(username, password)
       .then(response => {
@@ -211,10 +216,110 @@ function updateCurrent(user) {
   }
 }
 
-function changePassword(data) {
+function updateCurrentPhoto(formData) {
   return dispatch => {
     dispatch(request());
+
+    userService.updateCurrentPhoto(formData)
+      .then(response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+            dispatch(alertActions.success('Photo updated successfully'));
+          }
+        }, error => {
+          dispatch(failure(error));
+          error.then(response => {
+            const {data} = response;
+            if (data) {
+              dispatch(failure(error));
+              dispatch(validationActions.apiError(data));
+            }
+          });
+        })
+        .catch(err => {
+          let error = 'Server error';
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        });
+  };
+
+  function request() {
+    return {
+      type: userConstants.UPDATECURRENTPHOTO_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.UPDATECURRENTPHOTO_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.UPDATECURRENTPHOTO_FAILURE,
+      error
+    };
+  }
+}
+
+function removeCurrentPhoto() {
+  return dispatch => {
+    dispatch(request());
+
+    userService.removeCurrentPhoto()
+      .then(response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+            dispatch(alertActions.success('Photo removed successfully'));
+          }
+        }, error => {
+          dispatch(failure(error));
+          error.then(response => {
+            const {data} = response;
+            if (data) {
+              dispatch(failure(error));
+              dispatch(validationActions.apiError(data));
+            }
+          });
+        })
+        .catch(err => {
+          let error = 'Server error';
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        });
+  };
+
+  function request() {
+    return {
+      type: userConstants.REMOVECURRENTPHOTO_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.REMOVECURRENTPHOTO_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.REMOVECURRENTPHOTO_FAILURE,
+      error
+    };
+  }
+}
+
+function changePassword(data) {
+  return dispatch => {
     dispatch(alertActions.clear());
+    dispatch(request());
 
     userService.changePassword(data)
       .then(response => {
@@ -262,13 +367,19 @@ function changePassword(data) {
   }
 }
 
-function getAll() {
+function getAll(params) {
   return dispatch => {
     dispatch(request());
 
-    userService.getAll()
+    userService.getAll(params)
       .then(
-        users => dispatch(success(users)),
+        response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+          }
+        },
         error => dispatch(failure(error))
       );
   };
@@ -281,13 +392,102 @@ function getAll() {
 
   function success(users) {
     return {
-      type: userConstants.GETALL_SUCCESS, users
+      type: userConstants.GETALL_SUCCESS,
+      users
     };
   }
 
   function failure(error) {
     return {
       type: userConstants.GETALL_FAILURE,
+      error
+    };
+  }
+}
+
+function getById(id) {
+  return dispatch => {
+    dispatch(request());
+
+    userService.get(id)
+      .then(
+        response => {
+          const {data} = response;
+
+          if (response.success) {
+            dispatch(success(data));
+          }
+        },
+        error => dispatch(failure(error))
+      );
+  };
+
+  function request() {
+    return {
+      type: userConstants.GETBYID_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.GETBYID_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.GETBYID_FAILURE,
+      error
+    };
+  }
+}
+
+function updateById(id, user) {
+  return dispatch => {
+    dispatch(request());
+
+    userService.update(id, user)
+      .then(response => {
+        const {data} = response;
+
+        if (response.success) {
+          dispatch(success(data));
+          dispatch(alertActions.success('Updated successfully'));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
+          }
+        });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
+  };
+
+  function request() {
+    return {
+      type: userConstants.UPDATEBYID_REQUEST
+    };
+  }
+
+  function success(user) {
+    return {
+      type: userConstants.UPDATEBYID_SUCCESS,
+      user
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: userConstants.UPDATEBYID_FAILURE,
       error
     };
   }

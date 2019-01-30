@@ -1,0 +1,9 @@
+.right-section {
+  text-align: left;
+}
+
+@media only screen and (min-width: 768px) {
+  .right-section {
+    text-align: right;
+  }
+}
