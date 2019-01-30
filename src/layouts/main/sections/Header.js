@@ -64,7 +64,7 @@ class Header extends Component {
             perform="users:list"
             yes={() => (
               <NavItem className="px-3">
-                <NavLink to="/users">Users</NavLink>
+                <NavLink to="/users?sort=-created_at&status=10">Users</NavLink>
               </NavItem>
             )}
           />

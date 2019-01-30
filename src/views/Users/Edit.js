@@ -34,10 +34,11 @@ class Edit extends Component {
     super(props);
 
     this.state = {
+      isDirty: false,
       id: this.props.match.params.id,
+      initialData: null,
       user: {
         username: '',
-        email: '',
         role: undefined,
         status: undefined
       }
@@ -74,14 +75,19 @@ class Edit extends Component {
   handleChange(event) {
     let {name, value} = event.target;
 
-    console.log('name:', name)
-    console.log('value:', value)
-
     if (event.target.type === 'checkbox') {
       value = event.target.checked;
     }
 
-    const {user} = this.state;
+    const user = {...this.state.user};
+    if (!this.state.isDirty && user[name] !== value) {
+      const initialData = {...user};
+      this.setState({
+        initialData,
+        isDirty: true
+      });
+    }
+
     user[name] = value;
     this.setState({user});
     this.removeApiError(name);
@@ -106,12 +112,15 @@ class Edit extends Component {
   }
 
   handleReset(event) {
-    console.log('reset ...')
+    const {isDirty, initialData} = this.state;
+    if (isDirty) {
+      this.setState({user: initialData});
+    }
   }
 
   render() {
     const {loading} = this.props;
-    const {user} = this.state;
+    const {user, isDirty} = this.state;
     const {roles, statuses} = user;
 
     return (
@@ -179,9 +188,9 @@ class Edit extends Component {
               </CardBody>
               <CardFooter>
                 <CoreuiButton type="submit" size="sm" color="primary">
-                  <i className="fa fa-dot-circle-o"></i> Save
+                  <i className="fa fa-dot-circle-o"></i> Save {isDirty}
                 </CoreuiButton>
-                <Button onClick={this.handleReset} type="reset" size="sm" color="danger">
+                <Button onClick={this.handleReset} type="button" size="sm" color="danger">
                   <i className="fa fa-ban"></i> Reset
                 </Button>
                 <LoadingImg loading={loading}/>
