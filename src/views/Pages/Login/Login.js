@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {updateTitle} from 'redux-title';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
 import {
   Button,
   Card,
@@ -85,9 +86,11 @@ class Login extends Component {
                           this.form = c
                         }}
                         onSubmit={this.handleSubmit}>
-                    <h1>Login</h1>
+                    <h1><FormattedMessage id="Login"/></h1>
 
-                    <p className="text-muted">Sign In to your account</p>
+                    <p className="text-muted">
+                      <FormattedMessage id="Sign In to your account"/>
+                    </p>
 
                     <div className="mb-4">
                       <Input type="text"
@@ -117,15 +120,19 @@ class Login extends Component {
                     </div>
 
                     <Row>
-                      <Col sm="12" md="6">
+                      <Col sm="12" md="4">
                         <span className="loading-btn-container">
-                          <CoreuiButton color="primary" className="px-4">Login</CoreuiButton>
+                          <CoreuiButton color="primary" className="px-4">
+                           <FormattedMessage id="Login"/>
+                          </CoreuiButton>
                           <LoadingImg loading={loggingIn} />
                         </span>
                       </Col>
                       <Col sm="12" md="6" className="right-section">
                         <Link to="/">
-                          <Button color="link" className="px-0">Forgot password?</Button>
+                          <Button color="link" className="px-0">
+                            <FormattedMessage id="Forgot password?"/>
+                          </Button>
                         </Link>
                       </Col>
                     </Row>
@@ -135,13 +142,17 @@ class Login extends Component {
               <Card className="text-white bg-primary py-5 d-md-down-none" style={{width: 44 + '%'}}>
                 <CardBody className="text-center">
                   <div>
-                    <h2>Sign up</h2>
+                    <h2>
+                      <FormattedMessage id="Sign up"/>
+                    </h2>
                     <p>
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
                       do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     </p>
                     <Link to="/register">
-                      <Button color="primary" className="mt-3" active>Register Now!</Button>
+                      <Button color="primary" className="mt-3" active>
+                        <FormattedMessage id="Register Now!"/>
+                      </Button>
                     </Link>
                   </div>
                 </CardBody>
