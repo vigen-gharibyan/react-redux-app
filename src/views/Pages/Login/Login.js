@@ -16,7 +16,7 @@ import {
   Row
 } from 'reactstrap';
 
-import {userActions, validationActions} from '../../../actions';
+import {intlActions, userActions, validationActions} from '../../../actions';
 import {
   validations,
   Form,
@@ -60,6 +60,8 @@ class Login extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+
+    this.props.switchLanguage('am')
 
     this.form.validateAll();
     const {username, password} = this.state;
@@ -188,6 +190,9 @@ function mapDispatchToProps(dispatch) {
     },
     logout: () => {
       dispatch(userActions.logout());
+    },
+    switchLanguage: (lang) => {
+      dispatch(intlActions.switchLanguage(lang));
     }
   };
 }
