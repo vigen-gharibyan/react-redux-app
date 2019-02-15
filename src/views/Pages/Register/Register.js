@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {updateTitle} from 'redux-title';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
 import {
   Button,
   Card,
@@ -97,9 +98,14 @@ class Register extends Component {
                         this.form = c
                       }}
                       onSubmit={this.handleSubmit}>
-                  <h1>Register</h1>
 
-                  <p className="text-muted">Create your account</p>
+                  <h1>
+                    <FormattedMessage id="Register"/>
+                  </h1>
+
+                  <p className="text-muted">
+                    <FormattedMessage id="Create your account"/>
+                  </p>
 
                   <div className="mb-3">
                     <Input type="text"
@@ -154,13 +160,17 @@ class Register extends Component {
                   <Row>
                     <Col xs="6">
                       <div className="text-center loading-btn-container">
-                        <CoreuiButton color="success" block>Create Account</CoreuiButton>
+                        <CoreuiButton color="success" block>
+                          <FormattedMessage id="Create Account"/>
+                        </CoreuiButton>
                         <LoadingImg loading={registering} />
                       </div>
                     </Col>
                     <Col xs="6">
                       <div className="text-center">
-                        <Link to="/login" className="btn">Already registered ?</Link>
+                        <Link to="/login" className="btn">
+                          <FormattedMessage id="Already registered ?"/>
+                        </Link>
                       </div>
                     </Col>
                   </Row>
