@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {FormattedMessage} from 'react-intl';
 import {
   Button,
   Card,
@@ -61,7 +62,7 @@ class User extends Component {
           <Col sm="12" md="8" xl="6">
             <Card>
               <CardHeader>
-                <i className="fa fa-user"></i> <strong>User details</strong>
+                <i className="fa fa-user"></i> <strong><FormattedMessage id="User details"></FormattedMessage></strong>
               </CardHeader>
               <CardBody>
                 <Row>
@@ -96,7 +97,7 @@ class User extends Component {
               <CardFooter>
                 <Link to={`/users/${user.id}/edit`}>
                   <Button size="sm" color="primary">
-                    <i className="fa fa-edit"></i> Edit
+                    <i className="fa fa-edit"></i> <FormattedMessage id="Edit"></FormattedMessage>
                   </Button>
                 </Link>
               </CardFooter>

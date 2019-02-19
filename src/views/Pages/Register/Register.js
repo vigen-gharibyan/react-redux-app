@@ -198,8 +198,6 @@ function mapStateToProps(state) {
   const {registering} = state.registration;
   const {title, validation} = state;
 
-    console.log('title:', title)
-
   return {
     title,
     registering,
