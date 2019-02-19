@@ -15,5 +15,6 @@ export const params = {
       name: 'Armenian',
       icon: 'am',
     },
-  }
+  },
+  defaultProfileImg: '/assets/img/users/default-profile.png',
 };

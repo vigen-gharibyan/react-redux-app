@@ -6,22 +6,21 @@ import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem} from 'r
 import PropTypes from 'prop-types';
 
 import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
-import {Can} from "../../../helpers";
+import {Can, languages} from "../../../helpers";
+import {params} from "../../../config";
 import {intlActions} from '../../../actions';
-import {params} from '../../../config';
 
 import logo from '../assets/img/brand/logo.svg';
 import sygnet from '../assets/img/brand/sygnet.svg';
+
+//todo
+const {defaultProfileImg} = params;
 
 const propTypes = {
   children: PropTypes.node,
 };
 
 const defaultProps = {};
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
-const {languages} = params;
 
 class Header extends Component {
 
@@ -39,33 +38,29 @@ class Header extends Component {
         name: null,
         icon: null,
       },
-      enabledLanguages: []
     }
 
     this.changeLanguage = this.changeLanguage.bind(this);
   }
 
-  componentDidMount() {
-    const {currentUser, currentLanguage, enabledLanguages} = this.props;
+  componentWillReceiveProps(nextProps) {
+    const {currentUser, currentLanguage} = nextProps;
     if (currentUser) {
       this.setState({currentUser});
     }
     if (currentLanguage) {
       this.setState({currentLanguage});
     }
-    if (enabledLanguages) {
-      this.setState({enabledLanguages});
-    }
   }
 
-  changeLanguage(language) {
-    this.props.dispatch(intlActions.switchLanguage(language));
+  changeLanguage(lang) {
+    this.props.dispatch(intlActions.switchLanguage(lang));
   }
 
   render() {
     // eslint-disable-next-line
     const {children, ...attributes} = this.props;
-    const {currentUser, currentLanguage, enabledLanguages} = this.state;
+    const {currentUser, currentLanguage} = this.state;
 
     return (
       <React.Fragment>
@@ -123,14 +118,20 @@ class Header extends Component {
             </DropdownToggle>
 
             <DropdownMenu right style={{right: 'auto'}}>
-              {enabledLanguages.map((lang, key) => {
-                return (
-                  <DropdownItem key={key}>
-                    <a onClick={() => this.changeLanguage(languages[lang].locale)}>
-                      <i className={`flag-icon flag-icon-${languages[lang].icon}`}></i> {languages[lang].name}
-                    </a>
-                  </DropdownItem>
-                );
+              {Object.keys(languages).map((index, key) => {
+                const language = languages[index];
+
+                if(language.locale != currentLanguage.locale) {
+                  return (
+                    <DropdownItem key={key}>
+                      <a onClick={() => this.changeLanguage(language.locale)}>
+                        <i className={`flag-icon flag-icon-${language.icon}`}></i> {language.name}
+                      </a>
+                    </DropdownItem>
+                  );
+                }
+
+                return;
               })}
             </DropdownMenu>
           </AppHeaderDropdown>
@@ -199,8 +200,7 @@ function mapStateToProps(state) {
       currentUser
     },
     intl: {
-      locale,
-      enabledLanguages
+      locale
     }
   } = state;
 
@@ -209,7 +209,6 @@ function mapStateToProps(state) {
   return {
     currentUser,
     currentLanguage,
-    enabledLanguages,
   };
 }
 
