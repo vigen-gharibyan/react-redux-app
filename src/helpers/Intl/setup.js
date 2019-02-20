@@ -8,9 +8,9 @@ import {addLocaleData} from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import ru from 'react-intl/locale-data/ru';
 import am from 'react-intl/locale-data/am';
-import enData from '../../translations/en.json';
-import ruData from '../../translations/ru.json';
-import amData from '../../translations/am.json';
+import enData from '../../translations/app/en.json';
+import ruData from '../../translations/app/ru.json';
+import amData from '../../translations/app/am.json';
 
 // list of available languages
 export const enabledLanguages = [
