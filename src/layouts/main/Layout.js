@@ -15,17 +15,13 @@ import {
   AppSidebarNav,
 } from '@coreui/react';
 
-// sidebar nav config
+import Routes, {routes} from './Routes';
 import navigation from './sections/_nav';
-
-// routes config
-import routes from './routes';
 import Aside from './sections/Aside';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
 import Notifications from './sections/Notifications';
 import {userActions} from '../../actions';
-import {PrivateRoute} from '../../helpers';
 
 import './assets/css/style.css';
 
@@ -35,7 +31,20 @@ class Layout extends Component {
     this.props.getCurrentUser();
   }
 
+  getUrlFromProps(props) {
+    const {match} = props;
+    if(match) {
+      const {url} = match;
+      if(url) {
+        return url;
+      }
+    }
+    return null;
+  }
+
   render() {
+    const lngPrefix = this.getUrlFromProps(this.props);
+
     return (
       <div className="app">
         <AppHeader fixed>
@@ -53,24 +62,7 @@ class Layout extends Component {
           <main className="main">
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
-              <Switch>
-                {
-                  routes.map((route, idx) => {
-                      return route.component ? (
-                        <PrivateRoute key={idx}
-                                      perform={route.perform}
-                                      component={route.component}
-                                      path={route.path}
-                                      exact={route.exact}
-                                      name={route.name}
-                        />)
-                        : (null);
-                    }
-                  )
-                }
-                <Redirect exact from="/" to="/dashboard"/>
-                <Redirect from='/*' to='/404'/>
-              </Switch>
+              <Routes lngPrefix={lngPrefix}/>
             </Container>
           </main>
           <AppAside fixed hidden>

@@ -39,8 +39,6 @@ class Header extends Component {
         icon: null,
       },
     }
-
-    this.changeLanguage = this.changeLanguage.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,10 +49,6 @@ class Header extends Component {
     if (currentLanguage) {
       this.setState({currentLanguage});
     }
-  }
-
-  changeLanguage(lang) {
-    this.props.dispatch(intlActions.switchLanguage(lang));
   }
 
   render() {
@@ -124,9 +118,9 @@ class Header extends Component {
                 if(language.locale != currentLanguage.locale) {
                   return (
                     <DropdownItem key={key}>
-                      <a onClick={() => this.changeLanguage(language.locale)}>
+                      <Link to={`/${language.locale}/dashboard`}>
                         <i className={`flag-icon flag-icon-${language.icon}`}></i> {language.name}
-                      </a>
+                      </Link>
                     </DropdownItem>
                   );
                 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
-import {userService} from '../../services';
-import {Can} from '../../helpers';
+import {userService} from '../services';
+import {Can} from '../helpers';
 
 const PrivateRoute = ({component: Component, layout: Layout, perform: perform, ...rest}) => (
   <Route {...rest} render={props => {

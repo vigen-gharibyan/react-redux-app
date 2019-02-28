@@ -1,5 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import Loadable from 'react-loadable'
+
+import {PrivateRoute} from '../../routes';
 
 import {MainLayout} from './Layout';
 import Dashboard from '../../views/Dashboard';
@@ -41,6 +44,7 @@ import Widgets from '../../views/Widgets/Widgets';
 import Users from '../../views/Users';
 import User from '../../views/Users/User';
 import UserEdit from '../../views/Users/Edit';
+import {string} from '../../helpers';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -147,4 +151,34 @@ const routes = [
   {path: '/charts', name: 'Charts', component: Charts}
 ];
 
-export default routes;
+class Routes extends Component {
+  render() {
+    let {lngPrefix} = this.props;
+    lngPrefix = lngPrefix ? string.removeTrailingSlash(lngPrefix) : '';
+
+    return (
+      <Switch>
+        {
+          routes.map((route, idx) => {
+            const path = `${lngPrefix}${route.path}`;
+
+            return route.component ? (
+              <PrivateRoute key={idx}
+                            perform={route.perform}
+                            component={route.component}
+                            path={path}
+                            exact={route.exact}
+                            name={route.name}
+              />)
+              : (null);
+          })
+        }
+        <Redirect exact from={`${lngPrefix}/`} to={`${lngPrefix}/dashboard`}/>
+        <Redirect from='*' to={`${lngPrefix}/404`}/>
+      </Switch>
+    )
+  }
+}
+
+export {routes};
+export default Routes;

@@ -1,4 +1,5 @@
 export const params = {
+  defaultLng: 'ru',
   languages: {
     en: {
       locale: 'en',
