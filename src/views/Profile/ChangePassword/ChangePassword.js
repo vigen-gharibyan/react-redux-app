@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
   Card,
@@ -12,7 +11,7 @@ import {
   Row
 } from 'reactstrap';
 
-import {history} from '../../../helpers';
+import {redirect} from '../../../helpers';
 import {userActions, validationActions} from '../../../actions';
 import {validations, Form, Input, Button as CoreuiButton, LoadingImg} from '../../../helpers';
 
@@ -36,7 +35,7 @@ class ChangePassword extends Component {
     const {passwordChanged} = nextProps;
 
     if (passwordChanged) {
-      history.push('/profile');
+      redirect('/profile');
     }
   }
 

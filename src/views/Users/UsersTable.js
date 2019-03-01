@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {textFilter, selectFilter, multiSelectFilter} from 'react-bootstrap-table2-filter';
-import {Link} from 'react-router-dom';
 import {Badge} from 'reactstrap';
 
+import {Link} from "../../helpers";
 import {roles, date} from '../../helpers';
+import {defaultProfileImg} from "../../helpers";
 import {userActions} from '../../actions';
-
 import DataTable from '../../components/DataTable';
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
 
 const STATUS_DELETED = 0;
 const STATUS_INACTIVE = 1;

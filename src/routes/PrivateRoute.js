@@ -1,12 +1,12 @@
 import React from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import {userService} from '../services';
-import {Can} from '../helpers';
+import {Can, Redirect} from '../helpers';
 
 const PrivateRoute = ({component: Component, layout: Layout, perform: perform, ...rest}) => (
   <Route {...rest} render={props => {
     if (userService.isLoggedin()) {
-      if(perform) {
+      if (perform) {
         return (
           <Can
             perform={perform}
@@ -21,7 +21,9 @@ const PrivateRoute = ({component: Component, layout: Layout, perform: perform, .
       return <Component {...props} />
     }
 
-    return <Redirect to={{pathname: '/login', state: {from: props.location}}}/>
+    //todo: uncomment first version when 'Redirect' function will be fixed for objects
+    //return <Redirect to={{pathname: '/login', state: {from: props.location}}}/>
+    return <Redirect to='/login'/>
   }}/>
 );
 

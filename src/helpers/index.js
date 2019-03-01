@@ -8,3 +8,4 @@ export * from './Rbac/Can';
 export * from './Rbac/rbac-rules';
 export * from './date';
 export * from './string';
+export * from './images';

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -13,9 +12,8 @@ import {
 
 import {userActions} from '../../../actions';
 
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
-import {date} from '../../../helpers';
+import {Link} from '../../../helpers';
+import {date, defaultProfileImg} from '../../../helpers';
 
 class Profile extends Component {
   constructor(props) {

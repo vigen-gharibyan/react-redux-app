@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -15,9 +14,7 @@ import {
 
 import {userActions, validationActions} from '../../../actions';
 import {validations, Form, File, Button as CoreuiButton, LoadingImg} from '../../../helpers';
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
+import {defaultProfileImg} from '../../../helpers';
 
 class EditPhoto extends Component {
   constructor(props) {

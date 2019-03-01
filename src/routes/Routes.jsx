@@ -8,20 +8,20 @@ import {Login, Page404, Page500, Register} from '../views/Pages';
 class Routes extends Component {
   render() {
     let {lngPrefix} = this.props;
-    if(!lngPrefix) {
+    if (!lngPrefix) {
       lngPrefix = '';
     }
 
     return (
       <IntlWrapper>
-      <Switch>
-        <DefaultRoute path={`${lngPrefix}/404`} component={Page404}/>
-        <DefaultRoute path={`${lngPrefix}/500`} component={Page500}/>
-        <DefaultRoute path={`${lngPrefix}/login`} component={Login}/>
-        <DefaultRoute path={`${lngPrefix}/register`} component={Register}/>
-        <Route path={`${lngPrefix}/`} component={MainLayout}/>
-        <Redirect from='*' to={`${lngPrefix}/404`}/>
-      </Switch>
+        <Switch>
+          <DefaultRoute path={`${lngPrefix}/404`} component={Page404}/>
+          <DefaultRoute path={`${lngPrefix}/500`} component={Page500}/>
+          <DefaultRoute path={`${lngPrefix}/login`} component={Login}/>
+          <DefaultRoute path={`${lngPrefix}/register`} component={Register}/>
+          <Route path={`${lngPrefix}/`} component={MainLayout}/>
+          <Redirect from='*' to={`${lngPrefix}/404`}/>
+        </Switch>
       </IntlWrapper>
     )
   }

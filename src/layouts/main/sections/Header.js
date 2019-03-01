@@ -1,20 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link, NavLink} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
-import {Can, languages} from "../../../helpers";
-import {params} from "../../../config";
-import {intlActions} from '../../../actions';
+import {Can, languages, Link, NavLink} from "../../../helpers";
+import {defaultProfileImg} from "../../../helpers";
 
 import logo from '../assets/img/brand/logo.svg';
 import sygnet from '../assets/img/brand/sygnet.svg';
-
-//todo
-const {defaultProfileImg} = params;
 
 const propTypes = {
   children: PropTypes.node,
@@ -115,10 +110,10 @@ class Header extends Component {
               {Object.keys(languages).map((index, key) => {
                 const language = languages[index];
 
-                if(language.locale != currentLanguage.locale) {
+                if (language.locale != currentLanguage.locale) {
                   return (
                     <DropdownItem key={key}>
-                      <Link to={`/${language.locale}/dashboard`}>
+                      <Link lang={`${language.locale}`} to={`/dashboard`}>
                         <i className={`flag-icon flag-icon-${language.icon}`}></i> {language.name}
                       </Link>
                     </DropdownItem>
@@ -190,12 +185,8 @@ Header.defaultProps = defaultProps;
 
 function mapStateToProps(state) {
   const {
-    users: {
-      currentUser
-    },
-    intl: {
-      locale
-    }
+    users: {currentUser},
+    intl: {locale}
   } = state;
 
   const currentLanguage = languages[locale];

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -13,7 +12,7 @@ import {
   Row,
 } from 'reactstrap';
 
-import {history} from '../../../helpers';
+import {redirect} from '../../../helpers';
 import {userActions, validationActions} from '../../../actions';
 import {validations, Form, Input, Button as CoreuiButton, LoadingImg} from '../../../helpers';
 import EditPhoto from '../EditPhoto';
@@ -46,7 +45,7 @@ class EditProfile extends Component {
     }
 
     if (updatedCurrent) {
-      history.push('/profile');
+      redirect('/profile');
     }
   }
 

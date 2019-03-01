@@ -1,7 +1,7 @@
 import {userConstants} from '../_constants';
 import {userService} from '../services';
 import {alertActions, validationActions} from './';
-import {history} from '../helpers';
+import {redirect} from '../helpers';
 
 export const userActions = {
   register,
@@ -27,7 +27,7 @@ function register(user) {
       .then(response => {
         if (response.success) {
           dispatch(success());
-          history.push('/login');
+          redirect('/login');
           const successMessage = "You have succesfully registered. Before login check your email to activate your account.";
           dispatch(alertActions.success(successMessage));
         }
@@ -79,7 +79,7 @@ function login(username, password) {
       .then(response => {
         if (response.success) {
           dispatch(success(username));
-          history.push('/');
+          redirect('/');
         }
       }, error => {
         error.then(response => {
@@ -172,27 +172,27 @@ function updateCurrent(user) {
 
     userService.updateCurrent(user)
       .then(response => {
-          const {data} = response;
+        const {data} = response;
 
-          if (response.success) {
-            dispatch(success(data));
-            dispatch(alertActions.success('Updated successfully'));
+        if (response.success) {
+          dispatch(success(data));
+          dispatch(alertActions.success('Updated successfully'));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
           }
-        }, error => {
-          dispatch(failure(error));
-          error.then(response => {
-            const {data} = response;
-            if (data) {
-              dispatch(failure(error));
-              dispatch(validationActions.apiError(data));
-            }
-          });
-        })
-        .catch(err => {
-          let error = 'Server error';
-          dispatch(failure(error));
-          dispatch(alertActions.error(error));
         });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
   };
 
   function request() {
@@ -222,27 +222,27 @@ function updateCurrentPhoto(formData) {
 
     userService.updateCurrentPhoto(formData)
       .then(response => {
-          const {data} = response;
+        const {data} = response;
 
-          if (response.success) {
-            dispatch(success(data));
-            dispatch(alertActions.success('Photo updated successfully'));
+        if (response.success) {
+          dispatch(success(data));
+          dispatch(alertActions.success('Photo updated successfully'));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
           }
-        }, error => {
-          dispatch(failure(error));
-          error.then(response => {
-            const {data} = response;
-            if (data) {
-              dispatch(failure(error));
-              dispatch(validationActions.apiError(data));
-            }
-          });
-        })
-        .catch(err => {
-          let error = 'Server error';
-          dispatch(failure(error));
-          dispatch(alertActions.error(error));
         });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
   };
 
   function request() {
@@ -272,27 +272,27 @@ function removeCurrentPhoto() {
 
     userService.removeCurrentPhoto()
       .then(response => {
-          const {data} = response;
+        const {data} = response;
 
-          if (response.success) {
-            dispatch(success(data));
-            dispatch(alertActions.success('Photo removed successfully'));
+        if (response.success) {
+          dispatch(success(data));
+          dispatch(alertActions.success('Photo removed successfully'));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
           }
-        }, error => {
-          dispatch(failure(error));
-          error.then(response => {
-            const {data} = response;
-            if (data) {
-              dispatch(failure(error));
-              dispatch(validationActions.apiError(data));
-            }
-          });
-        })
-        .catch(err => {
-          let error = 'Server error';
-          dispatch(failure(error));
-          dispatch(alertActions.error(error));
         });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
   };
 
   function request() {
@@ -323,27 +323,27 @@ function changePassword(data) {
 
     userService.changePassword(data)
       .then(response => {
-          const {data} = response;
+        const {data} = response;
 
-          if (response.success) {
-            dispatch(success(data));
-            dispatch(alertActions.success('Password changed successfully'));
+        if (response.success) {
+          dispatch(success(data));
+          dispatch(alertActions.success('Password changed successfully'));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
           }
-        }, error => {
-          dispatch(failure(error));
-          error.then(response => {
-            const {data} = response;
-            if (data) {
-              dispatch(failure(error));
-              dispatch(validationActions.apiError(data));
-            }
-          });
-        })
-        .catch(err => {
-          let error = 'Server error';
-          dispatch(failure(error));
-          dispatch(alertActions.error(error));
         });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
   };
 
   function request() {

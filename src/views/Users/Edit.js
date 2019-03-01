@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -14,7 +13,7 @@ import {
   Table
 } from 'reactstrap';
 
-import {history} from '../../helpers';
+import {Link, redirect} from "../../helpers/Intl";
 import {userActions, validationActions} from '../../actions';
 import {
   validations,
@@ -64,7 +63,7 @@ class Edit extends Component {
     }
 
     if (updated) {
-      history.push(`/users/${id}`);
+      redirect(`/users/${id}`);
     }
   }
 

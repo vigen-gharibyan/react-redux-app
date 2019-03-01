@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 import {
   Button,
@@ -13,11 +12,9 @@ import {
   Table
 } from 'reactstrap';
 
+import {Link} from "../../helpers";
+import {date, defaultProfileImg} from '../../helpers';
 import {userActions} from '../../actions';
-import {date} from '../../helpers';
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
 
 class User extends Component {
 
@@ -111,9 +108,7 @@ class User extends Component {
 
 function mapStateToProps(state) {
   const {
-    users: {
-      user
-    }
+    users: {user}
   } = state;
 
   return {

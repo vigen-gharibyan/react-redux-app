@@ -1,9 +1,8 @@
-import { intlConstants } from '../_constants';
+import {intlConstants} from '../_constants';
 import {enabledLanguages, localizationData} from '../helpers/Intl/setup';
-import {params} from '../config';
+import {defaultLng} from '../helpers';
 
 // const defaultLng = global.navigator && global.navigator.language.split(/[-_]/)[0] || 'en';
-const {defaultLng} = params;
 
 const initialState = {
   enabledLanguages,
@@ -20,7 +19,7 @@ const IntlReducer = (state = initialState, action) => {
       let {locale} = actionWithoutType;
 
       //todo: check if is included in enabled languages too
-      if(!locale) {
+      if (!locale) {
         locale = defaultLng;
       }
 
