@@ -28,8 +28,18 @@ const IntlReducer = (state = initialState, action) => {
       return {
         ...state,
         locale,
-        messages: {...messages}
+        messages: {...messages},
       };
+    }
+
+    case intlConstants.SAVE_CURRENT_PATH: {
+      const {type, ...actionWithoutType} = action; // eslint-disable-line
+      const {currentPath} = actionWithoutType;
+
+      return {
+        ...state,
+        currentPath,
+      }
     }
 
     default:

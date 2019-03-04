@@ -48,8 +48,9 @@ class Header extends Component {
 
   render() {
     // eslint-disable-next-line
-    const {children, ...attributes} = this.props;
+    // const {children, ...attributes} = this.props;
     const {currentUser, currentLanguage} = this.state;
+    const {currentPath} = this.props;
 
     return (
       <React.Fragment>
@@ -113,7 +114,7 @@ class Header extends Component {
                 if (language.locale != currentLanguage.locale) {
                   return (
                     <DropdownItem key={key}>
-                      <Link lang={`${language.locale}`} to={`/dashboard`}>
+                      <Link lang={`${language.locale}`} to={currentPath}>
                         <i className={`flag-icon flag-icon-${language.icon}`}></i> {language.name}
                       </Link>
                     </DropdownItem>
@@ -186,7 +187,10 @@ Header.defaultProps = defaultProps;
 function mapStateToProps(state) {
   const {
     users: {currentUser},
-    intl: {locale}
+    intl: {
+      locale,
+      currentPath,
+    }
   } = state;
 
   const currentLanguage = languages[locale];
@@ -194,6 +198,7 @@ function mapStateToProps(state) {
   return {
     currentUser,
     currentLanguage,
+    currentPath,
   };
 }
 

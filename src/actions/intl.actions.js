@@ -2,7 +2,8 @@ import {intlConstants} from '../_constants';
 //import { localizationData } from '../helpers/Intl/setup';
 
 export const intlActions = {
-  switchLanguage
+  switchLanguage,
+  saveCurrentPath,
 }
 
 function switchLanguage(newLang) {
@@ -14,5 +15,12 @@ function switchLanguage(newLang) {
       ...localizationData[newLang]
     },
     */
+  };
+}
+
+function saveCurrentPath(path) {
+  return {
+    type: intlConstants.SAVE_CURRENT_PATH,
+    currentPath: path,
   };
 }

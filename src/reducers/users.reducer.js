@@ -136,7 +136,7 @@ const users = (state = initialState, action) => {
     }
     case userConstants.GETALL_SUCCESS: {
       const newState = getState(state);
-    //const data = action.users;
+      //const data = action.users;
       const {items, total} = action.users;
 
       return {
