@@ -5,8 +5,9 @@ import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem} from 'r
 import PropTypes from 'prop-types';
 
 import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
-import {Can, languages, Link, NavLink} from "../../../helpers";
+import {Can, Link, NavLink} from "../../../helpers";
 import {defaultProfileImg} from "../../../helpers";
+import LanguagesDropdown from './LanguagesDropdown';
 
 import logo from '../assets/img/brand/logo.svg';
 import sygnet from '../assets/img/brand/sygnet.svg';
@@ -28,29 +29,23 @@ class Header extends Component {
         email: '',
         photo: ''
       },
-      currentLanguage: {
-        locale: null,
-        name: null,
-        icon: null,
-      },
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const {currentUser, currentLanguage} = nextProps;
+    const {currentUser} = nextProps;
     if (currentUser) {
       this.setState({currentUser});
-    }
-    if (currentLanguage) {
-      this.setState({currentLanguage});
     }
   }
 
   render() {
+
+    // console.log('header render:', this.props.locale)
+
     // eslint-disable-next-line
     // const {children, ...attributes} = this.props;
-    const {currentUser, currentLanguage} = this.state;
-    const {currentPath} = this.props;
+    const {currentUser} = this.state;
 
     return (
       <React.Fragment>
@@ -102,29 +97,9 @@ class Header extends Component {
               <i className="icon-location-pin"></i>
             </NavLink>
           </NavItem>
-          <AppHeaderDropdown direction="down">
-            <DropdownToggle nav>
-              <i className={`flag-icon flag-icon-${currentLanguage.icon}`} title={currentLanguage.name}></i>
-            </DropdownToggle>
 
-            <DropdownMenu right style={{right: 'auto'}}>
-              {Object.keys(languages).map((index, key) => {
-                const language = languages[index];
+          <LanguagesDropdown />
 
-                if (language.locale != currentLanguage.locale) {
-                  return (
-                    <DropdownItem key={key}>
-                      <Link lang={`${language.locale}`} to={currentPath}>
-                        <i className={`flag-icon flag-icon-${language.icon}`}></i> {language.name}
-                      </Link>
-                    </DropdownItem>
-                  );
-                }
-
-                return;
-              })}
-            </DropdownMenu>
-          </AppHeaderDropdown>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
               <img src={ currentUser.photo || defaultProfileImg }
@@ -139,8 +114,9 @@ class Header extends Component {
               <DropdownItem>
                 <i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge>
               </DropdownItem>
-              <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge
-                color="success">42</Badge></DropdownItem>
+              <DropdownItem>
+                <i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge>
+              </DropdownItem>
               <DropdownItem>
                 <i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge>
               </DropdownItem>
@@ -187,18 +163,12 @@ Header.defaultProps = defaultProps;
 function mapStateToProps(state) {
   const {
     users: {currentUser},
-    intl: {
-      locale,
-      currentPath,
-    }
+    intl: {locale},
   } = state;
-
-  const currentLanguage = languages[locale];
 
   return {
     currentUser,
-    currentLanguage,
-    currentPath,
+    locale,
   };
 }
 
