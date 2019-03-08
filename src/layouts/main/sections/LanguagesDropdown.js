@@ -10,26 +10,6 @@ const defaultProps = {};
 
 class LanguagesDropdown extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentLanguage: {
-        locale: null,
-        name: null,
-        icon: null,
-      },
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {currentLanguage} = nextProps;
-
-    if (currentLanguage) {
-      this.setState({currentLanguage});
-    }
-  }
-
   render() {
     const {currentLanguage} = this.props;
     const {currentPath} = this.props;

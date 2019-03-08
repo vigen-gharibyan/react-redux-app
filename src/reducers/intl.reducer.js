@@ -1,6 +1,6 @@
 import {intlConstants} from '../_constants';
-import {enabledLanguages, localizationData} from '../helpers/Intl/setup';
-import {defaultLng} from '../helpers';
+import {localizationData} from '../helpers/Intl/setup';
+import {defaultLng, enabledLanguages} from '../helpers';
 
 // const defaultLng = global.navigator && global.navigator.language.split(/[-_]/)[0] || 'en';
 
@@ -18,8 +18,7 @@ const IntlReducer = (state = initialState, action) => {
       const {type, ...actionWithoutType} = action; // eslint-disable-line
       let {locale} = actionWithoutType;
 
-      //todo: check if is included in enabled languages too
-      if (!locale) {
+      if (!locale || !(enabledLanguages.includes(locale))) {
         locale = defaultLng;
       }
 
