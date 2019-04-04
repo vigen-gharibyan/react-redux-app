@@ -15,13 +15,14 @@ import {
   AppSidebarNav,
 } from '@coreui/react';
 
-import Routes, {routes} from './Routes';
+import Routes, {routes, routesWithPrefix} from './Routes';
 import navigation from './sections/_nav';
 import Aside from './sections/Aside';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
 import Notifications from './sections/Notifications';
 import {userActions} from '../../actions';
+import {addPrefixToRoutes} from '../../helpers';
 
 import './assets/css/style.css';
 
@@ -33,9 +34,9 @@ class Layout extends Component {
 
   getUrlFromProps(props) {
     const {match} = props;
-    if(match) {
+    if (match) {
       const {url} = match;
-      if(url) {
+      if (url) {
         return url;
       }
     }
@@ -43,6 +44,7 @@ class Layout extends Component {
   }
 
   render() {
+    const {currentLng} = this.props;
     const lngPrefix = this.getUrlFromProps(this.props);
 
     return (
@@ -60,7 +62,7 @@ class Layout extends Component {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes}/>
+            <AppBreadcrumb appRoutes={routesWithPrefix}/>
             <Container fluid>
               <Routes lngPrefix={lngPrefix}/>
             </Container>
@@ -78,6 +80,14 @@ class Layout extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  const {
+    intl: {locale},
+  } = state;
+
+  return {currentLng: locale};
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     getCurrentUser: () => {
@@ -86,5 +96,5 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const connectedLayout = connect(null, mapDispatchToProps)(Layout);
+const connectedLayout = connect(mapStateToProps, mapDispatchToProps)(Layout);
 export {connectedLayout as MainLayout};

@@ -40,9 +40,6 @@ class Header extends Component {
   }
 
   render() {
-
-    // console.log('header render:', this.props.locale)
-
     // eslint-disable-next-line
     // const {children, ...attributes} = this.props;
     const {currentUser} = this.state;

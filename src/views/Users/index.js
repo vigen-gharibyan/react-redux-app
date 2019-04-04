@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row} from 'reactstrap';
+import {FormattedMessage} from 'react-intl';
 import UsersTable from './UsersTable';
 
 class Users extends Component {
@@ -21,7 +22,7 @@ class Users extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-users"></i> <strong>Users</strong>
+                <i className="fa fa-users"></i> <strong><FormattedMessage id="Users"></FormattedMessage></strong>
               </CardHeader>
               <CardBody>
                 <UsersTable getLocation={this.getLocation}/>

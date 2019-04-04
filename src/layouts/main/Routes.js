@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
-import Loadable from 'react-loadable'
+import Loadable from 'react-loadable';
 
 import {PrivateRoute} from '../../routes';
+import {addPrefixToRoutes, enabledLanguages} from '../../helpers';
 
 import {MainLayout} from './Layout';
 import Dashboard from '../../views/Dashboard';
@@ -151,6 +152,19 @@ const routes = [
   {path: '/charts', name: 'Charts', component: Charts}
 ];
 
+function addPrefixesToRoutes(routes, enabledLanguages) {
+  let routesWithPrefix = [...routes];
+
+  enabledLanguages.map(lang => {
+    const routesWithThisLangPrefix = addPrefixToRoutes(routes, `/${lang}`);
+    routesWithPrefix = [...routesWithPrefix, ...routesWithThisLangPrefix];
+  });
+
+  return routesWithPrefix;
+}
+
+const routesWithPrefix = addPrefixesToRoutes(routes, enabledLanguages);
+
 class Routes extends Component {
   render() {
     let {lngPrefix} = this.props;
@@ -180,5 +194,5 @@ class Routes extends Component {
   }
 }
 
-export {routes};
+export {routesWithPrefix, routes};
 export default Routes;
