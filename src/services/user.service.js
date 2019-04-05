@@ -98,7 +98,7 @@ function login(username, password) {
       return response;
     })
     .catch(err => {
-      console.log('err:', err)
+      // console.log('err:', err)
       throw err;
     });
 }

@@ -1,6 +1,5 @@
 import {intlConstants} from '../_constants';
-import {localizationData} from '../helpers/Intl/setup';
-import {defaultLng, enabledLanguages} from '../helpers';
+import {defaultLng, enabledLanguages, localizationData} from '../helpers/Intl/setup';
 
 // const defaultLng = global.navigator && global.navigator.language.split(/[-_]/)[0] || 'en';
 
