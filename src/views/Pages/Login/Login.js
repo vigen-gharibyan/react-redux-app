@@ -188,7 +188,7 @@ function mapDispatchToProps(dispatch) {
     },
     logout: () => {
       dispatch(userActions.logout());
-    }
+    },
   };
 }
 
