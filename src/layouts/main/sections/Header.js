@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
 
 import {Can, Link, NavLink} from "../../../helpers";
-import {defaultProfileImg} from "../../../helpers";
+import {url, defaultProfileImg} from "../../../helpers";
 import LanguagesDropdown from './LanguagesDropdown';
 
 import logo from '../assets/img/brand/logo.svg';
@@ -100,7 +100,7 @@ class Header extends Component {
 
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={ currentUser.photo || defaultProfileImg }
+              <img src={ url(currentUser.photo) || defaultProfileImg }
                    className="img-avatar"
                    alt={currentUser.email}
                    title={currentUser.username}/>

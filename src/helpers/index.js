@@ -1,6 +1,7 @@
 //export * from './fake-backend';
 export * from './history';
 export * from './store';
+export * from './Url/index';
 export * from './fetcher';
 export * from './CoreuiValidations/validations';
 export * from './Intl';

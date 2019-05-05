@@ -14,7 +14,7 @@ import {
 
 import {userActions, validationActions} from '../../../actions';
 import {validations, Form, File, Button as CoreuiButton, LoadingImg} from '../../../helpers';
-import {defaultProfileImg} from '../../../helpers';
+import {url, defaultProfileImg} from '../../../helpers';
 
 class EditPhoto extends Component {
   constructor(props) {
@@ -56,6 +56,8 @@ class EditPhoto extends Component {
   handleUpdate(event) {
     event.preventDefault();
 
+    console.log('event.target.photo:', event.target.photo)
+
     const files = Array.from(event.target.photo.files);
     let formData = new FormData();
     files.forEach((file, i) => {
@@ -85,7 +87,7 @@ class EditPhoto extends Component {
           <CardBody>
             <Row>
               <Col sm="3">
-                <img src={ user.photo || defaultProfileImg }
+                <img src={ url(user.photo) || defaultProfileImg }
                      className="img-avatar"/>
               </Col>
               <Col sm="9">

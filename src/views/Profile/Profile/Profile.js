@@ -13,7 +13,7 @@ import {
 import {userActions} from '../../../actions';
 
 import {Link} from '../../../helpers';
-import {date, defaultProfileImg} from '../../../helpers';
+import {date, url, defaultProfileImg} from '../../../helpers';
 
 class Profile extends Component {
   constructor(props) {
@@ -55,7 +55,7 @@ class Profile extends Component {
                 <Row>
                   <Col sm="4">
                     <div className="profile-img-container">
-                      <img src={ user.photo || defaultProfileImg }
+                      <img src={ url(user.photo) || defaultProfileImg }
                            className=""/>
                     </div>
                   </Col>

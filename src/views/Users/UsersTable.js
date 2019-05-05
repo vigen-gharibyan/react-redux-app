@@ -5,7 +5,7 @@ import {Badge} from 'reactstrap';
 
 import {Link} from "../../helpers";
 import {roles, date} from '../../helpers';
-import {defaultProfileImg} from "../../helpers";
+import {url, defaultProfileImg} from "../../helpers";
 import {userActions} from '../../actions';
 import DataTable from '../../components/DataTable';
 
@@ -40,7 +40,7 @@ function getColumns(params) {
       const userLink = `/users/${row.id}`;
       return (
         <Link to={userLink}>
-          <img src={ cell || defaultProfileImg }
+          <img src={ url(cell) || defaultProfileImg }
                className="img-avatar"/>
         </Link>
       );
