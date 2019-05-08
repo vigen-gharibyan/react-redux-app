@@ -8,6 +8,7 @@ import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} f
 
 import {Can, Link, NavLink} from "../../../helpers";
 import {url, defaultProfileImg} from "../../../helpers";
+import {languages} from "../../../helpers";
 import LanguagesDropdown from './LanguagesDropdown';
 
 import logo from '../assets/img/brand/logo.svg';
@@ -96,7 +97,10 @@ class Header extends Component {
             </NavLink>
           </NavItem>
 
-          <LanguagesDropdown />
+          {
+            (Object.keys(languages).length > 1) &&
+            <LanguagesDropdown />
+          }
 
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>

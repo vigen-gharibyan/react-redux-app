@@ -10,8 +10,13 @@ class MultilangRoutes extends Component {
     const langs = Object.keys(languages);
     const langsString = langs.join('|');
 
+    let path = '';
+    if (langs.length > 1) {
+      path = `/:lng(${langsString})?`;
+    }
+
     return (
-      <Route path={`/:lng(${langsString})?`} component={MultilangRoute}/>
+      <Route path={path} component={MultilangRoute}/>
     );
   }
 }

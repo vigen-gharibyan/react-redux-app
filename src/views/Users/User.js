@@ -51,7 +51,7 @@ class User extends Component {
   }
 
   render() {
-    const {user} = this.state;
+    const {id, user} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -92,7 +92,7 @@ class User extends Component {
                 </Row>
               </CardBody>
               <CardFooter>
-                <Link to={`/users/${user.id}/edit`}>
+                <Link to={`/users/${id}/edit`}>
                   <Button size="sm" color="primary">
                     <i className="fa fa-edit"></i> <FormattedMessage id="Edit"></FormattedMessage>
                   </Button>

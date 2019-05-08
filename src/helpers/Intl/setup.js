@@ -13,7 +13,8 @@ import ruData from '../../translations/app/ru.json';
 import amData from '../../translations/app/am.json';
 import {params} from '../../config';
 
-const {defaultLng, enabledLanguages, languages} = params;
+const {enabledLanguages, languages} = params;
+let {defaultLng = 'en'} = params;
 
 // need Intl polyfill, Intl not supported in Safari
 /*
@@ -59,6 +60,18 @@ const localizationData = {
   ru: flattenMessages(ruData),
   am: flattenMessages(amData),
 };
+
+Object.keys(languages).map((key) => {
+  if (enabledLanguages.indexOf(key) < 0) {
+    delete languages[key];
+  }
+});
+
+if (!defaultLng || enabledLanguages.indexOf(defaultLng) < 0) {
+  if (enabledLanguages.length > 0) {
+    defaultLng = enabledLanguages[0];
+  }
+}
 
 export {
   defaultLng,

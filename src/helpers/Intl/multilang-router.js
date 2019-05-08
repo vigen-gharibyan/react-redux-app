@@ -3,10 +3,8 @@ import React from 'react';
 import {Link, NavLink, Redirect} from 'react-router-dom';
 
 import {store} from '../store';
-import {params} from '../../config';
 import {history} from '../history';
-
-const {languages, defaultLng} = params;
+import {languages, defaultLng} from './setup';
 
 const addPrefixToRoutes = (routes, lngPrefix) => {
   let newRoutes = routes.map((route, idx) => {
