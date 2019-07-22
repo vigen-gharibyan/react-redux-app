@@ -45,6 +45,8 @@ import Widgets from '../../views/Widgets/Widgets';
 import Users from '../../views/Users';
 import User from '../../views/Users/User';
 import UserEdit from '../../views/Users/Edit';
+import Posts from '../../views/Posts';
+
 import {string} from '../../helpers';
 
 function Loading() {
@@ -111,6 +113,12 @@ const routes = [
     name: 'Edit',
     component: UserEdit,
     perform: 'users:update'
+  },
+  {
+    path: '/posts',
+    exact: true,
+    name: 'Posts',
+    component: Posts,
   },
   {path: '/theme', exact: true, name: 'Theme', component: Colors},
   {path: '/theme/colors', name: 'Colors', component: Colors},

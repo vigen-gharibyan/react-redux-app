@@ -65,8 +65,7 @@ class User extends Component {
                 <Row>
                   <Col sm="4">
                     <div className="profile-img-container">
-                      <img src={ url(user.photo) || defaultProfileImg }
-                           className=""/>
+                      <img src={ url(user.photo) || defaultProfileImg }/>
                     </div>
                   </Col>
                 </Row>

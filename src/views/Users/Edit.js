@@ -23,9 +23,7 @@ import {
   Button as CoreuiButton,
   LoadingImg
 } from '../../helpers';
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
+import {url, defaultProfileImg} from '../../helpers';
 
 class Edit extends Component {
 
@@ -139,8 +137,7 @@ class Edit extends Component {
                 <Row>
                   <Col sm="4">
                     <div className="profile-img-container">
-                      <img src={ user.photo || defaultProfileImg }
-                           className=""/>
+                      <img src={ url(user.photo) || defaultProfileImg }/>
                     </div>
                   </Col>
                 </Row>

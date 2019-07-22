@@ -1,4 +1,4 @@
-import {doFetch, doUpload} from '../helpers';
+import {doFetch, doSearch, doUpload} from '../helpers';
 
 var jwt = require('jsonwebtoken');
 var _ = require('lodash');
@@ -93,32 +93,9 @@ function logout() {
 }
 
 function getAll(queryParams) {
-  let params = [];
-  let query = '';
-
-  if (queryParams) {
-    const {page, sort, filters, perPage} = queryParams;
-
-    if (filters) {
-      _.forEach(filters, (value, key) => {
-        params.push(`UserSearch[${key}]=${value}`)
-      });
-    }
-
-    !!perPage && params.push(`per-page=${perPage}`);
-    !!page && params.push(`page=${page}`);
-    !!sort && params.push(`sort=${sort}`);
-
-    if (params.length > 0) {
-      query = params.join('&');
-    }
-
-    if (query) {
-      query = `?${query}`;
-    }
-  }
-
-  return doFetch(`users${query}`, {auth: true});
+  return doSearch('users', queryParams, 'UserSearch', {
+    auth: true,
+  });
 }
 
 function getById(id) {

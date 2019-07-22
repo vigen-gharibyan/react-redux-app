@@ -10,6 +10,11 @@ export default {
       },
     },
     {
+      name: 'Posts',
+      url: '/posts',
+      icon: 'icon-star',
+    },
+    {
       title: true,
       name: 'Theme',
       wrapper: {            // optional wrapper object
