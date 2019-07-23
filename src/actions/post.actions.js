@@ -70,10 +70,10 @@ function getById(id) {
     };
   }
 
-  function success(user) {
+  function success(post) {
     return {
       type: postConstants.GET_SUCCESS,
-      user
+      post
     };
   }
 
@@ -120,10 +120,10 @@ function updateById(id, user) {
     };
   }
 
-  function success(user) {
+  function success(post) {
     return {
       type: postConstants.UPDATE_SUCCESS,
-      user
+      post
     };
   }
 

@@ -2,7 +2,7 @@ import {doFetch, doSearch} from '../helpers';
 
 export const postService = {
   getAll,
-//  get: getById,
+  get: getById,
   update,
   delete: _delete
 };
@@ -11,6 +11,10 @@ function getAll(queryParams) {
   return doSearch('posts', queryParams, 'PostSearch', {
     auth: true,
   });
+}
+
+function getById (id) {
+  return doFetch('post');
 }
 
 function create(user) {

@@ -31,7 +31,7 @@ class Posts extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-users"></i> <strong>Posts</strong>
+                <i className="fa fa-newspaper-o"></i> <strong>Posts</strong>
               </CardHeader>
               <CardBody>
                 <PostsTable getLocation={this.getLocation}/>

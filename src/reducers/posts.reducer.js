@@ -21,7 +21,6 @@ const posts = (state = initialState, action) => {
     }
     case postConstants.GETALL_SUCCESS: {
       const newState = getState(state);
-      //const data = action.users;
       const {items, total} = action.posts;
 
       return {
@@ -50,11 +49,11 @@ const posts = (state = initialState, action) => {
     }
     case postConstants.GET_SUCCESS: {
       const newState = getState(state);
-      const {user} = action;
+      const {post} = action;
 
       return {
         ...newState,
-        user
+        post
       };
     }
     case postConstants.GET_FAILURE: {

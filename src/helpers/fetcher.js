@@ -23,7 +23,7 @@ export function handleResponse(response) {
     return response.json();
 }
 
-export function doFetch(url, options) {
+export const doFetch = (url, options) => {
   options = options || {};
 
   const fullUrl = encodeURI(`${apiUrl}/${url}`);
@@ -53,7 +53,7 @@ export function doFetch(url, options) {
     .then(handleResponse);
 }
 
-export function doSearch(url, queryParams, searchPrefix, options) {
+export const doSearch = (url, queryParams, searchPrefix, options) => {
   let params = [];
   let query = '';
 
@@ -82,7 +82,7 @@ export function doSearch(url, queryParams, searchPrefix, options) {
   return doFetch(`${url}${query}`, options);
 }
 
-export function doUpload(url, options) {
+export const doUpload = (url, options) => {
   options = options || {};
 
   const fullUrl = encodeURI(`${apiUrl}/${url}`);

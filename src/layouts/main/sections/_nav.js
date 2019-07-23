@@ -12,7 +12,7 @@ export default {
     {
       name: 'Posts',
       url: '/posts',
-      icon: 'icon-star',
+      icon: 'icon-note',
     },
     {
       title: true,
