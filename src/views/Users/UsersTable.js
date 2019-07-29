@@ -17,7 +17,7 @@ const statuses = {
   [STATUS_ACTIVE]: 'Active',
   [STATUS_INACTIVE]: 'Inactive',
   [STATUS_DELETED]: 'Deleted'
-}
+};
 
 const getBadge = (status) => {
   return (

@@ -47,6 +47,7 @@ import User from '../../views/Users/User';
 import UserEdit from '../../views/Users/Edit';
 import Posts from '../../views/Posts';
 import Post from '../../views/Posts/Post';
+import PostEdit from '../../views/Posts/Edit';
 
 import {string} from '../../helpers';
 
@@ -126,6 +127,12 @@ const routes = [
     exact: true,
     name: 'Post',
     component: Post,
+  },
+  {
+    path: '/posts/:id/edit',
+    exact: true,
+    name: 'Edit',
+    component: PostEdit,
   },
   {path: '/theme', exact: true, name: 'Theme', component: Colors},
   {path: '/theme/colors', name: 'Colors', component: Colors},

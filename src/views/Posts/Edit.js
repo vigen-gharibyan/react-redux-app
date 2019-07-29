@@ -14,16 +14,17 @@ import {
 } from 'reactstrap';
 
 import {Link, redirect} from "../../helpers/Intl";
-import {userActions, validationActions} from '../../actions';
+import {postActions, validationActions} from '../../actions';
 import {
   validations,
   Form,
   Input,
+  Textarea,
   Select,
   Button as CoreuiButton,
   LoadingImg
 } from '../../helpers';
-import {url, defaultProfileImg} from '../../helpers';
+import {url} from '../../helpers';
 
 class Edit extends Component {
 
@@ -34,12 +35,21 @@ class Edit extends Component {
       isDirty: false,
       id: this.props.match.params.id,
       initialData: null,
-      user: {
-        username: '',
-        role: undefined,
-        status: undefined
-      }
-    }
+      post: {
+        title: '',
+        content: '',
+        enabled: '',
+      },
+      statuses: [
+        {
+          id: 0,
+          name: 'Disabled',
+        }, {
+          id: 1,
+          name: 'Enabled',
+        },
+      ],
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -49,19 +59,19 @@ class Edit extends Component {
   componentWillMount() {
     const {id} = this.state;
     this.props.clearValidationError();
-    this.props.getUser(id);
+    this.props.getPost(id);
   }
 
   componentWillReceiveProps(nextProps) {
-    const {user, updated} = nextProps;
+    const {post, updated} = nextProps;
     const {id} = this.state;
 
-    if (user) {
-      this.setState({user});
+    if (post) {
+      this.setState({post});
     }
 
     if (updated) {
-      redirect(`/users/${id}`);
+      redirect(`/posts/${id}`);
     }
   }
 
@@ -76,17 +86,17 @@ class Edit extends Component {
       value = event.target.checked;
     }
 
-    const user = {...this.state.user};
-    if (!this.state.isDirty && user[name] !== value) {
-      const initialData = {...user};
+    const post = {...this.state.post};
+    if (!this.state.isDirty && post[name] !== value) {
+      const initialData = {...post};
       this.setState({
         initialData,
         isDirty: true
       });
     }
 
-    user[name] = value;
-    this.setState({user});
+    post[name] = value;
+    this.setState({post});
     this.removeApiError(name);
   }
 
@@ -97,32 +107,32 @@ class Edit extends Component {
     this.form.validateAll();
 
     //todo
-    let {user} = this.state;
+    let {post} = this.state;
     const data = {
-      role: user.role,
-      status: user.status
+      title: post.title,
+      content: post.content,
+      enabled: post.enabled,
     };
 
     if (1) {
-      this.props.updateUser(id, data);
+      this.props.updatePost(id, data);
     }
   }
 
   handleReset(event) {
     const {isDirty, initialData} = this.state;
     if (isDirty) {
-      this.setState({user: initialData});
+      this.setState({post: initialData});
     }
   }
 
   render() {
     const {loading} = this.props;
-    const {user, isDirty} = this.state;
-    const {roles, statuses} = user;
+    const {post, statuses} = this.state;
 
     return (
       <div className="animated fadeIn">
-        <Col sm="12" md="8" xl="6">
+        <Col sm="12">
           <Card>
             <Form name="form"
                   noValidate
@@ -131,50 +141,48 @@ class Edit extends Component {
                   }}
                   onSubmit={this.handleSubmit}>
               <CardHeader>
-                <i className="fa fa-user"></i> <strong>Edit: {user.username}</strong>
+                <i className="fa fa-newspaper-o"></i> <strong>Edit: {post.title}</strong>
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col sm="4">
-                    <div className="profile-img-container">
-                      <img src={ url(user.photo) || defaultProfileImg }/>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
                   <Col sm="6">
                     <FormGroup>
-                      <Label htmlFor="role">Role</Label>
-                      <Select
-                        name="role" id="role"
-                        label="Role"
-                        value={user.role}
-                        onChange={this.handleChange}
-                        apierror={this.props.validation.role}
-                        validations={[validations.required, validations.apiError]}>
-                        <option value="">Select</option>
-                        {
-                          !!roles &&
-                          Object.keys(roles).map((index, k) => (
-                            <option key={k} value={index}>{roles[index]}</option>
-                          ))
-                        }
-                      </Select>
+                      <Label htmlFor="title">Title</Label>
+                      <Input type="text"
+                             name="title" id="title"
+                             placeholder="Title"
+                             autoComplete="title"
+                             label="Title"
+                             value={post.title}
+                             onChange={this.handleChange}
+                             apierror={this.props.validation.title}
+                             validations={[validations.required, validations.apiError]}/>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label htmlFor="content">Content</Label>
+                      <Textarea name="content" id="content"
+                                placeholder="Content"
+                                autoComplete="content"
+                                label="Content"
+                                value={post.content}
+                                onChange={this.handleChange}
+                                apierror={this.props.validation.content}
+                                validations={[validations.required, validations.apiError]}/>
                     </FormGroup>
                     <FormGroup>
                       <Label htmlFor="status">Status</Label>
                       <Select
                         name="status" id="status"
                         label="Status"
-                        value={user.status}
+                        value={post.enabled}
                         onChange={this.handleChange}
-                        apierror={this.props.validation.status}
+                        apierror={this.props.validation.enabled}
                         validations={[validations.required, validations.apiError]}>
                         <option value="">Select</option>
                         {
                           !!statuses &&
-                          Object.keys(statuses).map((index, k) => (
-                            <option key={k} value={index}>{statuses[index]}</option>
+                          statuses.map((item, k) => (
+                            <option key={k} value={item.id}>{item.name}</option>
                           ))
                         }
                       </Select>
@@ -202,9 +210,9 @@ class Edit extends Component {
 function mapStateToProps(state) {
   const {
     validation,
-    users: {
+    posts: {
       updateByIdloading,
-      user,
+      post,
       updated
     }
   } = state;
@@ -212,18 +220,18 @@ function mapStateToProps(state) {
   return {
     loading: updateByIdloading,
     validation,
-    user,
+    post,
     updated
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUser: (id) => {
-      dispatch(userActions.get(id));
+    getPost: (id) => {
+      dispatch(postActions.get(id));
     },
-    updateUser: (id, user) => {
-      dispatch(userActions.update(id, user));
+    updatePost: (id, post) => {
+      dispatch(postActions.update(id, post));
     },
     clearValidationError: (name) => {
       dispatch(validationActions.clear(name));
@@ -231,5 +239,5 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const UserEdit = connect(mapStateToProps, mapDispatchToProps)(Edit);
-export default UserEdit;
+const PostEdit = connect(mapStateToProps, mapDispatchToProps)(Edit);
+export default PostEdit;

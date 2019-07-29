@@ -53,13 +53,10 @@ const CustomFile = ({error, isChanged, isUsed, ...props}) => {
 
 // Define own Textarea component
 const CustomTextarea = ({error, isChanged, isUsed, ...props}) => {
-  const hasError = !!(isChanged && isUsed && !!error);
+  const otherProps = {error, isChanged, isUsed};
 
   return (
-    <div className={(isChanged && isUsed && !!error) ? 'has-error' : ''}>
-      <textarea invalid={!!hasError} {...props}>{ props.value }</textarea>
-      <FormFeedback invalid={(!!hasError).toString()}>{error}</FormFeedback>
-    </div>
+    <CustomInput type="textarea" {...props} {...otherProps}/>
   )
 };
 

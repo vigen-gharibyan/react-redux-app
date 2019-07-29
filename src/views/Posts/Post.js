@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {FormattedMessage} from 'react-intl';
 import {
   Button,
   Card,
@@ -11,8 +12,12 @@ import {
   Table
 } from 'reactstrap';
 
+import {Link} from "../../helpers";
 import {postActions} from '../../actions';
 import {date} from '../../helpers';
+
+const Entities = require('html-entities').XmlEntities;
+const entities = new Entities();
 
 class Post extends Component {
 
@@ -34,8 +39,16 @@ class Post extends Component {
     this.props.dispatch(postActions.get(id));
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {post} = nextProps;
+
+    if (post) {
+      this.setState({post});
+    }
+  }
+
   render() {
-    const {post} = this.state;
+    const {id, post} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -49,18 +62,20 @@ class Post extends Component {
                 <Row>
                   <Col sm="10">
                     <dl className="row">
-                      <dt className="col-sm-3">Title:</dt>
-                      <dd className="col-sm-9">{post.title}</dd>
-
-                      <dt className="col-sm-3">Content:</dt>
-                      <dd className="col-sm-9">{post.content}</dd>
-
-                      <dt className="col-sm-3">Created:</dt>
-                      <dd className="col-sm-9">{date.format(post.created_at)}</dd>
+                      <dt className="col-sm-12">{post.title}</dt>
+                      <dd className="col-sm-12">{post.content}</dd>
+                      <dd className="col-sm-9">Created: {date.format(post.created_at)}</dd>
                     </dl>
                   </Col>
                 </Row>
               </CardBody>
+              <CardFooter>
+                <Link to={`/posts/${id}/edit`}>
+                  <Button size="sm" color="primary">
+                    <i className="fa fa-edit"></i> <FormattedMessage id="Edit"></FormattedMessage>
+                  </Button>
+                </Link>
+              </CardFooter>
             </Card>
           </Col>
         </Row>

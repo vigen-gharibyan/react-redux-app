@@ -14,7 +14,7 @@ function getAll(queryParams) {
 }
 
 function getById (id) {
-  return doFetch('post');
+  return doFetch(`posts/${id}`);
 }
 
 function create(user) {
