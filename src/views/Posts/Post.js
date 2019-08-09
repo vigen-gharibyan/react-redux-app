@@ -47,6 +47,19 @@ class Post extends Component {
     }
   }
 
+  escapeHtml(text) {
+    if(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    return '';
+  }
+
   render() {
     const {id, post} = this.state;
 
@@ -63,7 +76,7 @@ class Post extends Component {
                   <Col sm="10">
                     <dl className="row">
                       <dt className="col-sm-12">{post.title}</dt>
-                      <dd className="col-sm-12">{post.content}</dd>
+                      <dd className="col-sm-12">{this.escapeHtml(post.content)}</dd>
                       <dd className="col-sm-9">Created: {date.format(post.created_at)}</dd>
                     </dl>
                   </Col>

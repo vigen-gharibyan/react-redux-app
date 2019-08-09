@@ -65,7 +65,7 @@ class EditProfile extends Component {
       value = event.target.checked;
     }
 
-    const user = {...this.state.user};
+    const {user} = this.state;
     user[name] = value;
     this.setState({user});
     this.removeApiError(name);

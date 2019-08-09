@@ -95,7 +95,7 @@ class Edit extends Component {
     }
     */
 
-    const post = {...this.state.post};
+    const {post} = this.state;
     post[name] = value;
     this.setState({post});
     this.removeApiError(name);
@@ -122,7 +122,9 @@ class Edit extends Component {
 
   handleReset(event) {
     const {initialData} = this.state;
-    this.setState({post: initialData});
+    this.setState({
+      post: {...initialData},
+    });
   }
 
   render() {
