@@ -2,209 +2,184 @@ import {userConstants} from '../_constants';
 import {userService} from '../services';
 var _ = require('lodash');
 
-let currentUser = userService.getCurrentFromStorage();
-let initialState = {currentUser};
+let loggedinUser = userService.getCurrentFromStorage();
+let initialState = {loggedinUser};
 
 function getState(state) {
-  let newState = _.pick(state, ['currentUser']);
+  let newState = _.pick(state, ['loggedinUser']);
 
-  return newState;
+  return {...newState};
 }
 
 const users = (state = initialState, action) => {
+  const newState = getState(state);
+
   switch (action.type) {
     case userConstants.GETCURRENT_REQUEST: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        loading: true
+        loading: true,
       };
     }
     case userConstants.GETCURRENT_SUCCESS: {
-      const newState = getState(state);
       const {user} = action;
       localStorage.setItem('user', JSON.stringify(user));
 
       return {
         ...newState,
-        currentUser: user
+        currentUser: user,
+        loggedinUser: user,
       };
     }
     case userConstants.GETCURRENT_FAILURE: {
-      const newState = getState(state);
       const {error} = action;
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
     case userConstants.UPDATECURRENT_REQUEST: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        updateCurrentLoading: true
+        updateCurrentLoading: true,
       };
     }
     case userConstants.UPDATECURRENT_SUCCESS: {
-      const newState = getState(state);
       const {user} = action;
 
       return {
         ...newState,
         currentUser: user,
-        updatedCurrent: true
+        loggedinUser: user,
+        updatedCurrent: true,
       };
     }
     case userConstants.UPDATECURRENT_FAILURE: {
-      const newState = getState(state);
       const {error} = action;
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
     case userConstants.UPDATECURRENTPHOTO_REQUEST:
     case userConstants.REMOVECURRENTPHOTO_REQUEST: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        updateCurrentPhotoLoading: true
+        updateCurrentPhotoLoading: true,
       };
     }
     case userConstants.UPDATECURRENTPHOTO_SUCCESS:
     case userConstants.REMOVECURRENTPHOTO_SUCCESS: {
-      const newState = getState(state);
       const {user} = action;
 
       return {
         ...newState,
         currentUser: user,
-        updatedCurrentPhoto: true
+        loggedinUser: user,
+        updatedCurrentPhoto: true,
       };
     }
     case userConstants.UPDATECURRENTPHOTO_FAILURE:
     case userConstants.REMOVECURRENTPHOTO_FAILURE: {
-      const newState = getState(state);
       const {error} = action;
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
     case userConstants.CHANGEPASSWORD_REQUEST: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        changePasswordLoading: true
+        changePasswordLoading: true,
       };
     }
     case userConstants.CHANGEPASSWORD_SUCCESS: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        passwordChanged: true
+        passwordChanged: true,
       };
     }
     case userConstants.CHANGEPASSWORD_FAILURE: {
-      const newState = getState(state);
       const {error} = action;
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
     case userConstants.GETALL_REQUEST: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        getAllLoading: true
+        getAllLoading: true,
       };
     }
     case userConstants.GETALL_SUCCESS: {
-      const newState = getState(state);
       //const data = action.users;
       const {items, total} = action.users;
 
       return {
         ...newState,
         items,
-        total
+        total,
       };
     }
     case userConstants.GETALL_FAILURE: {
-      const newState = getState(state);
       const {error} = action;
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
     case userConstants.GETBYID_REQUEST: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        loading: true
+        loading: true,
       };
     }
     case userConstants.GETBYID_SUCCESS: {
-      const newState = getState(state);
       const {user} = action;
 
       return {
         ...newState,
-        user
+        user,
       };
     }
     case userConstants.GETBYID_FAILURE: {
-      const newState = getState(state);
       const {error} = action;
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
     case userConstants.UPDATEBYID_REQUEST: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        updateByIdloading: true
+        updateByIdLoading: true,
       };
     }
     case userConstants.UPDATEBYID_SUCCESS: {
-      const newState = getState(state);
-
       return {
         ...newState,
-        updated: true
+        updated: true,
       };
     }
     case userConstants.UPDATEBYID_FAILURE: {
-      const newState = getState(state);
       const {error} = action;
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
@@ -242,9 +217,7 @@ const users = (state = initialState, action) => {
       };
     }
     default: {
-      const newState = getState(state);
-
-      return newState;
+      return {...newState};
     }
   }
 }

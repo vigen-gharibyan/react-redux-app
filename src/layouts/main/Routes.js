@@ -47,6 +47,7 @@ import User from '../../views/Users/User';
 import UserEdit from '../../views/Users/Edit';
 import Posts from '../../views/Posts';
 import Post from '../../views/Posts/Post';
+import PostCreate from '../../views/Posts/Create';
 import PostEdit from '../../views/Posts/Edit';
 
 import {string} from '../../helpers';
@@ -121,6 +122,12 @@ const routes = [
     exact: true,
     name: 'Posts',
     component: Posts,
+  },
+  {
+    path: '/posts/create',
+    exact: true,
+    name: 'Add Post',
+    component: PostCreate,
   },
   {
     path: '/posts/:id',

@@ -55,11 +55,11 @@ function getCurrentFromStorage() {
   return null;
 }
 
-function register(user) {
+function register(data) {
   return doFetch('users/signup', {
     method: 'POST',
     auth: false,
-    body: user,
+    body: data,
   });
 }
 
@@ -106,11 +106,11 @@ function getCurrent() {
   return doFetch('users/current', {auth: true});
 }
 
-function updateCurrent(user) {
+function updateCurrent(data) {
   return doFetch('users/current', {
     method: 'PUT',
     auth: true,
-    body: user,
+    body: data,
   });
 }
 
@@ -128,11 +128,11 @@ function removeCurrentPhoto() {
   });
 }
 
-function update(id, user) {
+function update(id, data) {
   return doFetch(`users/${id}`, {
     method: 'PUT',
     auth: true,
-    body: user,
+    body: data,
   });
 }
 

@@ -115,7 +115,7 @@ class PostsTable extends Component {
 
     return (
       <DataTable
-        keyField='title'
+        keyField='id'
         items={items}
         total={total}
         filters={filters}

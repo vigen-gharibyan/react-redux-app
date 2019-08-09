@@ -30,15 +30,19 @@ class Edit extends Component {
   constructor(props) {
     super(props);
 
+    const {id} = props.match.params;
+
+    const user = {
+      username: '',
+      role: undefined,
+      status: undefined,
+    };
+
     this.state = {
-      isDirty: false,
-      id: this.props.match.params.id,
-      initialData: null,
-      user: {
-        username: '',
-        role: undefined,
-        status: undefined
-      }
+      id,
+      initialData: user,
+      user,
+      // isDirty: false,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -57,7 +61,11 @@ class Edit extends Component {
     const {id} = this.state;
 
     if (user) {
-      this.setState({user});
+      const initialData = {...user};
+      this.setState({
+        user,
+        initialData,
+      });
     }
 
     if (updated) {
@@ -77,13 +85,15 @@ class Edit extends Component {
     }
 
     const user = {...this.state.user};
+    /*
     if (!this.state.isDirty && user[name] !== value) {
-      const initialData = {...user};
+      // const initialData = {...user};
       this.setState({
-        initialData,
+        // initialData,
         isDirty: true
       });
     }
+    */
 
     user[name] = value;
     this.setState({user});
@@ -109,15 +119,19 @@ class Edit extends Component {
   }
 
   handleReset(event) {
-    const {isDirty, initialData} = this.state;
+    const {/*isDirty,*/ initialData} = this.state;
+    this.setState({user: initialData});
+
+    /*
     if (isDirty) {
       this.setState({user: initialData});
     }
+    */
   }
 
   render() {
     const {loading} = this.props;
-    const {user, isDirty} = this.state;
+    const {user /*, isDirty*/} = this.state;
     const {roles, statuses} = user;
 
     return (
@@ -203,17 +217,17 @@ function mapStateToProps(state) {
   const {
     validation,
     users: {
-      updateByIdloading,
+      updateByIdLoading,
       user,
-      updated
+      updated,
     }
   } = state;
 
   return {
-    loading: updateByIdloading,
+    loading: updateByIdLoading,
     validation,
     user,
-    updated
+    updated,
   };
 }
 

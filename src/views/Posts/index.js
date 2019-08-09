@@ -10,6 +10,7 @@ import {
   Table
 } from 'reactstrap';
 
+import {Link} from "../../helpers/Intl";
 import PostsTable from './PostsTable';
 
 class Posts extends Component {
@@ -27,6 +28,13 @@ class Posts extends Component {
   render() {
     return (
       <div className="animated fadeIn">
+        <Row className="mb-3">
+          <Col xl={12}>
+            <Link to="/posts/create">
+              <Button color="success">Add Post</Button>
+            </Link>
+          </Col>
+        </Row>
         <Row>
           <Col xl={12}>
             <Card>

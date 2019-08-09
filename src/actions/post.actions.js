@@ -3,6 +3,7 @@ import {postService} from '../services';
 import {alertActions, validationActions} from './';
 
 export const postActions = {
+  create,
   getAll,
   get: getById,
   update: updateById,
@@ -85,11 +86,61 @@ function getById(id) {
   }
 }
 
-function updateById(id, user) {
+function create(post) {
   return dispatch => {
     dispatch(request());
 
-    postService.update(id, user)
+    postService.create(post)
+      .then(response => {
+        const {data} = response;
+
+        if (response.success) {
+          dispatch(success(data));
+          dispatch(alertActions.success('Created successfully'));
+        }
+      }, error => {
+        dispatch(failure(error));
+        error.then(response => {
+          const {data} = response;
+          if (data) {
+            dispatch(failure(error));
+            dispatch(validationActions.apiError(data));
+          }
+        });
+      })
+      .catch(err => {
+        let error = 'Server error';
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      });
+  };
+
+  function request() {
+    return {
+      type: postConstants.CREATE_REQUEST
+    };
+  }
+
+  function success(post) {
+    return {
+      type: postConstants.CREATE_SUCCESS,
+      post
+    };
+  }
+
+  function failure(error) {
+    return {
+      type: postConstants.CREATE_FAILURE,
+      error
+    };
+  }
+}
+
+function updateById(id, post) {
+  return dispatch => {
+    dispatch(request());
+
+    postService.update(id, post)
       .then(response => {
         const {data} = response;
 

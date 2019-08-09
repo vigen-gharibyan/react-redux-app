@@ -197,21 +197,21 @@ function updateCurrent(user) {
 
   function request() {
     return {
-      type: userConstants.UPDATECURRENT_REQUEST
+      type: userConstants.UPDATECURRENT_REQUEST,
     };
   }
 
   function success(user) {
     return {
       type: userConstants.UPDATECURRENT_SUCCESS,
-      user
+      user,
     };
   }
 
   function failure(error) {
     return {
       type: userConstants.UPDATECURRENT_FAILURE,
-      error
+      error,
     };
   }
 }
@@ -247,21 +247,21 @@ function updateCurrentPhoto(formData) {
 
   function request() {
     return {
-      type: userConstants.UPDATECURRENTPHOTO_REQUEST
+      type: userConstants.UPDATECURRENTPHOTO_REQUEST,
     };
   }
 
   function success(user) {
     return {
       type: userConstants.UPDATECURRENTPHOTO_SUCCESS,
-      user
+      user,
     };
   }
 
   function failure(error) {
     return {
       type: userConstants.UPDATECURRENTPHOTO_FAILURE,
-      error
+      error,
     };
   }
 }
@@ -297,14 +297,14 @@ function removeCurrentPhoto() {
 
   function request() {
     return {
-      type: userConstants.REMOVECURRENTPHOTO_REQUEST
+      type: userConstants.REMOVECURRENTPHOTO_REQUEST,
     };
   }
 
   function success(user) {
     return {
       type: userConstants.REMOVECURRENTPHOTO_SUCCESS,
-      user
+      user,
     };
   }
 

@@ -16,6 +16,7 @@ import {Link} from '../../../helpers';
 import {date, url, defaultProfileImg} from '../../../helpers';
 
 class Profile extends Component {
+
   constructor(props) {
     super(props);
 
@@ -101,14 +102,12 @@ class Profile extends Component {
 function mapStateToProps(state) {
   const {
     validation,
-    users: {
-      currentUser
-    }
+    users: {currentUser}
   } = state;
 
   return {
     validation,
-    user: currentUser
+    user: currentUser,
   };
 }
 

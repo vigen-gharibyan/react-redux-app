@@ -26,59 +26,47 @@ import {
 } from '../../helpers';
 import {url} from '../../helpers';
 
-class Edit extends Component {
+class Create extends Component {
 
   constructor(props) {
     super(props);
 
-    const {id} = props.match.params;
-
-    const post = {
-      title: '',
-      content: '',
-      enabled: '',
-    };
-
-    const statuses = [
-      {
-        id: 0,
-        name: 'Disabled',
-      },
-      {
-        id: 1,
-        name: 'Enabled',
-      },
-    ];
-
     this.state = {
-      id,
-      initialData: post,
-      post,
-      statuses,
+      isDirty: false,
+      initialData: null,
+      post: {
+        title: '',
+        content: '',
+        enabled: '',
+      },
+      statuses: [
+        {
+          id: 0,
+          name: 'Disabled',
+        }, {
+          id: 1,
+          name: 'Enabled',
+        },
+      ],
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
   }
 
   componentWillMount() {
-    const {id} = this.state;
     this.props.clearValidationError();
-    this.props.getPost(id);
   }
 
   componentWillReceiveProps(nextProps) {
-    const {post, updated} = nextProps;
-    const {id} = this.state;
+    const {post, created} = nextProps;
 
     if (post) {
-      const initialData = {...post};
-      this.setState({post, initialData});
+      this.setState({post});
     }
 
-    if (updated) {
-      redirect(`/posts/${id}`);
+    if (created) {
+      redirect(`/posts`);
     }
   }
 
@@ -89,13 +77,19 @@ class Edit extends Component {
   handleChange(event) {
     let {name, value} = event.target;
 
-    /*
     if (event.target.type === 'checkbox') {
       value = event.target.checked;
     }
-    */
 
     const post = {...this.state.post};
+    if (!this.state.isDirty && post[name] !== value) {
+      const initialData = {...post};
+      this.setState({
+        initialData,
+        isDirty: true
+      });
+    }
+
     post[name] = value;
     this.setState({post});
     this.removeApiError(name);
@@ -116,18 +110,13 @@ class Edit extends Component {
     };
 
     if (1) {
-      this.props.updatePost(id, data);
+      this.props.createPost(data);
     }
-  }
-
-  handleReset(event) {
-    const {initialData} = this.state;
-    this.setState({post: initialData});
   }
 
   render() {
     const {loading} = this.props;
-    const {post, statuses, initialData} = this.state;
+    const {post, statuses} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -140,7 +129,7 @@ class Edit extends Component {
                   }}
                   onSubmit={this.handleSubmit}>
               <CardHeader>
-                <i className="fa fa-newspaper-o"></i> <strong>Edit: {initialData.title}</strong>
+                <i className="fa fa-newspaper-o"></i> <strong>Add Post</strong>
               </CardHeader>
               <CardBody>
                 <Row>
@@ -193,9 +182,6 @@ class Edit extends Component {
                 <CoreuiButton type="submit" size="sm" color="primary">
                   <i className="fa fa-dot-circle-o"></i> Save
                 </CoreuiButton>
-                <Button onClick={this.handleReset} type="button" size="sm" color="danger">
-                  <i className="fa fa-ban"></i> Reset
-                </Button>
                 <LoadingImg loading={loading}/>
               </CardFooter>
             </Form>
@@ -210,27 +196,24 @@ function mapStateToProps(state) {
   const {
     validation,
     posts: {
-      updateLoading,
+      createLoading,
       post,
-      updated,
+      created,
     }
   } = state;
 
   return {
-    loading: updateLoading,
+    loading: createLoading,
     validation,
     post,
-    updated,
+    created,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPost: (id) => {
-      dispatch(postActions.get(id));
-    },
-    updatePost: (id, post) => {
-      dispatch(postActions.update(id, post));
+    createPost: (post) => {
+      dispatch(postActions.create(post));
     },
     clearValidationError: (name) => {
       dispatch(validationActions.clear(name));
@@ -238,5 +221,5 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const PostEdit = connect(mapStateToProps, mapDispatchToProps)(Edit);
-export default PostEdit;
+const PostCreate = connect(mapStateToProps, mapDispatchToProps)(Create);
+export default PostCreate;

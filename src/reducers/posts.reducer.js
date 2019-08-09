@@ -4,7 +4,7 @@ var _ = require('lodash');
 let initialState = {};
 
 function getState(state) {
-  let newState = _.pick(state, ['currentUser']);
+  let newState = _.pick(state, []);
 
   return newState;
 }
@@ -16,7 +16,7 @@ const posts = (state = initialState, action) => {
 
       return {
         ...newState,
-        getAllLoading: true
+        getAllLoading: true,
       };
     }
     case postConstants.GETALL_SUCCESS: {
@@ -26,7 +26,7 @@ const posts = (state = initialState, action) => {
       return {
         ...newState,
         items,
-        total
+        total,
       };
     }
     case postConstants.GETALL_FAILURE: {
@@ -35,11 +35,11 @@ const posts = (state = initialState, action) => {
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
-    case postConstants.GETBYID_REQUEST: {
+    case postConstants.GET_REQUEST: {
       const newState = getState(state);
 
       return {
@@ -53,7 +53,7 @@ const posts = (state = initialState, action) => {
 
       return {
         ...newState,
-        post
+        post,
       };
     }
     case postConstants.GET_FAILURE: {
@@ -62,7 +62,33 @@ const posts = (state = initialState, action) => {
 
       return {
         ...newState,
-        error
+        error,
+      };
+    }
+
+    case postConstants.CREATE_REQUEST: {
+      const newState = getState(state);
+
+      return {
+        ...newState,
+        createLoading: true,
+      };
+    }
+    case postConstants.CREATE_SUCCESS: {
+      const newState = getState(state);
+
+      return {
+        ...newState,
+        created: true,
+      };
+    }
+    case postConstants.CREATE_FAILURE: {
+      const newState = getState(state);
+      const {error} = action;
+
+      return {
+        ...newState,
+        error,
       };
     }
 
@@ -71,7 +97,7 @@ const posts = (state = initialState, action) => {
 
       return {
         ...newState,
-        updateByIdloading: true
+        updateLoading: true
       };
     }
     case postConstants.UPDATE_SUCCESS: {
@@ -79,7 +105,7 @@ const posts = (state = initialState, action) => {
 
       return {
         ...newState,
-        updated: true
+        updated: true,
       };
     }
     case postConstants.UPDATE_FAILURE: {
@@ -88,40 +114,40 @@ const posts = (state = initialState, action) => {
 
       return {
         ...newState,
-        error
+        error,
       };
     }
 
     case postConstants.DELETE_REQUEST: {
-      // add 'deleting:true' property to user being deleted
+      // add 'deleting:true' property to post being deleted
       return {
         ...state,
-        items: state.items.map(user =>
-          user.id === action.id
-            ? {...user, deleting: true}
-            : user
+        items: state.items.map(post =>
+          post.id === action.id
+            ? {...post, deleting: true}
+            : post
         )
       };
     }
     case postConstants.DELETE_SUCCESS: {
-      // remove deleted user from state
+      // remove deleted post from state
       return {
-        items: state.items.filter(user => user.id !== action.id)
+        items: state.items.filter(post => post.id !== action.id)
       };
     }
     case postConstants.DELETE_FAILURE: {
-      // remove 'deleting:true' property and add 'deleteError:[error]' property to user
+      // remove 'deleting:true' property and add 'deleteError:[error]' property to post
       return {
         ...state,
-        items: state.items.map(user => {
-          if (user.id === action.id) {
-            // make copy of user without 'deleting:true' property
-            const {deleting, ...userCopy} = user;
-            // return copy of user with 'deleteError:[error]' property
-            return {...userCopy, deleteError: action.error};
+        items: state.items.map(post => {
+          if (post.id === action.id) {
+            // make copy of post without 'deleting:true' property
+            const {deleting, ...postCopy} = post;
+            // return copy of post with 'deleteError:[error]' property
+            return {...postCopy, deleteError: action.error};
           }
 
-          return user;
+          return post;
         })
       };
     }

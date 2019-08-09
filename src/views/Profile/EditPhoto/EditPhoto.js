@@ -56,8 +56,6 @@ class EditPhoto extends Component {
   handleUpdate(event) {
     event.preventDefault();
 
-    console.log('event.target.photo:', event.target.photo)
-
     const files = Array.from(event.target.photo.files);
     let formData = new FormData();
     files.forEach((file, i) => {

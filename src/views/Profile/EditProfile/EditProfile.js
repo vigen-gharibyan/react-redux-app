@@ -21,11 +21,14 @@ class EditProfile extends Component {
   constructor(props) {
     super(props);
 
+    const user = {
+      username: '',
+      email: '',
+    }
+
     this.state = {
-      user: {
-        username: '',
-        email: ''
-      }
+      initialData: user,
+      user,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -41,7 +44,9 @@ class EditProfile extends Component {
   componentWillReceiveProps(nextProps) {
     const {user, updatedCurrent} = nextProps;
     if (user) {
-      this.setState({user});
+      const initialData = {...user};
+
+      this.setState({user, initialData});
     }
 
     if (updatedCurrent) {
@@ -60,7 +65,7 @@ class EditProfile extends Component {
       value = event.target.checked;
     }
 
-    const {user} = this.state;
+    const user = {...this.state.user};
     user[name] = value;
     this.setState({user});
     this.removeApiError(name);
@@ -78,7 +83,8 @@ class EditProfile extends Component {
   }
 
   handleReset(event) {
-    console.log('reset ...')
+    const {initialData} = this.state;
+    this.setState({user: {...initialData}});
   }
 
   render() {
@@ -152,7 +158,7 @@ function mapStateToProps(state) {
     users: {
       updateCurrentLoading,
       currentUser,
-      updatedCurrent
+      updatedCurrent,
     }
   } = state;
 
@@ -160,7 +166,7 @@ function mapStateToProps(state) {
     loading: updateCurrentLoading,
     validation,
     user: currentUser,
-    updatedCurrent
+    updatedCurrent,
   };
 }
 
@@ -174,7 +180,7 @@ function mapDispatchToProps(dispatch) {
     },
     clearValidationError: (name) => {
       dispatch(validationActions.clear(name));
-    }
+    },
   }
 }
 

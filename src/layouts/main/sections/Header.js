@@ -26,7 +26,7 @@ class Header extends Component {
     super(props);
 
     this.state = {
-      currentUser: {
+      loggedinUser: {
         username: '',
         email: '',
         photo: ''
@@ -35,16 +35,17 @@ class Header extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {currentUser} = nextProps;
-    if (currentUser) {
-      this.setState({currentUser});
+    const {loggedinUser} = nextProps;
+
+    if (loggedinUser) {
+      this.setState({loggedinUser});
     }
   }
 
   render() {
     // eslint-disable-next-line
     // const {children, ...attributes} = this.props;
-    const {currentUser} = this.state;
+    const {loggedinUser} = this.state;
 
     return (
       <React.Fragment>
@@ -104,10 +105,10 @@ class Header extends Component {
 
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={ url(currentUser.photo) || defaultProfileImg }
+              <img src={ url(loggedinUser.photo) || defaultProfileImg }
                    className="img-avatar"
-                   alt={currentUser.email}
-                   title={currentUser.username}/>
+                   alt={loggedinUser.email}
+                   title={loggedinUser.username}/>
             </DropdownToggle>
             <DropdownMenu right style={{right: 'auto'}}>
               <DropdownItem header tag="div" className="text-center">
@@ -164,12 +165,12 @@ Header.defaultProps = defaultProps;
 
 function mapStateToProps(state) {
   const {
-    users: {currentUser},
+    users: {loggedinUser},
     intl: {locale},
   } = state;
 
   return {
-    currentUser,
+    loggedinUser,
     locale,
   };
 }
