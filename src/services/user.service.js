@@ -1,7 +1,6 @@
 import {doFetch, doSearch, doUpload} from '../helpers';
 
 var jwt = require('jsonwebtoken');
-var _ = require('lodash');
 
 export const userService = {
   isLoggedin,
@@ -27,12 +26,12 @@ function isLoggedin() {
     var decodedJwt = jwt.decode(token);
 
     if (decodedJwt) {
-      var expiration_time = decodedJwt.exp;
+      var expirationTime = decodedJwt.exp;
 
-      if (expiration_time) {
-        var current_time = Date.now() / 1000;
+      if (expirationTime) {
+        var currentTime = Date.now() / 1000;
 
-        if (expiration_time > current_time) {
+        if (expirationTime > currentTime) {
           return true;
         }
       } else {

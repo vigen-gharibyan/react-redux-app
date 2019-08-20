@@ -8,10 +8,12 @@ import {
   Button,
   FormGroup,
   FormText,
-  FormFeedback
+  FormFeedback,
 } from 'reactstrap';
+import {Editor} from '@tinymce/tinymce-react';
 
 import {validations} from '../validations';
+import {config} from '../../config';
 
 import './styles.css';
 
@@ -57,6 +59,28 @@ const CustomTextarea = ({error, isChanged, isUsed, ...props}) => {
 
   return (
     <CustomInput type="textarea" {...props} {...otherProps}/>
+  )
+};
+
+const CustomEditor = ({error, isChanged, isUsed, ...props}) => {
+  const hasError = isChanged && isUsed && !!error;
+  const otherProps = {error, isChanged, isUsed};
+
+  console.log('props:', props)
+
+  return (
+    <FormGroup className={hasError ? 'has-error' : ''}>
+      <Editor
+        initialValue={props.value}
+        apiKey={config.tinymceApiKey}
+        init={{
+          plugins: 'link image code',
+          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+        }}
+        {...otherProps}
+      />
+      <FormFeedback invalid={(!!hasError).toString()}>{error}</FormFeedback>
+    </FormGroup>
   )
 };
 
@@ -117,6 +141,7 @@ const CoreuiForm = form(CustomForm);
 const CoreuiInput = control(CustomInput);
 const CoreuiFile = control(CustomFile);
 const CoreuiTextarea = control(CustomTextarea);
+const CoreuiEditor = control(CustomEditor);
 const CoreuiSelect = control(CustomSelect);
 const CoreuiCheckbox = control(CustomCheckbox);
 const CoreuiButton = button(CustomButton);
@@ -127,6 +152,7 @@ export {
   CoreuiInput as Input,
   CoreuiFile as File,
   CoreuiTextarea as Textarea,
+  CoreuiEditor as Editor,
   CoreuiSelect as Select,
   CoreuiCheckbox as Checkbox,
   CoreuiButton as Button,

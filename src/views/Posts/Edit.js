@@ -21,6 +21,7 @@ import {
   Input,
   Textarea,
   Select,
+  Editor,
   Button as CoreuiButton,
   LoadingImg,
 } from '../../helpers';
@@ -161,7 +162,7 @@ class Edit extends Component {
                     </FormGroup>
                     <FormGroup>
                       <Label htmlFor="content">Content</Label>
-                      <Textarea name="content" id="content"
+                      <Editor name="content" id="content"
                                 placeholder="Content"
                                 autoComplete="content"
                                 label="Content"
