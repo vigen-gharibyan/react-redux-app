@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -14,7 +13,7 @@ import {
   Table
 } from 'reactstrap';
 
-import {history} from '../../helpers';
+import {Link, redirect} from "../../helpers/Intl";
 import {userActions, validationActions} from '../../actions';
 import {
   validations,
@@ -24,24 +23,26 @@ import {
   Button as CoreuiButton,
   LoadingImg
 } from '../../helpers';
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
+import {url, defaultProfileImg} from '../../helpers';
 
 class Edit extends Component {
 
   constructor(props) {
     super(props);
 
+    const {id} = props.match.params;
+
+    const user = {
+      username: '',
+      role: undefined,
+      status: undefined,
+    };
+
     this.state = {
-      isDirty: false,
-      id: this.props.match.params.id,
-      initialData: null,
-      user: {
-        username: '',
-        role: undefined,
-        status: undefined
-      }
+      id,
+      initialData: user,
+      user,
+      // isDirty: false,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -60,11 +61,15 @@ class Edit extends Component {
     const {id} = this.state;
 
     if (user) {
-      this.setState({user});
+      const initialData = {...user};
+      this.setState({
+        user,
+        initialData,
+      });
     }
 
     if (updated) {
-      history.push(`/users/${id}`);
+      redirect(`/users/${id}`);
     }
   }
 
@@ -80,13 +85,15 @@ class Edit extends Component {
     }
 
     const user = {...this.state.user};
+    /*
     if (!this.state.isDirty && user[name] !== value) {
-      const initialData = {...user};
+      // const initialData = {...user};
       this.setState({
-        initialData,
+        // initialData,
         isDirty: true
       });
     }
+    */
 
     user[name] = value;
     this.setState({user});
@@ -112,15 +119,19 @@ class Edit extends Component {
   }
 
   handleReset(event) {
-    const {isDirty, initialData} = this.state;
+    const {/*isDirty,*/ initialData} = this.state;
+    this.setState({user: initialData});
+
+    /*
     if (isDirty) {
       this.setState({user: initialData});
     }
+    */
   }
 
   render() {
     const {loading} = this.props;
-    const {user, isDirty} = this.state;
+    const {user /*, isDirty*/} = this.state;
     const {roles, statuses} = user;
 
     return (
@@ -140,8 +151,7 @@ class Edit extends Component {
                 <Row>
                   <Col sm="4">
                     <div className="profile-img-container">
-                      <img src={ user.photo || defaultProfileImg }
-                           className=""/>
+                      <img src={ url(user.photo) || defaultProfileImg }/>
                     </div>
                   </Col>
                 </Row>
@@ -188,7 +198,7 @@ class Edit extends Component {
               </CardBody>
               <CardFooter>
                 <CoreuiButton type="submit" size="sm" color="primary">
-                  <i className="fa fa-dot-circle-o"></i> Save {isDirty}
+                  <i className="fa fa-dot-circle-o"></i> Save
                 </CoreuiButton>
                 <Button onClick={this.handleReset} type="button" size="sm" color="danger">
                   <i className="fa fa-ban"></i> Reset
@@ -207,17 +217,17 @@ function mapStateToProps(state) {
   const {
     validation,
     users: {
-      updateByIdloading,
+      updateByIdLoading,
       user,
-      updated
+      updated,
     }
   } = state;
 
   return {
-    loading: updateByIdloading,
+    loading: updateByIdLoading,
     validation,
     user,
-    updated
+    updated,
   };
 }
 

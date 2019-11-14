@@ -1,10 +1,6 @@
-import {authHeader, doFetch, handleResponse} from '../helpers';
-import {config} from '../config';
+import {doFetch, doSearch, doUpload} from '../helpers';
 
 var jwt = require('jsonwebtoken');
-var _ = require('lodash');
-
-const apiUrl = config.apiUrl;
 
 export const userService = {
   isLoggedin,
@@ -20,7 +16,7 @@ export const userService = {
   removeCurrentPhoto,
   update,
   changePassword,
-  delete: _delete
+  delete: _delete,
 };
 
 function isLoggedin() {
@@ -30,12 +26,12 @@ function isLoggedin() {
     var decodedJwt = jwt.decode(token);
 
     if (decodedJwt) {
-      var expiration_time = decodedJwt.exp;
+      var expirationTime = decodedJwt.exp;
 
-      if (expiration_time) {
-        var current_time = Date.now() / 1000;
+      if (expirationTime) {
+        var currentTime = Date.now() / 1000;
 
-        if (expiration_time > current_time) {
+        if (expirationTime > currentTime) {
           return true;
         }
       } else {
@@ -58,189 +54,100 @@ function getCurrentFromStorage() {
   return null;
 }
 
-function register(user) {
-  const requestOptions = {
+function register(data) {
+  return doFetch('users/signup', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(user)
-  };
-
-  return fetch(`${apiUrl}/users/signup`, requestOptions)
-    .then(handleResponse)
-    .catch(err => {
-      console.log('err', err)
-      throw err;
-    });
+    auth: false,
+    body: data,
+  });
 }
 
 function login(username, password) {
-  const requestOptions = {
+  return doFetch('users/login', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({username, password})
-  };
+    auth: false,
+    body: {username, password},
+  })
+  .then(response => {
+    const {data} = response;
 
-  return fetch(`${apiUrl}/users/login`, requestOptions)
-    .then(handleResponse)
-    .then(response => {
-      const {data} = response;
+    // login successful if there's a jwt token in the response
+    if (data && data.token) {
+      // store user details and jwt token in local storage to keep user logged in between page refreshes
+      localStorage.setItem('token', data.token);
+    }
 
-      // login successful if there's a jwt token in the response
-      if (data && data.token) {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('token', data.token);
-      }
-
-      return response;
-    })
-    .catch(err => {
-      console.log('err:', err)
-      throw err;
-    });
+    return response;
+  })
+  .catch(err => {
+    // console.log('err:', err)
+    throw err;
+  });
 }
 
 function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem('token');
+  localStorage.removeItem('user');
 }
 
 function getAll(queryParams) {
-  let params = [];
-  let query = '';
-
-  // console.log('queryParams:', queryParams)
-
-  if (queryParams) {
-    const {page, sort, filters, perPage} = queryParams;
-
-    if (filters) {
-      _.forEach(filters, (value, key) => {
-        params.push(`UserSearch[${key}]=${value}`)
-      });
-    }
-
-    !!perPage && params.push(`per-page=${perPage}`);
-    !!page && params.push(`page=${page}`);
-    !!sort && params.push(`sort=${sort}`);
-
-    if (params.length > 0) {
-      query = params.join('&');
-    }
-
-    if (query) {
-      query = `?${query}`;
-    }
-  }
-
-  const requestOptions = {
-    method: 'GET',
-    headers: authHeader()
-  };
-
-  let url = `users${query}`;
-  return doFetch(url, requestOptions);
+  return doSearch('users', queryParams, 'UserSearch', {
+    auth: true,
+  });
 }
 
 function getById(id) {
-  const requestOptions = {
-    method: 'GET',
-    headers: authHeader()
-  };
-
-  return fetch(`${apiUrl}/users/${id}`, requestOptions)
-    .then(handleResponse);
+  return doFetch(`users/${id}`, {auth: true});
 }
 
 function getCurrent() {
-  const requestOptions = {
-    method: 'GET',
-    headers: authHeader()
-  };
-
-  return fetch(`${apiUrl}/users/current`, requestOptions)
-    .then(handleResponse);
+  return doFetch('users/current', {auth: true});
 }
 
-function updateCurrent(user) {
-  const requestOptions = {
+function updateCurrent(data) {
+  return doFetch('users/current', {
     method: 'PUT',
-    headers: {
-      ...authHeader(),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(user)
-  };
-
-  return fetch(`${apiUrl}/users/current`, requestOptions)
-    .then(handleResponse);
+    auth: true,
+    body: data,
+  });
 }
 
 function updateCurrentPhoto(formData) {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      ...authHeader()
-    },
-    body: formData
-  };
-
-  return fetch(`${apiUrl}/users/photo`, requestOptions)
-    .then(handleResponse);
+  return doUpload('users/photo', {
+    auth: true,
+    body: formData,
+  });
 }
 
 function removeCurrentPhoto() {
-  const requestOptions = {
+  return doFetch('users/photo', {
     method: 'PUT',
-    headers: {
-      ...authHeader(),
-      'Content-Type': 'application/json'
-    }
-  };
-
-  return fetch(`${apiUrl}/users/photo`, requestOptions)
-    .then(handleResponse);
+    auth: true,
+  });
 }
 
-function update(id, user) {
-  const requestOptions = {
+function update(id, data) {
+  return doFetch(`users/${id}`, {
     method: 'PUT',
-    headers: {
-      ...authHeader(),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(user)
-  };
-
-  return fetch(`${apiUrl}/users/${id}`, requestOptions)
-    .then(handleResponse);
+    auth: true,
+    body: data,
+  });
 }
 
 function changePassword(data) {
-  const requestOptions = {
+  return doFetch('users/password', {
     method: 'PUT',
-    headers: {
-      ...authHeader(),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  };
-
-  return fetch(`${apiUrl}/users/password`, requestOptions)
-    .then(handleResponse);
+    auth: true,
+    body: data,
+  });
 }
 
+// todo: not tested
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
-  const requestOptions = {
+  return doFetch(`users/${id}`, {
     method: 'DELETE',
-    headers: authHeader()
-  };
-
-  return fetch('/users/' + id, requestOptions).then(handleResponse);
+    auth: true,
+  });
 }
-
-

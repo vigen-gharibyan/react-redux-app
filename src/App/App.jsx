@@ -1,5 +1,9 @@
 import React from 'react';
-import Routes from '../routes';
+import {Router} from 'react-router-dom';
+
+import {MultilangRoutes} from '../routes';
+import {Routes} from '../routes';
+import {history} from '../helpers';
 
 // CoreUI Icons Set
 import '@coreui/icons/css/coreui-icons.min.css';
@@ -17,7 +21,9 @@ import './App.css';
 class App extends React.Component {
   render() {
     return (
-      <Routes/>
+      <Router history={history}>
+        <MultilangRoutes/>
+      </Router>
     );
   }
 }

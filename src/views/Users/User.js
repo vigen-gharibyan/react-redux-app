@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 import {
   Button,
@@ -13,11 +12,9 @@ import {
   Table
 } from 'reactstrap';
 
+import {Link} from "../../helpers";
+import {date, url, defaultProfileImg} from '../../helpers';
 import {userActions} from '../../actions';
-import {date} from '../../helpers';
-
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
 
 class User extends Component {
 
@@ -54,7 +51,7 @@ class User extends Component {
   }
 
   render() {
-    const {user} = this.state;
+    const {id, user} = this.state;
 
     return (
       <div className="animated fadeIn">
@@ -68,8 +65,7 @@ class User extends Component {
                 <Row>
                   <Col sm="4">
                     <div className="profile-img-container">
-                      <img src={ user.photo || defaultProfileImg }
-                           className=""/>
+                      <img src={ url(user.photo) || defaultProfileImg }/>
                     </div>
                   </Col>
                 </Row>
@@ -95,7 +91,7 @@ class User extends Component {
                 </Row>
               </CardBody>
               <CardFooter>
-                <Link to={`/users/${user.id}/edit`}>
+                <Link to={`/users/${id}/edit`}>
                   <Button size="sm" color="primary">
                     <i className="fa fa-edit"></i> <FormattedMessage id="Edit"></FormattedMessage>
                   </Button>
@@ -111,9 +107,7 @@ class User extends Component {
 
 function mapStateToProps(state) {
   const {
-    users: {
-      user
-    }
+    users: {user}
   } = state;
 
   return {

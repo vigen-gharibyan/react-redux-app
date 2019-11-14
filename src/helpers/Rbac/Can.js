@@ -31,11 +31,11 @@ const check = (rules, role, action, data) => {
 
 const Can = props => {
   let {role} = props;
-  const {currentUser} = props;
+  const {loggedinUser} = props;
 
   if(typeof role == 'undefined') {
-    if(currentUser) {
-      role = currentUser.role;
+    if(loggedinUser) {
+      role = loggedinUser.role;
     }
   }
 
@@ -50,11 +50,11 @@ Can.defaultProps = {
 };
 
 function mapStateToProps(state) {
-  const {users: {currentUser}} = state;
+  const {
+    users: {loggedinUser}
+  } = state;
 
-  return {
-    currentUser
-  };
+  return {loggedinUser};
 }
 
 const connectedCan = connect(mapStateToProps)(Can);

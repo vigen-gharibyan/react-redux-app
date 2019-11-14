@@ -1,7 +1,7 @@
-import { userConstants } from '../_constants';
-import { userService } from '../services';
+import {userConstants} from '../_constants';
+import {userService} from '../services';
 
-const initialState = userService.isLoggedin() ? { loggedIn: true } : {};
+const initialState = userService.isLoggedin() ? {loggedIn: true} : {};
 
 const authentication = (state = initialState, action) => {
   switch (action.type) {

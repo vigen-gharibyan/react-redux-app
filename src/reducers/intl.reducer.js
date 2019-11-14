@@ -1,14 +1,13 @@
-import { intlConstants } from '../_constants';
-import {enabledLanguages, localizationData} from '../helpers/Intl/setup';
+import {intlConstants} from '../_constants';
+import {defaultLng, enabledLanguages, localizationData} from '../helpers/Intl/setup';
 
-// const initLocale = global.navigator && global.navigator.language.split(/[-_]/)[0] || 'en';
-const initLocale = 'ru';
+// const defaultLng = global.navigator && global.navigator.language.split(/[-_]/)[0] || 'en';
 
 const initialState = {
   enabledLanguages,
-  locale: initLocale,
+  locale: defaultLng,
   messages: {
-    ...(localizationData[initLocale] || {})
+    ...(localizationData[defaultLng] || {})
   },
 };
 
@@ -16,14 +15,29 @@ const IntlReducer = (state = initialState, action) => {
   switch (action.type) {
     case intlConstants.SWITCH_LANGUAGE: {
       const {type, ...actionWithoutType} = action; // eslint-disable-line
-      const {locale} = actionWithoutType;
+      let {locale} = actionWithoutType;
+
+      if (!locale || !(enabledLanguages.includes(locale))) {
+        locale = defaultLng;
+      }
+
       const messages = localizationData[locale];
 
       return {
         ...state,
         locale,
-        messages: {...messages}
+        messages: {...messages},
       };
+    }
+
+    case intlConstants.SAVE_CURRENT_PATH: {
+      const {type, ...actionWithoutType} = action; // eslint-disable-line
+      const {currentPath} = actionWithoutType;
+
+      return {
+        ...state,
+        currentPath,
+      }
     }
 
     default:

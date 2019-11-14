@@ -11,13 +11,10 @@ import am from 'react-intl/locale-data/am';
 import enData from '../../translations/app/en.json';
 import ruData from '../../translations/app/ru.json';
 import amData from '../../translations/app/am.json';
+import {params} from '../../config';
 
-// list of available languages
-export const enabledLanguages = [
-  'en',
-  'ru',
-  'am',
-];
+const {enabledLanguages, languages} = params;
+let {defaultLng = 'en'} = params;
 
 // need Intl polyfill, Intl not supported in Safari
 /*
@@ -58,8 +55,27 @@ addLocaleData([
   ...am,
 ]);
 
-export const localizationData = {
+const localizationData = {
   en: flattenMessages(enData),
   ru: flattenMessages(ruData),
   am: flattenMessages(amData),
+};
+
+Object.keys(languages).map((key) => {
+  if (enabledLanguages.indexOf(key) < 0) {
+    delete languages[key];
+  }
+});
+
+if (!defaultLng || enabledLanguages.indexOf(defaultLng) < 0) {
+  if (enabledLanguages.length > 0) {
+    defaultLng = enabledLanguages[0];
+  }
+}
+
+export {
+  defaultLng,
+  enabledLanguages,
+  languages,
+  localizationData,
 };

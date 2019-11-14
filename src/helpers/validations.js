@@ -85,7 +85,7 @@ const validations = {
   required: (value, props) => {
     const label = props.label || 'This field';
 
-    if (!value || !value.toString().trim().length) {
+    if (!value.toString().trim().length) {
       let text = `${label} is required`;
 
       return text;

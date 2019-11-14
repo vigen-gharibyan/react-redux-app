@@ -15,17 +15,14 @@ import {
   AppSidebarNav,
 } from '@coreui/react';
 
-// sidebar nav config
-import navigation from './sections/_nav';
-
-// routes config
-import routes from './routes';
+import Routes, {routes, routesWithPrefix} from './Routes';
+import getNavigation from './sections/_nav';
 import Aside from './sections/Aside';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
 import Notifications from './sections/Notifications';
 import {userActions} from '../../actions';
-import {PrivateRoute} from '../../helpers';
+import {addPrefixToRoutes} from '../../helpers';
 
 import './assets/css/style.css';
 
@@ -35,7 +32,22 @@ class Layout extends Component {
     this.props.getCurrentUser();
   }
 
+  getUrlFromProps(props) {
+    const {match} = props;
+    if (match) {
+      const {url} = match;
+      if (url) {
+        return url;
+      }
+    }
+    return null;
+  }
+
   render() {
+    const {currentLng} = this.props;
+    const lngPrefix = this.getUrlFromProps(this.props);
+    const navigation = getNavigation();
+
     return (
       <div className="app">
         <AppHeader fixed>
@@ -51,26 +63,9 @@ class Layout extends Component {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes}/>
+            <AppBreadcrumb appRoutes={routesWithPrefix}/>
             <Container fluid>
-              <Switch>
-                {
-                  routes.map((route, idx) => {
-                      return route.component ? (
-                        <PrivateRoute key={idx}
-                                      perform={route.perform}
-                                      component={route.component}
-                                      path={route.path}
-                                      exact={route.exact}
-                                      name={route.name}
-                        />)
-                        : (null);
-                    }
-                  )
-                }
-                <Redirect exact from="/" to="/dashboard"/>
-                <Redirect from='/*' to='/404'/>
-              </Switch>
+              <Routes lngPrefix={lngPrefix}/>
             </Container>
           </main>
           <AppAside fixed hidden>
@@ -86,6 +81,14 @@ class Layout extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  const {
+    intl: {locale},
+  } = state;
+
+  return {currentLng: locale};
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     getCurrentUser: () => {
@@ -94,5 +97,5 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const connectedLayout = connect(null, mapDispatchToProps)(Layout);
+const connectedLayout = connect(mapStateToProps, mapDispatchToProps)(Layout);
 export {connectedLayout as MainLayout};

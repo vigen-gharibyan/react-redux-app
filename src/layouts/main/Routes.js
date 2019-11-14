@@ -1,5 +1,9 @@
-import React from 'react';
-import Loadable from 'react-loadable'
+import React, {Component} from 'react';
+import {Redirect, Route, Switch} from 'react-router-dom';
+import Loadable from 'react-loadable';
+
+import {PrivateRoute} from '../../routes';
+import {addPrefixToRoutes, enabledLanguages} from '../../helpers';
 
 import {MainLayout} from './Layout';
 import Dashboard from '../../views/Dashboard';
@@ -41,6 +45,12 @@ import Widgets from '../../views/Widgets/Widgets';
 import Users from '../../views/Users';
 import User from '../../views/Users/User';
 import UserEdit from '../../views/Users/Edit';
+import Posts from '../../views/Posts';
+import Post from '../../views/Posts/Post';
+import PostCreate from '../../views/Posts/Create';
+import PostEdit from '../../views/Posts/Edit';
+
+import {string} from '../../helpers';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -107,6 +117,30 @@ const routes = [
     component: UserEdit,
     perform: 'users:update'
   },
+  {
+    path: '/posts',
+    exact: true,
+    name: 'Posts',
+    component: Posts,
+  },
+  {
+    path: '/posts/create',
+    exact: true,
+    name: 'Add Post',
+    component: PostCreate,
+  },
+  {
+    path: '/posts/:id',
+    exact: true,
+    name: 'Post',
+    component: Post,
+  },
+  {
+    path: '/posts/:id/edit',
+    exact: true,
+    name: 'Edit',
+    component: PostEdit,
+  },
   {path: '/theme', exact: true, name: 'Theme', component: Colors},
   {path: '/theme/colors', name: 'Colors', component: Colors},
   {path: '/theme/typography', name: 'Typography', component: Typography},
@@ -147,4 +181,47 @@ const routes = [
   {path: '/charts', name: 'Charts', component: Charts}
 ];
 
-export default routes;
+function addPrefixesToRoutes(routes, enabledLanguages) {
+  let routesWithPrefix = [...routes];
+
+  enabledLanguages.map(lang => {
+    const routesWithThisLangPrefix = addPrefixToRoutes(routes, `/${lang}`);
+    routesWithPrefix = [...routesWithPrefix, ...routesWithThisLangPrefix];
+  });
+
+  return routesWithPrefix;
+}
+
+const routesWithPrefix = addPrefixesToRoutes(routes, enabledLanguages);
+
+class Routes extends Component {
+  render() {
+    let {lngPrefix} = this.props;
+    lngPrefix = lngPrefix ? string.removeTrailingSlash(lngPrefix) : '';
+
+    return (
+      <Switch>
+        {
+          routes.map((route, idx) => {
+            const path = `${lngPrefix}${route.path}`;
+
+            return route.component ? (
+              <PrivateRoute key={idx}
+                            perform={route.perform}
+                            component={route.component}
+                            path={path}
+                            exact={route.exact}
+                            name={route.name}
+              />)
+              : (null);
+          })
+        }
+        <Redirect exact from={`${lngPrefix}/`} to={`${lngPrefix}/dashboard`}/>
+        <Redirect from='*' to={`${lngPrefix}/404`}/>
+      </Switch>
+    )
+  }
+}
+
+export {routesWithPrefix, routes};
+export default Routes;

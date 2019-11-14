@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {updateTitle} from 'redux-title';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
 import {
@@ -14,6 +13,7 @@ import {
   Row
 } from 'reactstrap';
 
+import {Link} from '../../../helpers';
 import {userActions, validationActions} from '../../../actions';
 import {
   validations,

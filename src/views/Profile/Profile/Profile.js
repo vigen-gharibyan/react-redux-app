@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -13,11 +12,11 @@ import {
 
 import {userActions} from '../../../actions';
 
-//todo
-const defaultProfileImg = '/assets/img/users/default-profile.png';
-import {date} from '../../../helpers';
+import {Link} from '../../../helpers';
+import {date, url, defaultProfileImg} from '../../../helpers';
 
 class Profile extends Component {
+
   constructor(props) {
     super(props);
 
@@ -57,7 +56,7 @@ class Profile extends Component {
                 <Row>
                   <Col sm="4">
                     <div className="profile-img-container">
-                      <img src={ user.photo || defaultProfileImg }
+                      <img src={ url(user.photo) || defaultProfileImg }
                            className=""/>
                     </div>
                   </Col>
@@ -103,14 +102,12 @@ class Profile extends Component {
 function mapStateToProps(state) {
   const {
     validation,
-    users: {
-      currentUser
-    }
+    users: {currentUser}
   } = state;
 
   return {
     validation,
-    user: currentUser
+    user: currentUser,
   };
 }
 

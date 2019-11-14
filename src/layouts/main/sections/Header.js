@@ -1,20 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link, NavLink} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
-import {Can, languages} from "../../../helpers";
-import {params} from "../../../config";
-import {intlActions} from '../../../actions';
+
+import {Can, Link, NavLink} from "../../../helpers";
+import {url, defaultProfileImg} from "../../../helpers";
+import {languages} from "../../../helpers";
+import LanguagesDropdown from './LanguagesDropdown';
 
 import logo from '../assets/img/brand/logo.svg';
 import sygnet from '../assets/img/brand/sygnet.svg';
-
-//todo
-const {defaultProfileImg} = params;
 
 const propTypes = {
   children: PropTypes.node,
@@ -28,39 +26,26 @@ class Header extends Component {
     super(props);
 
     this.state = {
-      currentUser: {
+      loggedinUser: {
         username: '',
         email: '',
         photo: ''
       },
-      currentLanguage: {
-        locale: null,
-        name: null,
-        icon: null,
-      },
     }
-
-    this.changeLanguage = this.changeLanguage.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    const {currentUser, currentLanguage} = nextProps;
-    if (currentUser) {
-      this.setState({currentUser});
-    }
-    if (currentLanguage) {
-      this.setState({currentLanguage});
-    }
-  }
+    const {loggedinUser} = nextProps;
 
-  changeLanguage(lang) {
-    this.props.dispatch(intlActions.switchLanguage(lang));
+    if (loggedinUser) {
+      this.setState({loggedinUser});
+    }
   }
 
   render() {
     // eslint-disable-next-line
-    const {children, ...attributes} = this.props;
-    const {currentUser, currentLanguage} = this.state;
+    // const {children, ...attributes} = this.props;
+    const {loggedinUser} = this.state;
 
     return (
       <React.Fragment>
@@ -112,35 +97,18 @@ class Header extends Component {
               <i className="icon-location-pin"></i>
             </NavLink>
           </NavItem>
+
+          {
+            (Object.keys(languages).length > 1) &&
+            <LanguagesDropdown />
+          }
+
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <i className={`flag-icon flag-icon-${currentLanguage.icon}`} title={currentLanguage.name}></i>
-            </DropdownToggle>
-
-            <DropdownMenu right style={{right: 'auto'}}>
-              {Object.keys(languages).map((index, key) => {
-                const language = languages[index];
-
-                if(language.locale != currentLanguage.locale) {
-                  return (
-                    <DropdownItem key={key}>
-                      <a onClick={() => this.changeLanguage(language.locale)}>
-                        <i className={`flag-icon flag-icon-${language.icon}`}></i> {language.name}
-                      </a>
-                    </DropdownItem>
-                  );
-                }
-
-                return;
-              })}
-            </DropdownMenu>
-          </AppHeaderDropdown>
-          <AppHeaderDropdown direction="down">
-            <DropdownToggle nav>
-              <img src={ currentUser.photo || defaultProfileImg }
+              <img src={ url(loggedinUser.photo) || defaultProfileImg }
                    className="img-avatar"
-                   alt={currentUser.email}
-                   title={currentUser.username}/>
+                   alt={loggedinUser.email}
+                   title={loggedinUser.username}/>
             </DropdownToggle>
             <DropdownMenu right style={{right: 'auto'}}>
               <DropdownItem header tag="div" className="text-center">
@@ -149,8 +117,9 @@ class Header extends Component {
               <DropdownItem>
                 <i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge>
               </DropdownItem>
-              <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge
-                color="success">42</Badge></DropdownItem>
+              <DropdownItem>
+                <i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge>
+              </DropdownItem>
               <DropdownItem>
                 <i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge>
               </DropdownItem>
@@ -196,19 +165,13 @@ Header.defaultProps = defaultProps;
 
 function mapStateToProps(state) {
   const {
-    users: {
-      currentUser
-    },
-    intl: {
-      locale
-    }
+    users: {loggedinUser},
+    intl: {locale},
   } = state;
 
-  const currentLanguage = languages[locale];
-
   return {
-    currentUser,
-    currentLanguage,
+    loggedinUser,
+    locale,
   };
 }
 
