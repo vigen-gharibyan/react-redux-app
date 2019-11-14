@@ -18,6 +18,7 @@ import {validations, Form, Input, Button as CoreuiButton, LoadingImg} from '../.
 import EditPhoto from '../EditPhoto';
 
 class EditProfile extends Component {
+
   constructor(props) {
     super(props);
 
@@ -43,9 +44,9 @@ class EditProfile extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {user, updatedCurrent} = nextProps;
+
     if (user) {
       const initialData = {...user};
-
       this.setState({user, initialData});
     }
 

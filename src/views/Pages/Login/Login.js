@@ -171,7 +171,7 @@ function mapStateToProps(state) {
   return {
     title,
     loggingIn,
-    validation
+    validation,
   };
 }
 

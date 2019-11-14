@@ -16,7 +16,7 @@ export const userService = {
   removeCurrentPhoto,
   update,
   changePassword,
-  delete: _delete
+  delete: _delete,
 };
 
 function isLoggedin() {

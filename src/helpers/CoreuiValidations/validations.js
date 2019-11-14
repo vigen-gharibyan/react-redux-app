@@ -10,10 +10,9 @@ import {
   FormText,
   FormFeedback,
 } from 'reactstrap';
-import {Editor} from '@tinymce/tinymce-react';
 
+import TinymceEditor from '../../components/TinymceEditor';
 import {validations} from '../validations';
-import {config} from '../../config';
 
 import './styles.css';
 
@@ -66,18 +65,11 @@ const CustomEditor = ({error, isChanged, isUsed, ...props}) => {
   const hasError = isChanged && isUsed && !!error;
   const otherProps = {error, isChanged, isUsed};
 
-  console.log('props:', props)
-
   return (
     <FormGroup className={hasError ? 'has-error' : ''}>
-      <Editor
-        initialValue={props.value}
-        apiKey={config.tinymceApiKey}
-        init={{
-          plugins: 'link image code',
-          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-        }}
-        {...otherProps}
+      <TinymceEditor
+        value={props.value}
+        handleChange={props.handleChange}
       />
       <FormFeedback invalid={(!!hasError).toString()}>{error}</FormFeedback>
     </FormGroup>

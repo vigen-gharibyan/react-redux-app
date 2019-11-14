@@ -16,7 +16,7 @@ import {
 } from '@coreui/react';
 
 import Routes, {routes, routesWithPrefix} from './Routes';
-import navigation from './sections/_nav';
+import getNavigation from './sections/_nav';
 import Aside from './sections/Aside';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
@@ -46,6 +46,7 @@ class Layout extends Component {
   render() {
     const {currentLng} = this.props;
     const lngPrefix = this.getUrlFromProps(this.props);
+    const navigation = getNavigation();
 
     return (
       <div className="app">

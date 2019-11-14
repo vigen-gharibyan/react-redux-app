@@ -129,18 +129,20 @@ class PostsTable extends Component {
 
 function mapStateToProps(state) {
   const {
+    intl: {locale},
     posts: {
       getAllLoading,
       items,
-      total
+      total,
     }
   } = state;
 
   return {
-    ...state,
+    //...state,
+    locale,
     loading: getAllLoading,
     items,
-    total
+    total,
   };
 }
 
