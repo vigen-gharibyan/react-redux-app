@@ -22,7 +22,7 @@ class Users extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-users"></i> <strong><FormattedMessage id="Users"></FormattedMessage></strong>
+                <i className="fa fa-users"></i> <strong><FormattedMessage id="Users"/></strong>
               </CardHeader>
               <CardBody>
                 <UsersTable getLocation={this.getLocation}/>

@@ -72,7 +72,7 @@ class Post extends Component {
               <CardFooter>
                 <Link to={`/posts/${id}/edit`}>
                   <Button size="sm" color="primary">
-                    <i className="fa fa-edit"></i> <FormattedMessage id="Edit"></FormattedMessage>
+                    <i className="fa fa-edit"></i> <FormattedMessage id="Edit"/>
                   </Button>
                 </Link>
               </CardFooter>

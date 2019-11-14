@@ -59,7 +59,7 @@ class Header extends Component {
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
             <NavLink to="/">
-              <FormattedMessage id="Dashboard"></FormattedMessage>
+              <FormattedMessage id="Dashboard"/>
             </NavLink>
           </NavItem>
 
@@ -68,7 +68,7 @@ class Header extends Component {
             yes={() => (
               <NavItem className="px-3">
                 <NavLink to="/users?sort=-created_at&status=10">
-                  <FormattedMessage id="Users"></FormattedMessage>
+                  <FormattedMessage id="Users"/>
                 </NavLink>
               </NavItem>
             )}
@@ -76,7 +76,7 @@ class Header extends Component {
 
           <NavItem className="px-3">
             <NavLink to="/settings">
-              <FormattedMessage id="Settings"></FormattedMessage>
+              <FormattedMessage id="Settings"/>
             </NavLink>
           </NavItem>
         </Nav>
@@ -112,7 +112,7 @@ class Header extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{right: 'auto'}}>
               <DropdownItem header tag="div" className="text-center">
-                <strong><FormattedMessage id="Account"></FormattedMessage></strong>
+                <strong><FormattedMessage id="Account"/></strong>
               </DropdownItem>
               <DropdownItem>
                 <i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge>
@@ -127,15 +127,15 @@ class Header extends Component {
                 <i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge>
               </DropdownItem>
               <DropdownItem header tag="div" className="text-center">
-                <strong><FormattedMessage id="Settings"></FormattedMessage></strong>
+                <strong><FormattedMessage id="Settings"/></strong>
               </DropdownItem>
               <DropdownItem>
                 <Link to="/profile">
-                  <i className="fa fa-user"></i> <FormattedMessage id="Profile"></FormattedMessage>
+                  <i className="fa fa-user"></i> <FormattedMessage id="Profile"/>
                 </Link>
               </DropdownItem>
               <DropdownItem>
-                <i className="fa fa-wrench"></i> <FormattedMessage id="Settings"></FormattedMessage>
+                <i className="fa fa-wrench"></i> <FormattedMessage id="Settings"/>
               </DropdownItem>
               <DropdownItem>
                 <i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge>
@@ -147,7 +147,7 @@ class Header extends Component {
               <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
               <DropdownItem>
                 <Link to="/login">
-                  <i className="fa fa-lock"></i> <FormattedMessage id="Logout"></FormattedMessage>
+                  <i className="fa fa-lock"></i> <FormattedMessage id="Logout"/>
                 </Link>
               </DropdownItem>
             </DropdownMenu>

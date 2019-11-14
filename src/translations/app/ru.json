@@ -33,5 +33,10 @@
   "account": "счет",
   "Account": "Счет",
   "profile": "профиль",
-  "Profile": "Профиль"
+  "Profile": "Профиль",
+
+  "Posts": "Посты",
+  "posts": "посты",
+  "Post": "Пост",
+  "post": "пост"
 }

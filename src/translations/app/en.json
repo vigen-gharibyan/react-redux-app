@@ -33,5 +33,10 @@
   "account": "account",
   "Account": "Account",
   "profile": "profile",
-  "Profile": "Profile"
+  "Profile": "Profile",
+
+  "Posts": "Posts",
+  "posts": "posts",
+  "Post": "Post",
+  "post": "post"
 }

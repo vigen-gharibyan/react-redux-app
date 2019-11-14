@@ -59,7 +59,7 @@ class User extends Component {
           <Col sm="12" md="8" xl="6">
             <Card>
               <CardHeader>
-                <i className="fa fa-user"></i> <strong><FormattedMessage id="User details"></FormattedMessage></strong>
+                <i className="fa fa-user"></i> <strong><FormattedMessage id="User details"/></strong>
               </CardHeader>
               <CardBody>
                 <Row>
@@ -93,7 +93,7 @@ class User extends Component {
               <CardFooter>
                 <Link to={`/users/${id}/edit`}>
                   <Button size="sm" color="primary">
-                    <i className="fa fa-edit"></i> <FormattedMessage id="Edit"></FormattedMessage>
+                    <i className="fa fa-edit"></i> <FormattedMessage id="Edit"/>
                   </Button>
                 </Link>
               </CardFooter>

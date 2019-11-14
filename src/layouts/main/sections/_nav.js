@@ -1,19 +1,23 @@
+import React from 'react';
+import {FormattedMessage} from 'react-intl';
 import {getLink} from '../../../helpers';
 
 export default function gatNavigation() {
   return {
     items: [
       {
-        name: 'Dashboard',
+        name: <FormattedMessage id="Dashboard"/>,
         url: getLink('/dashboard'),
         icon: 'icon-speedometer',
+        /*
         badge: {
           variant: 'info',
           text: 'NEW',
         },
+        */
       },
       {
-        name: 'Posts',
+        name: <FormattedMessage id="Posts"/>,
         url: getLink('/posts'),
         icon: 'icon-note',
       },
