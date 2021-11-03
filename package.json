@@ -50,7 +50,7 @@
     "redux-thunk": "^2.3.0",
     "redux-title": "0.0.3",
     "simple-line-icons": "^2.4.1",
-    "validator": "^10.11.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
